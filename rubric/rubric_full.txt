@@ -1,0 +1,335 @@
+
+Rubric for Preparation & Submission of the 
+Electronic Theses, Dissertations, and Dissertation Abstracts
+
+I. General
+Complete
+Incomplete
+FONT and COLOR
+Recommended TrueType fonts and point sizes. 
+*Arial 10pt – 12pt
+Century 11pt – 12pt
+*Courier New 10pt – 12pt
+Garamond 12pt 
+*Georgia 11pt – 12pt 
+Lucida Bright 10pt – 12pt
+Microsoft Sans Serif 10pt – 12pt
+Tahoma 10pt – 12pt
+*Times New Roman 12pt 
+*Trebuchet MS 10pt – 12pt 
+*Verdana 10pt – 12pt 
+*Web font. Designed for easy screen readability. Since many readers are likely to view and/or use your dissertation or thesis onscreen, you may wish to improve the readability of your text by using one of these fonts. 
+Color: Use black font for text
+The use of color should be reserved primarily for tables, figures, illustrations, and active website or document links throughout your thesis or dissertation.
+
+
+B. MARGIN
+1. One-inch margin on all sides, top, bottom, left, and right.
+2. The page number should print no closer than one-half inch from the edge of the paper.  
+i. The page number should be placed consistently throughout the manuscript.  
+ii. The footer's size should also remain consistent throughout the manuscript.
+
+
+ABBREVIATIONS
+       No abbreviations in TITLE
+
+
+Dissertation Committee members identified in ProQuest according to Advance to Candidacy Petition
+
+
+E. Keywords and subject categories identified in ProQuest
+
+
+F. SPACING
+Double spacing should be used in preliminary pages and throughout the body of the manuscript. 
+Single spacing should be used in long quotes, footnotes, indented quotations, figures, and tables. 
+
+
+
+
+G. TITLE PAGE
+The title page is always the first page, and it is not numbered but is counted as page i. 
+The title page template can be found in the section for the forms under "Thesis, Dissertation, and Manuscript Related". Make sure you select the appropriate title page template for your degree.
+You should not use their own title page.
+Your name should appear as it is listed in your student portal only - no honorifics or courtesy titles. If you would like to update your name, please see guidance on the Registrar's website.
+All committee members’ signatures must appear on the DocuSign title page. 
+You should first make sure that the committee on file with UCSF is still accurate. You can do so by going to your completed Advance to Candidacy petition or the Change of Committee petition in your Student Portal. 
+If updates are needed, please make them ASAP, as this is extremely time sensitive! 
+The chair and committee members on your title page must match those we have on file at UCSF.
+
+
+H. PAGINATION AND NUMBERING
+1. All pages must be numbered except the title page.
+Page numbers may be placed at the top or bottom of the page, and may be center or right justified, but must be consistently placed throughout the document.
+Preliminary pages must be numbered sequentially using lower case Roman numerals (ii, iii, iv, v, etc.).
+The title page counts as page “i” but the number should not be printed on the page.
+For numbering the remainder of the manuscript, including the main body text, bibliography, appendices, and library release form, use Arabic numerals (1, 2, 3, 4, etc.).
+Figures/illustrations/tables should follow the 1.1, 2.1, 3.1, etc. numbering scheme to clarify to the reader in which chapter the figure/illustration is located.  The first number should reference the chapter.
+If the manuscript is only one chapter, or does not include chapters, sequential numbering may be used.
+Do not use letter suffixes, such as 21a, 21b for page numbers or to reference tables/figures.
+For in-text citations, either square [ ] or curved brackets ( ) can be used as long as it is consistent. Please check with your committee to see if they have a preference.
+Superscripts can also be used rather than brackets (e.g. ...was discovered. 1,3).
+Subscript should not be used.
+
+
+I. COPYRIGHT PAGE
+1. This page (ii) is included ONLY in theses or dissertations for which an application for registration for claim to United States copyright has been submitted.
+2. If there is no copyright, this page is left blank and numbered as preliminary page ii.
+
+
+J. UCSF LIBRARY RELEASE
+The publishing agreement, is the last page, signed and dated by the student (via DocuSign), and should be numbered. 
+This page does not appear on Table of Contents. 
+The agreement may be electronically generated via DocuSign. 
+Students should not use their own version of the publishing agreement.
+
+
+K. ORIENTATION AND PAGE SIZE
+All pages in your final document must be in the portrait orientation, and all pages must be 8.5” x 11” (standard U.S. letter size)
+You should not use a multi-column layout. Preliminary pages and the body of the manuscript should be written as any standard academic report.
+You may use landscape orientation if necessary for certain elements of the document (such as a wide, horizontal chart or graph) to fit on the page. In this case, instead of rotating the page, you should rotate the image/table 90 degrees counter-clockwise, so that the bottom of the element is on the right side of the page. 
+Text should be oriented in the same way as the graphic and be placed in the correct position; top (left) for tables, and bottom (right) for figures. The page number must still be in the same location, and have the same orientation, as on all other pages. (See an example.)
+
+
+L. WIDOWS AND ORPHANS
+Widows are very short lines at the end of a paragraph or column. They are poor typography leaving too much white space between paragraphs or the bottom of the page. Please remove all widows.
+Orphans are single words or short lines at the beginning of a column or page. They result in poor horizontal alignment at the top of the column or page. See a related tutorial. Please make sure that no headings are separated from text at the bottom of pages.
+After every content shift, please also make sure to update your Table of Contents and List of Figures/Tables to account for these shifts.
+
+
+M.CHARTS, FIGURES, AND ILLUSTRATIONS
+All images and illustrations must appear within the required one-inch page margins.
+
+
+N. ABSTRACT
+The abstract always appears directly before Table of Contents.
+The title of your dissertation, your name (as it is listed in your student portal and without any special/honorary titles), and the word "Abstract" should appear at the top center of the page. 
+Do not include a listing of your committee since they are already listed on your title page.
+The abstract should include a brief statement of the problem, a description of the methods and procedures used to gather data or study the problem, and a condensed summary of the findings.
+This page should be double-spaced.
+
+
+O. DEGREE DATE IN PROQUEST 
+Students should list the last month of the term in which they graduate and the current year. Please reference the Dissertation and Thesis Guidelines for additional clarification.
+
+
+P. ABBREVIATIONS
+No abbreviations are allowed in text or in PROQUEST ETD unless one of the following: 
+Mathematical formulas
+Chemical formulas, symbols, or structures
+Words of foreign languages.
+Referenced in the List of Abbreviations
+
+
+Q. EMAIL IN PROQUEST ETD
+A UCSF and a personal email address should both be listed in PROQUEST ETD.
+
+
+II. Numbering/Organization
+Complete
+Incomplete
+A. SEQUENTIAL ORDER
+The content should be arranged in the following order:
+Title Page +
+Copyright +
+Dedication*
+Acknowledgements*
+Contributions*
+Epigraph *
+Abstract +
+Table of Contents +
+List of Figures*
+List of Tables* 
+List of Abbreviations*
+List of Symbols*
+
+Body of Manuscript +
+References +
+Appendices* 
+UCSF Publishing Agreement +
+
+
+Comments:
+
+
+Complete
+Incomplete
+III. Content
+
+
+A. TITLE PAGE (REQUIRED)
+The title page in the appropriate format as referenced in the forms under "Thesis, Dissertation, and Manuscript Related" is appended to the dissertation/thesis.
+
+
+B. COPYRIGHT (REQUIRED)
+If you are planning to register a copyright, a statement of copyright and Roman numeral must be included on this page. The format should be (centered), with appropriate line breaks (double spaced), as follows:
+Copyright 20XX
+
+by
+
+Author’s Full Name (As it appears on the title page)
+ALL RIGHTS RESERVED
+
+The word “copyright” (no symbol allowed) and the “current year”; “by” should begin with a lowercased b; Your name should be listed as on your title page. 
+If the work is not copyrighted, then this page will be blank – except for the Roman numeral (ii).
+
+
+C. DEDICATION, ACKNOWLEDGEMENTS, CONTRIBUTIONS AND EPIGRAPH (OPTIONAL)
+You have an option to include a dedication, acknowledgements, or preface. If you choose to include any or all these elements, give each its own page(s).
+A DEDICATION is a message from the author in tribute to a person, group, or cause. Most dedications are short statements of tribute beginning with “To”…for Example, “To my family…”
+ACKNOWLEDGEMENTS are the author’s statement of gratitude to and recognition of people and institutions that helped in the author’s research and/or writing.
+CONTRIBUTIONS allow authors to note if they are using previously published materials. References to the publication(s) in which the material originally appeared, including co-authors, multiple published papers, or copyrighted material may be included.
+The EPIGRAPH is a short quotation or a poem, which usually serves to link the book to other, usually well-known, published works. The source of the quotation is given on the line following the epigraph and is usually right-aligned, often preceded by a dash.
+Each of these pages should be double-spaced.
+Headings must be in all capital letters and centered 
+
+
+D. ABSTRACT (REQUIRED)
+1. The abstract appears directly before Table of Contents.
+2. The title of the dissertation, student name (as it is listed in the student portal and without any special/honorary titles), and the word "Abstract" should appear at the top center of the page in ALL CAPITAL LETTERS. 
+
+
+
+E. TABLE OF CONTENTS (REQUIRED)
+1. Chapter titles, major headings, subheadings, references, and page numbers only. 
+2. Preliminary pages and the UCSF library release page are not listed.
+3. TOC is double-spaced. 
+4. TOC does not include List of Figures or List of Tables.
+5. Chapter titles/headings should not overlap with the page numbers. 
+6. Page heading must be in all capital letters and centered.
+
+
+F. LIST OF TABLES (REQUIRED)
+1. The List of Tables is required if the manuscript contains tables. 
+2. The List of Tables should be in the same format as the Table of Contents, i.e. the names/numbers of the tables, and corresponding page numbers. 
+3. This page should be double-spaced.
+4. Table titles/captions should not overlap with the page numbers. 
+5. The List of Tables should begin on its own page, separate from the List of Figures.
+6. Page heading must be in all capital letters and centered.
+
+
+G. LIST OF FIGURES (REQUIRED)
+1. The List of Figures is required if the manuscript contains illustrations or figures of any kind.
+2. The List of Figures should use the same format as the Table of Contents, giving the figure or illustration names/numbers and corresponding page numbers. 
+3. This page should also be double-spaced.
+4. Figure titles/captions should not overlap with the page numbers. 
+5. The List of Figures should begin on its own page, separate page from the Table of Contents, and it should be separate from the List of Tables.
+6. Page heading must be in all capital letters and centered.
+
+
+H. LIST OF ABBREVIATIONS (REQUIRED)
+1. The List of Abbreviations is required if the manuscript has used abbreviations.
+2.  The List of Abbreviations should be an alphabetical list of their definitions. 
+3. Page heading must be in all capital letters and centered.
+
+
+I. LIST OF SYMBOLS (REQUIRED)
+1. The List of Symbols is required if the manuscript has used special symbols.
+2. The List of Symbols should a list of their definitions. 
+3. This may be presented similarly to the Table of Contents (with a definition and page number for each symbol), or as a list of each symbol with the accompanying definition.
+4. Page heading must be in all capital letters and centered.
+
+
+J. BODY OF MANUSCRIPT
+1. Primary headings in body of text should be all caps, bolded and centered on the page double spaced above major section. 
+PRIMARY HEADING
+
+2. Secondary headings in body of text should be Sentence Case, bolded, and left justified, double spaced above section text.
+
+Secondary Heading
+
+3. Tertiary headings in body of text should be Sentence Case, unbolded, italicized, and left justified. 
+
+Tertiary Heading
+
+4. Quaternary headings in body of text should be Sentence Case, Italicized, left justified, followed by a period, and in line with the paragraph
+
+Quaternary Heading.  Paragraph text follows in line with heading.
+
+5. Subheadings with multiple lines should be double spaced.
+6. Begin each major section on a new page (i.e. Individual chapters).
+7. Always begin references on a separate page either immediately following the end of each chapter or at the end of your entire document. 
+a. If you place references after each chapter, the references for the last chapter must be placed immediately following the chapter and before the appendices. 
+b. All chapter content, including figures and tables should be placed before the references.
+c. If you place all references at the end of the thesis or dissertation, they must appear after the appendices as the final component in the document.
+
+
+
+III. Text- Associated Components
+Complete
+Incomplete
+A. TABLES
+1. Page numbers in List of Tables should match tables in text.
+2. Table should appear on a separate page and adjacent to first page of the text where it is referred.
+3. Table titles/captions should be placed above the table. 
+4. Table titles/captions must be single spaced.
+5. Table titles/captions preceded and followed by double spacing
+6. Tables that span across multiple pages must include repeating column headers so that readers know which column contains which data.
+7. Table references (i.e. Table 1.1, etc.) should be bolded. The entire title does not necessarily need to be bolded. 
+8. Table legends should be placed near the table, on the same page, and should not be incorporated with a list of legends for multiple tables.
+
+
+B. FIGURES
+1. Page numbers in List of Figures should match figures in text.
+2. Each figure requires a figure number, a title, and in most cases, an explanatory legend.
+3. Figure titles/captions/legends must be placed below the figure.
+4. Figure legend should be single spaced. 
+5. If the full legend does not fit on the page, the figure number, and title should be on the same page as the figure, and the legend should be centered on a separate page immediately following the figure.
+6. For figure captions that span more than one page, please include (Figure caption continued on the next page.) at the end of the caption on the first page, and (Figure caption continued from the previous page.) at the beginning of the caption on the second page.
+7. Each figure should be placed adjacent to the first page of the text on which it is referred to.
+8. Figure legends should be placed in close proximity to the figure and should not be incorporated with a list of legends for multiple figures. 
+9. Figure title should be capitalized in the same way as it is in the List of Figures (nouns capitalized)
+
+
+
+
+C. QUOTATIONS
+Prose quotation of two or three sentences and over four lines long should be in block quote (i.e., single-spaced, indented uniformly 5 spaces from the left margin)
+
+
+D. FOOTNOTES
+Should be used sparingly. Footnotes should be placed at the bottom of the page, and demarcated from the text by a solid line beginning at the left margin followed by double-spacing before the footnote is typed in single-spaced format.
+
+
+
+
+Complete
+Incomplete
+IV. Supplementary Components
+
+
+A. APPENDIX (OPTIONAL)
+The following types of material may be appropriately placed in an appendix: Descriptions of computer programs, computer printouts, lengthy quotations, detailed tables of complex original data, details of mathematical or statistical analyses, questionnaires and verbatim responses, subject consent form, letter to agency for access to subjects, etc.
+
+
+B. REFERENCES (REQUIRED)
+1. References must be listed on the Table of Contents. 
+2. References may appear at the end of each chapter or at the end of the manuscript. Either way, references should be placed on their own page(s). 
+3. If you choose to place references at the end of the manuscript, this section should simply be titled "References". Do not assign a chapter number to this section, but do include it in your table of contents.
+4. To retain clarity, references should always be double-spaced and should be listed alphabetically, except in cases where sources are referenced by number within the manuscript. 5. If numbered, use Arabic numbering instead of Roman numerals.
+6. References should remain consistent throughout the manuscript, even in cases where sections of the entire manuscript have been parsed from different publications/papers. 7. Theses and dissertations, if derived from multiple sources, should be reformatted and presented as one cohesive manuscript.
+
+
+C. UCSF PUBLISHING AGREEMENT (REQUIRED)
+1. The publishing agreement, is the last page, signed and dated by the student (via DocuSign), and should be numbered. 
+2. This page does not appear on Table of Contents. 
+3. The agreement may be electronically generated via DocuSign. 4. Students should not use their own version of the publishing agreement.
+5. The publishing agreement is a required condition of graduation for all University of California campuses. 
+
+
+D. ELECRONIC PUBLISHING
+Document is uploaded as a PDF file with the following specifications:
+Optimized for printing
+No security settings
+All fonts are embedded into file
+Images/graphics resolution of at least 600 dpi
+
+
+E. USE OF COPYRIGHTED MATERIAL
+1. Must obtain written permission for use of copyrighted material from the holder of the copyright.
+2. With the approval of your committee and graduate program, material that you have previously published may be accepted as part of a thesis or dissertation. 
+3. The published material must meet all formatting requirements, which may necessitate reduction of the published material.
+
+PLEASE ENSURE THAT YOU HAVE PERMISSION TO USE ANY COPYRIGHTED MATERIAL USED IN THIS DISSERTATION / THESIS
+
+Comments:

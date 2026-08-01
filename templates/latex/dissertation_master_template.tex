@@ -1,0 +1,164 @@
+\documentclass[12pt,oneside]{report}
+
+% ==============================================================================
+% PAGE MARGINS & GEOMETRY (UCSF / ProQuest compliant: 1 inch on all sides)
+% Page numbers must print at least 0.5 inches from the edge.
+% ==============================================================================
+\usepackage[letterpaper, top=1in, bottom=1in, left=1in, right=1in, footskip=0.5in]{geometry}
+
+% ==============================================================================
+% TYPOGRAPHY & SPACING
+% Standard font: Times New Roman 12pt (via mathptmx) or Georgia/Arial.
+% Body text: Double spaced. Quotes/Tables/Captions: Single spaced.
+% ==============================================================================
+\usepackage{mathptmx} % Times New Roman
+\usepackage{setspace}
+\doublespacing
+
+% ==============================================================================
+% GRAPHICS & PATHS
+% ==============================================================================
+\usepackage{graphicx}
+\graphicspath{{./figures/}}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg,.eps,.tiff}
+
+% ==============================================================================
+% MATHEMATICS & TABLES
+% ==============================================================================
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{subcaption}
+
+% ==============================================================================
+% HYPERLINKS & CROSS-REFERENCES
+% ==============================================================================
+\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black, breaklinks=true]{hyperref}
+\usepackage[capitalise, noabbrev, nameinlink]{cleveref}
+
+% ==============================================================================
+% BIBLIOGRAPHY (BibLaTeX with Biber)
+% Clean numeric citation style with DOI support and automated field cleaning.
+% ==============================================================================
+\usepackage[
+  sorting=none,
+  backend=biber,
+  style=numeric-comp,
+  maxbibnames=10,
+  minbibnames=3,
+  giveninits=true,
+  terseinits=true,
+  natbib=true,
+  isbn=false,
+  issn=false,
+  doi=true,
+  url=false,
+  eprint=false
+]{biblatex}
+
+\addbibresource{references.bib}
+
+% Suppress non-essential bib fields for publication clean output
+\AtEveryBibitem{%
+  \clearlist{language}%
+  \clearfield{urldate}%
+  \clearfield{note}%
+  \clearfield{addendum}%
+  \clearfield{eprint}%
+  \clearfield{isbn}%
+  \clearfield{issn}%
+}
+
+% ==============================================================================
+% TABLE OF CONTENTS / LIST OF FIGURES / LIST OF TABLES FORMATTING (tocloft)
+% ==============================================================================
+\usepackage[titles]{tocloft}
+\cftsetrmarg{7.0em}
+\cftsetpnumwidth{3.5em}
+\renewcommand{\cftdotsep}{4.0}
+\renewcommand{\cftchapfont}{\normalfont\bfseries}
+\renewcommand{\cftchappagefont}{\normalfont\bfseries}
+\renewcommand{\cftchapleader}{\hfill}
+\setlength{\cftbeforechapskip}{0.7em}
+\setlength{\cftchapnumwidth}{2.0em}
+
+\begin{document}
+
+% ------------------------------------------------------------------------------
+% PRELIMINARY PAGES (Roman numerals, starting after unnumbered Title Page)
+% ------------------------------------------------------------------------------
+\pagenumbering{roman}
+
+% Title Page (Page i, unnumbered)
+\input{titlepage_template.tex}
+\clearpage
+
+% Copyright Page (Page ii)
+\setcounter{page}{2}
+\thispagestyle{plain}
+\begin{center}
+    \singlespacing
+    \vspace*{3in}
+    Copyright \copyright\ 2026\\
+    by\\
+    Firstname Middlename Lastname\\
+    All rights reserved.
+\end{center}
+\clearpage
+
+% Dedication Page (Optional)
+\thispagestyle{plain}
+\begin{center}
+    \vspace*{2in}
+    \textit{Dedicated to my family, mentors, and lab mates.}
+\end{center}
+\clearpage
+
+% Acknowledgments
+\thispagestyle{plain}
+\section*{Acknowledgments}
+\addcontentsline{toc}{chapter}{Acknowledgments}
+I would like to acknowledge my advisor, committee members, and collaborators...
+\clearpage
+
+% Abstract
+\thispagestyle{plain}
+\section*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\begin{center}
+    {\bfseries Title of Dissertation}\\
+    Firstname Middlename Lastname
+\end{center}
+\vspace{0.2in}
+Insert abstract text here (double-spaced per UCSF requirements). This thesis explores...
+\clearpage
+
+% Table of Contents, List of Figures, List of Tables
+\singlespacing
+\tableofcontents
+\clearpage
+\listoffigures
+\clearpage
+\listoftables
+\clearpage
+
+% ------------------------------------------------------------------------------
+% MAIN BODY CHAPTERS (Arabic numerals, starting at Page 1)
+% ------------------------------------------------------------------------------
+\doublespacing
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\include{ch1_template}
+\include{ch2_template}
+
+% ------------------------------------------------------------------------------
+% BIBLIOGRAPHY
+% ------------------------------------------------------------------------------
+\clearpage
+\singlespacing
+\printbibliography[heading=bibintoc, title={References}]
+
+\end{document}

@@ -1,0 +1,22 @@
+# macOS System Files
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# LaTeX build outputs
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.fdb_latexmk
+*.fls
+*.synctex.gz
