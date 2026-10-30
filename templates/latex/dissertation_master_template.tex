@@ -1,164 +1,218 @@
 \documentclass[12pt,oneside]{report}
 
-% ==============================================================================
-% PAGE MARGINS & GEOMETRY (UCSF / ProQuest compliant: 1 inch on all sides)
-% Page numbers must print at least 0.5 inches from the edge.
-% ==============================================================================
-\usepackage[letterpaper, top=1in, bottom=1in, left=1in, right=1in, footskip=0.5in]{geometry}
+%%% ========================================================================= %%%
+%%% UCSF DISSERTATION MASTER LATEX TEMPLATE                                   %%%
+%%% Fully compliant with UCSF Dissertation Rubric (Rev 04/24)                 %%%
+%%% ========================================================================= %%%
 
-% ==============================================================================
-% TYPOGRAPHY & SPACING
-% Standard font: Times New Roman 12pt (via mathptmx) or Georgia/Arial.
-% Body text: Double spaced. Quotes/Tables/Captions: Single spaced.
-% ==============================================================================
-\usepackage{mathptmx} % Times New Roman
+%%% ------------ I. MARGINS, FONT & SPACING (RUBRIC SEC I.A, I.B, I.F) ------------ %%%
+\usepackage[letterpaper, top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{mathptmx} % Times New Roman 12pt TrueType font
 \usepackage{setspace}
-\doublespacing
+\doublespacing % Double spacing throughout text
 
-% ==============================================================================
-% GRAPHICS & PATHS
-% ==============================================================================
 \usepackage{graphicx}
-\graphicspath{{./figures/}}
-\DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg,.eps,.tiff}
-
-% ==============================================================================
-% MATHEMATICS & TABLES
-% ==============================================================================
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{booktabs}
 \usepackage{multirow}
-\usepackage{longtable}
 \usepackage{array}
-\usepackage{subcaption}
-
-% ==============================================================================
-% HYPERLINKS & CROSS-REFERENCES
-% ==============================================================================
+\usepackage{pdfpages}
 \usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black, breaklinks=true]{hyperref}
 \usepackage[capitalise, noabbrev, nameinlink]{cleveref}
 
-% ==============================================================================
-% BIBLIOGRAPHY (BibLaTeX with Biber)
-% Clean numeric citation style with DOI support and automated field cleaning.
-% ==============================================================================
+%%% ------------ CITATION FORMATTING (RUBRIC SEC I.H) ------------ %%%
+% Consistent square brackets [1], numeric-comp style, no subscripts
 \usepackage[
   sorting=none,
   backend=biber,
   style=numeric-comp,
-  maxbibnames=10,
-  minbibnames=3,
-  giveninits=true,
-  terseinits=true,
   natbib=true,
-  isbn=false,
-  issn=false,
   doi=true,
   url=false,
-  eprint=false
+  isbn=false
 ]{biblatex}
-
 \addbibresource{references.bib}
 
-% Suppress non-essential bib fields for publication clean output
-\AtEveryBibitem{%
-  \clearlist{language}%
-  \clearfield{urldate}%
-  \clearfield{note}%
-  \clearfield{addendum}%
-  \clearfield{eprint}%
-  \clearfield{isbn}%
-  \clearfield{issn}%
-}
+%%% ------------ WIDOWS & ORPHANS (RUBRIC SEC I.L) ------------ %%%
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
 
-% ==============================================================================
-% TABLE OF CONTENTS / LIST OF FIGURES / LIST OF TABLES FORMATTING (tocloft)
-% ==============================================================================
-\usepackage[titles]{tocloft}
-\cftsetrmarg{7.0em}
-\cftsetpnumwidth{3.5em}
-\renewcommand{\cftdotsep}{4.0}
-\renewcommand{\cftchapfont}{\normalfont\bfseries}
-\renewcommand{\cftchappagefont}{\normalfont\bfseries}
-\renewcommand{\cftchapleader}{\hfill}
-\setlength{\cftbeforechapskip}{0.7em}
-\setlength{\cftchapnumwidth}{2.0em}
+%%% ------------ HEADING HIERARCHY (RUBRIC SEC III.J) ------------ %%%
+\usepackage{titlesec}
+
+% Primary: All caps, bold, centered, double spaced above section
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\centering\LARGE}
+  {\MakeUppercase{\chaptertitlename\ \thechapter}}
+  {10pt}
+  {\MakeUppercase}
+\titlespacing*{\chapter}{0pt}{0pt}{30pt}
+
+% Secondary: Sentence case, bold, left-aligned
+\titleformat{\section}
+  {\normalfont\bfseries\large\raggedright}
+  {\thesection}
+  {1em}
+  {}
+\titlespacing*{\section}{0pt}{18pt}{6pt}
+
+% Tertiary: Sentence case, italic, left-aligned
+\titleformat{\subsection}
+  {\normalfont\itshape\large\raggedright}
+  {\thesubsection}
+  {1em}
+  {}
+\titlespacing*{\subsection}{0pt}{12pt}{4pt}
+
+% Quaternary: Sentence case, italic, left-aligned, run-in with period
+\titleformat{\subsubsection}[runin]
+  {\normalfont\itshape}
+  {\thesubsubsection}
+  {1em}
+  {}
+  [.]
+\titlespacing*{\subsubsection}{0pt}{6pt}{6pt}
+
+%%% ------------ CAPTION FORMATTING (RUBRIC SEC III.A & III.B) ------------ %%%
+% Table captions ABOVE, Figure captions BELOW; single-spaced with bold labels
+\usepackage[labelfont=bf, textfont=normalfont, singlelinecheck=off, font={small,singlespacing}]{caption}
+\captionsetup[table]{position=above, skip=6pt, font={small,singlespacing}}
+\captionsetup[figure]{position=below, skip=6pt, font={small,singlespacing}}
+
+%%% ------------ BLOCK QUOTATIONS (RUBRIC SEC I.F & III.C) ------------ %%%
+% Single-spaced, indented 5 spaces from left margin
+\usepackage{etoolbox}
+\AtBeginEnvironment{quotation}{\singlespacing}
+\AtBeginEnvironment{quote}{\singlespacing}
+
+%%% ------------ ALL CAPS COMPONENT HEADINGS (RUBRIC SEC III.E, III.F, III.G) ------------ %%%
+\renewcommand{\contentsname}{TABLE OF CONTENTS}
+\renewcommand{\listfigurename}{LIST OF FIGURES}
+\renewcommand{\listtablename}{LIST OF TABLES}
+
+%%% ------------ PAGINATION & FOOTER (RUBRIC SEC I.B.2 & I.H) ------------ %%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\cfoot{\thepage} % Bottom center pagination
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\footskip}{0.6in} % Footer distance >= 0.5in from edge
 
 \begin{document}
 
-% ------------------------------------------------------------------------------
-% PRELIMINARY PAGES (Roman numerals, starting after unnumbered Title Page)
-% ------------------------------------------------------------------------------
+%%% ========================================================================= %%%
+%%% PRELIMINARY PAGES (Numbered in lowercase Roman numerals)                   %%%
+%%% ========================================================================= %%%
 \pagenumbering{roman}
 
-% Title Page (Page i, unnumbered)
-\input{titlepage_template.tex}
-\clearpage
+% --- TITLE PAGE (Page i, unnumbered, Rubric Sec I.G) ---
+% Note: Use the official UCSF title page PDF template signed via DocuSign
+\includepdf[pages={1}]{Title_Page.pdf}
+\setcounter{page}{2} % Copyright page is Page ii
 
-% Copyright Page (Page ii)
-\setcounter{page}{2}
-\thispagestyle{plain}
+% --- COPYRIGHT PAGE (Page ii, Rubric Sec I.I & III.B) ---
+% Format: Copyright 20XX / by / Student Name / ALL RIGHTS RESERVED (no (c) symbol)
+\thispagestyle{fancy}
 \begin{center}
-    \singlespacing
-    \vspace*{3in}
-    Copyright \copyright\ 2026\\
-    by\\
-    Firstname Middlename Lastname\\
-    All rights reserved.
+  \vspace*{2.5in}
+  Copyright 2026\\[0.2in]
+  by\\[0.2in]
+  AUTHOR FULL NAME\\[0.2in]
+  ALL RIGHTS RESERVED
 \end{center}
 \clearpage
 
-% Dedication Page (Optional)
-\thispagestyle{plain}
+% --- DEDICATION (Optional, Rubric Sec III.C) ---
+\chapter*{DEDICATION}
+\doublespacing
+Dedicated to my mentors, colleagues, family, and friends who supported this journey.
+\clearpage
+
+% --- ACKNOWLEDGEMENTS (Optional, Rubric Sec III.C) ---
+\chapter*{ACKNOWLEDGEMENTS}
+\doublespacing
+I express my deepest gratitude to my advisor, dissertation committee members, and laboratory colleagues.
+\clearpage
+
+% --- CONTRIBUTIONS (Optional, Rubric Sec III.C) ---
+\chapter*{CONTRIBUTIONS}
+\doublespacing
+Descriptions of student and co-author contributions for adapted manuscript chapters.
+\clearpage
+
+% --- EPIGRAPH (Optional, Rubric Sec III.C) ---
+\chapter*{EPIGRAPH}
+\doublespacing
+\vspace*{1.5in}
+\begin{quotation}
+  \itshape
+  ``Equipped with his five senses, man explores the universe around him and calls the adventure Science.''
+\end{quotation}
+\begin{flushright}
+  --- Edwin Powell Hubble (1948)
+\end{flushright}
+\clearpage
+
+% --- ABSTRACT (Required, Rubric Sec I.N & III.D) ---
+% Always appears directly before TOC; ALL CAPS Title, Name, and ABSTRACT
+\chapter*{ABSTRACT}
+\doublespacing
 \begin{center}
-    \vspace*{2in}
-    \textit{Dedicated to my family, mentors, and lab mates.}
+  \textbf{TITLE OF THE DISSERTATION IN ALL CAPITAL LETTERS}\\[0.08in]
+  \textbf{AUTHOR FULL NAME IN ALL CAPITAL LETTERS}
 \end{center}
+\vspace{0.05in}
+
+\noindent A concise synthesis of the research problem, methodology, findings, and conclusions. The abstract must be double-spaced and contain no abbreviations in the title.
 \clearpage
 
-% Acknowledgments
-\thispagestyle{plain}
-\section*{Acknowledgments}
-\addcontentsline{toc}{chapter}{Acknowledgments}
-I would like to acknowledge my advisor, committee members, and collaborators...
-\clearpage
-
-% Abstract
-\thispagestyle{plain}
-\section*{Abstract}
-\addcontentsline{toc}{chapter}{Abstract}
-\begin{center}
-    {\bfseries Title of Dissertation}\\
-    Firstname Middlename Lastname
-\end{center}
-\vspace{0.2in}
-Insert abstract text here (double-spaced per UCSF requirements). This thesis explores...
-\clearpage
-
-% Table of Contents, List of Figures, List of Tables
-\singlespacing
+% --- TABLE OF CONTENTS (Required, Rubric Sec III.E) ---
+% Excludes preliminary pages and publishing agreement; ALL CAPS centered title
 \tableofcontents
 \clearpage
+
+% --- LIST OF FIGURES (Required if figures present, Rubric Sec III.G) ---
+% On its own page, separate from List of Tables
 \listoffigures
 \clearpage
+
+% --- LIST OF TABLES (Required if tables present, Rubric Sec III.F) ---
+% On its own page, separate from List of Figures
 \listoftables
 \clearpage
 
-% ------------------------------------------------------------------------------
-% MAIN BODY CHAPTERS (Arabic numerals, starting at Page 1)
-% ------------------------------------------------------------------------------
+% --- LIST OF ABBREVIATIONS (Required if abbreviations used, Rubric Sec I.P & III.H) ---
+\chapter*{LIST OF ABBREVIATIONS}
 \doublespacing
+\begin{tabular}{lp{5in}}
+  \textbf{DNA} & Deoxyribonucleic Acid \\
+  \textbf{RNA} & Ribonucleic Acid \\
+  \textbf{UCSF} & University of California, San Francisco \\
+\end{tabular}
+\clearpage
+
+%%% ========================================================================= %%%
+%%% MAIN BODY (Numbered in Arabic numerals starting at 1, Rubric Sec I.H)     %%%
+%%% ========================================================================= %%%
 \pagenumbering{arabic}
 \setcounter{page}{1}
+\doublespacing
 
-\include{ch1_template}
-\include{ch2_template}
-
-% ------------------------------------------------------------------------------
-% BIBLIOGRAPHY
-% ------------------------------------------------------------------------------
+\input{ch1_intro}
 \clearpage
-\singlespacing
-\printbibliography[heading=bibintoc, title={References}]
+
+%%% ========================================================================= %%%
+%%% REFERENCES SECTION (Required, Rubric Sec IV.B)                            %%%
+%%% Titled REFERENCES, listed in Table of Contents                            %%%
+%%% ========================================================================= %%%
+\printbibliography[heading=bibintoc, title={REFERENCES}]
+\clearpage
+
+%%% ========================================================================= %%%
+%%% UCSF PUBLISHING AGREEMENT (Required, Rubric Sec I.J & IV.C)               %%%
+%%% Final page, numbered via pagecommand, omitted from Table of Contents     %%%
+%%% ========================================================================= %%%
+\includepdf[pages={1}, pagecommand={\thispagestyle{fancy}}]{publishing_agreement.pdf}
 
 \end{document}

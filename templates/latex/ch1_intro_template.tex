@@ -1,0 +1,61 @@
+\chapter{Introduction}
+\label{ch:introduction}
+
+\section{Background and Motivation}
+Biological research in the modern era relies increasingly on multi-omics profiling and computational data modeling. In this chapter, we outline the foundational principles and state-of-the-art literature motivating this dissertation \cite{Horvath2013}.
+
+\section{Heading Hierarchy Example}
+As required by the institutional formatting rubric (Sec III.J), headings must strictly adhere to the four-level hierarchy:
+\begin{enumerate}
+  \item \textbf{Primary Headings} (\verb|\chapter{}|): ALL CAPITAL LETTERS, bold, centered, double spaced above major sections.
+  \item \textbf{Secondary Headings} (\verb|\section{}|): Sentence Case, bold, left-aligned.
+  \item \textbf{Tertiary Headings} (\verb|\subsection{}|): Sentence Case, italicized, unbolded, left-aligned.
+  \item \textbf{Quaternary Headings} (\verb|\subsubsection{}|): Sentence Case, italicized, in-line with paragraph, followed by a period.
+\end{enumerate}
+
+\subsection{Tertiary Subsection Heading Example}
+Tertiary headings are italicized and unbolded in sentence case. Paragraph text begins double-spaced underneath.
+
+\subsubsection{Quaternary Heading Example}
+Quaternary headings run directly in line with paragraph text, followed immediately by a period.
+
+\section{Table Formatting Example}
+Per Rubric Sec III.A, table titles/captions must be placed \textbf{above} the table, single-spaced, with bolded table references.
+
+\begin{table}[htbp]
+  \centering
+  \caption[Sample demographic summary table.]{Demographic summary of study cohorts evaluated across chapters.}
+  \label{tab:demographics}
+  \begin{tabular}{lccc}
+    \toprule
+    \textbf{Cohort Name} & \textbf{Ancestry} & \textbf{Sample Size (N)} & \textbf{Platform} \\
+    \midrule
+    Discovery Cohort     & Multi-Ancestry    & 621                      & EPIC BeadChip \\
+    Replication Cohort A & African American  & 1,394                    & 450K BeadChip \\
+    Replication Cohort B & European          & 729                      & 450K BeadChip \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Figure Formatting Example}
+Per Rubric Sec III.B, figure titles and legends must be placed \textbf{below} the figure and single-spaced.
+
+\begin{figure}[htbp]
+  \centering
+  % Replace with your figure graphic (e.g., \includegraphics[width=0.85\linewidth]{figures/fig1.pdf})
+  \rule{0.8\linewidth}{2in} % Placeholder graphic box
+  \caption[Schematic overview of the analytical study workflow.]{
+    \textbf{Schematic overview of the analytical study workflow.}
+    High-throughput DNA methylation and genomic variant data are preprocessed, followed by ancestry-stratified evaluation of epigenetic clock predictions and methylation quantitative trait loci (meQTL) mapping.
+  }
+  \label{fig:workflow}
+\end{figure}
+
+\section{Block Quotation Formatting Example}
+Per Rubric Sec I.F and III.C, prose quotations over 4 lines must be single-spaced and indented uniformly:
+
+\begin{quotation}
+  Biological aging is a complex, multifaceted process characterized by the gradual deterioration of physiological function and increased susceptibility to disease. Epigenetic modifications, particularly DNA methylation at cytosine-phosphate-guanine dinucleotides, provide a dynamic and quantifiable record of cellular chronological and physiological history.
+\end{quotation}
+
+Double-spaced prose continues here immediately following the quotation block.

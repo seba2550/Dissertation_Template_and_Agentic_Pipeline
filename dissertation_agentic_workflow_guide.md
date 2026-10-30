@@ -1,140 +1,159 @@
-# Dissertation Formatting Tutorial & Agentic AI Unification Framework
+# Dissertation Agentic Workflow & Compliance Guide 🚀
 
-> **Author**: Sebastián Cruz-González  
-> **Target Institution**: University of California, San Francisco (UCSF) Graduate Division & ProQuest ETD  
-> **Super-Directory**: `/Users/sgonzalez/Desktop/Capra Lab/Dissertation_Template_and_Agentic_Pipeline/`
+A comprehensive, step-by-step operational guide for PhD candidates and AI assistants orchestrating the dissertation authoring, reference management, compilation, and institutional rubric validation pipeline.
 
 ---
 
-## 1. Executive Summary & Overview
+## 🎯 Architectural Philosophy
 
-Completing a Ph.D. dissertation requires transforming years of heterogeneous research outputs—ranging from co-authored Microsoft Word manuscript drafts (`.docx`), raw LaTeX documents (`.tex`), standalone reference libraries (`.bib`), Jupyter Notebooks, supplementary tables, and high-resolution figures—into a single, highly structured, institutionally compliant document.
-
-This guide provides:
-1. **Standardized Dual-Track Templates**: Production-ready LaTeX and Microsoft Word configurations adhering strictly to UCSF Graduate Division and ProQuest publication rubrics.
-2. **An Agentic AI Unification Pipeline**: Conceptual frameworks, system prompts, and python automation tools (`agentic_scripts/`) to orchestrate LLM agents in ingesting, unifying, deduplicating, and formatting disparate source materials.
+Doctoral dissertations often incorporate manuscripts originally prepared across disparate word processors, co-authors, and journal formats. This pipeline establishes an automated, deterministic bridge between Microsoft Word drafts (`.docx`) and an institutionally certified LaTeX dissertation project compliant with all 26 rules of the **UCSF Dissertation Rubric (Rev 04/24)**.
 
 ---
 
-## 2. Institutional & ProQuest Formatting Rubric
+## 🔄 The 6-Stage Lifecycle
 
-Below is the definitive formatting rubric synthesized from UCSF Graduate Division and ProQuest guidelines:
-
-### A. Typography & Spacing
-- **Font Selection**: Times New Roman (12pt), Georgia (11–12pt), or Arial (10–12pt). Main text must be pure black (`#000000`).
-- **Line Spacing**:
-  - **Body Text**: Double-spaced throughout preliminary pages and main chapters.
-  - **Single-Spaced Exceptions**: Long indented quotations, footnotes, figure captions, table text, and preliminary titles.
-- **Margins**: Exactly **1.0 inch** on top, bottom, left, and right sides. No elements may bleed into margins.
-
-### B. Pagination & Front Matter Architecture
-- **Title Page**: Always Page `i` (counted, but **NO page number printed**).
-- **Preliminary Pages**: Copyright, Abstract, Dedication, Acknowledgments, Table of Contents (TOC), List of Figures (LOF), and List of Tables (LOT).
-  - Numbered sequentially with lowercase Roman numerals (`ii, iii, iv...`).
-  - Printed centered or right-aligned at least **0.5 inches** from the bottom edge.
-- **Main Body Chapters**: Chapters 1 through Conclusion, References, and Appendices.
-  - Numbered sequentially with Arabic numerals (`1, 2, 3...`), restarting at Page 1 on Chapter 1.
-
----
-
-## 3. Disparate Format Unification: The Agentic AI Pipeline
-
-When pulling together published manuscripts, draft DOCX files, and raw data, traditional copy-pasting introduces formatting degradation, broken references, and inconsistent styles. Agentic AI agents solve this by operating as automated format compilers and content reconcilers.
-
-```mermaid
-flowchart TD
-    A[Disparate Source Inputs] --> B[DOCX Manuscript Drafts]
-    A --> C[LaTeX Sub-files]
-    A --> D[Loose BibTeX Files / EndNotes]
-    A --> E[Supplementary Tables & Figures]
-    
-    B --> F[Pandoc & Agentic Ingest<br/>`pandoc_ingest.py`]
-    C --> F
-    D --> G[BibTeX Unifier<br/>`bib_unifier.py`]
-    E --> H[Asset Ingestion]
-
-    F --> I[Master Unified Dissertation Workspace]
-    G --> I
-    H --> I
-
-    I --> J[Compliance & Rubric Validator<br/>`format_validator.py`]
-    J --> K[Final Compliant PDF / DOCX Output]
+```
+[DOCX Manuscript]
+       │
+       ▼
+[Stage 1: Reference & DOI Extraction] ──► (references.bib, doi_list.txt, citation_map.json)
+       │
+       ▼
+[Stage 2: DOCX to LaTeX Conversion]   ──► (chX_chapter.tex with \cite{} keys)
+       │
+       ▼
+[Stage 3: Template Integration]       ──► (dissertation_master.tex)
+       │
+       ▼
+[Stage 4: Multi-Pass Compilation]     ──► (dissertation_master.pdf + .log)
+       │
+       ▼
+[Stage 5: 26-Rule Rubric Audit]       ──► (audit_report.json + summary table)
+       │
+       ▼
+[Stage 6: ProQuest ETD Archival]      ──► (Final certified PDF submission)
 ```
 
 ---
 
-## 4. Reusable Agentic AI System Prompts
+## 🛠 Stage-by-Stage Instructions
 
-You can use the following system prompts with LLM agents (such as Antigravity agents) when converting and editing dissertation chapters:
+### Stage 1: Reference Extraction from DOCX Drafts
 
-### Prompt Pattern A: Manuscript Ingestion & LaTeX Standardization
-```text
-You are an expert academic typesetter and LaTeX specialist.
-Convert the attached manuscript section (from DOCX or Markdown) into clean LaTeX following these rules:
-1. Maintain all section hierarchy (\chapter, \section, \subsection).
-2. Wrap all figures in \begin{figure}[htbp] ... \end{figure} using \singlespacing for captions.
-3. Replace all inline citations with \cite{citation_key}.
-4. Convert raw markdown or word tables into \begin{table} with \usepackage{booktabs} formatting (\toprule, \midrule, \bottomrule).
-5. Ensure no raw formatting or hardcoded linebreaks leak into the LaTeX output.
-```
+Word manuscripts frequently contain citations as plain text `[1, 2]`, embedded hyperlinks to publisher websites, or EndNote/Zotero bookmarks.
 
-### Prompt Pattern B: Citation Reconciliation & BibTeX Cleaning
-```text
-You are an automated bibliography database editor.
-Given the attached raw reference list and BibTeX entries:
-1. Deduplicate entries sharing the same DOI or Title.
-2. Standardize all entry keys to 'AuthorYear' (e.g., Smith2024).
-3. Strip non-essential fields: 'issn', 'isbn', 'urldate', 'eprint', 'language'.
-4. Ensure every entry contains a valid DOI and journal title.
-5. Return ONLY the cleaned BibTeX block.
-```
-
----
-
-## 5. Automation Toolkit Reference (`agentic_scripts/`)
-
-The repository includes three Python tools to automate conversion and compliance checking:
-
-### 1. `bib_unifier.py`
-Merges and cleans multiple `.bib` files across chapters.
+Run the reference extractor:
 ```bash
-python3 agentic_scripts/bib_unifier.py ch1_refs.bib ch2_refs.bib -o templates/latex/references.bib
+python3 run_pipeline.py extract-refs "Chapter_Draft.docx" \
+  -o "ch_refs.bib" \
+  -d "ch_dois.txt" \
+  -m "citation_map.json" \
+  -l "dissertation_references.bib"
 ```
 
-### 2. `pandoc_ingest.py`
-Converts `.docx` or `.md` files into clean, typeset LaTeX chapter snippets.
+**Key Behaviors**:
+- **Offline Cache Priority**: If an existing master `.bib` file is provided via `-l/--local-bib`, the extractor queries local entries first, avoiding redundant network API calls.
+- **Identifier Resolution**: Unpacks embedded relationships and converts URLs from Nature, Science, Springer, Cell Press, PMC, and bioRxiv into clean DOIs/PMIDs.
+- **Citation Map**: Creates `citation_map.json`, mapping raw URLs and citation markers (e.g. `rId4` or DOI URLs) directly to BibTeX keys (e.g. `Horvath2013`).
+
+---
+
+### Stage 2: DOCX to LaTeX Conversion
+
+Convert the narrative text from Word to modular LaTeX chapters while substituting citations:
 ```bash
-python3 agentic_scripts/pandoc_ingest.py draft_manuscript.docx -o templates/latex/ch3_template.tex -f latex --title "Epigenetic Clock Validation"
+python3 run_pipeline.py convert-docx "Chapter_Draft.docx" \
+  -o "ch1_intro.tex" \
+  -m "citation_map.json" \
+  -t "Introduction and Background" \
+  --label "ch:introduction"
 ```
 
-### 3. `format_validator.py`
-Performs automated static compliance analysis against the official UCSF / ProQuest ETD rubric for **both** LaTeX (`.tex`) and Word (`.docx`) files.
-```bash
-# Validate LaTeX dissertation master
-python3 agentic_scripts/format_validator.py --tex templates/latex/dissertation_master_template.tex
+**What the converter enforces**:
+- Replaces raw web links with proper `\cite{citekey}` commands from `citation_map.json`.
+- Restructures Word heading styles (`Heading 1`, `Heading 2`, etc.) into LaTeX `\section{...}`, `\subsection{...}`, and `\subsubsection{...}` in accordance with the institutional 4-level hierarchy.
+- Strips non-standard Word characters and sanitizes LaTeX special characters (`%`, `&`, `_`, `#`).
 
-# Validate Word dissertation draft against institutional rubric
-python3 agentic_scripts/format_validator.py --docx "my_dissertation_draft.docx" --rubric rubric/rubric_full.txt
+---
+
+### Stage 3: Master Document Configuration
+
+Ensure the master document (`dissertation_master.tex` or `templates/latex/dissertation_master_template.tex`) contains the required preamble specifications:
+
+```latex
+\documentclass[12pt,oneside]{report}
+\usepackage[letterpaper, top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{mathptmx}
+\usepackage{setspace}
+\doublespacing
+
+% Footskip >= 0.5 inches from paper edge
+\setlength{\footskip}{0.6in}
+
+% Captions: Tables above, Figures below (single-spaced, bold labels)
+\usepackage[labelfont=bf, textfont=normalfont, singlelinecheck=off, font={small,singlespacing}]{caption}
+\captionsetup[table]{position=above, skip=6pt, font={small,singlespacing}}
+\captionsetup[figure]{position=below, skip=6pt, font={small,singlespacing}}
+
+% Block quotations: single-spaced and indented
+\usepackage{etoolbox}
+\AtBeginEnvironment{quotation}{\singlespacing}
+\AtBeginEnvironment{quote}{\singlespacing}
+
+% Component headings in ALL CAPITAL LETTERS
+\renewcommand{\contentsname}{TABLE OF CONTENTS}
+\renewcommand{\listfigurename}{LIST OF FIGURES}
+\renewcommand{\listtablename}{LIST OF TABLES}
 ```
 
 ---
 
-## 6. Directory Map of the Template Package
+### Stage 4: Multi-Pass Compilation
 
+Compile the complete dissertation via `latexmk` or multi-pass `pdflatex` + `biber`:
+```bash
+python3 run_pipeline.py build -t dissertation_master.tex --validate
 ```
-Capra Lab/Dissertation_Template_and_Agentic_Pipeline/
-├── dissertation_agentic_workflow_guide.md   # Master tutorial & workflow manual
-├── templates/
-│   ├── latex/
-│   │   ├── dissertation_master_template.tex # Master UCSF compliant LaTeX file
-│   │   ├── titlepage_template.tex          # Official UCSF title page layout
-│   │   ├── ch1_template.tex                # Sample Chapter 1
-│   │   ├── ch2_template.tex                # Sample Chapter 2
-│   │   └── references.bib                  # Unified BibTeX database
-│   └── word/
-│       └── dissertation_word_guide.md      # Complete MS Word style & field guide
-└── agentic_scripts/
-    ├── bib_unifier.py                      # BibTeX deduplicator & cleaner
-    ├── pandoc_ingest.py                    # Multi-format manuscript ingestion wrapper
-    └── format_validator.py                 # Institutional rubric validator
+
+The build runner checks exit codes, counts total PDF pages, inspects log files, and automatically runs the rubric audit.
+
+---
+
+### Stage 5: Programmatic 26-Rule Rubric Audit
+
+Audit the project against the full institutional rubric:
+```bash
+python3 run_pipeline.py validate-rubric -t dissertation_master.tex -j audit_report.json
 ```
+
+Or using the standalone script:
+```bash
+python3 agentic_scripts/format_validator.py dissertation_master.tex
+```
+
+#### Diagnostic Remediation Checklist:
+- **Title Abbreviations**: If `I.C_TITLE_ABBREVIATIONS` fails, expand all acronyms (e.g., *Alzheimer's Disease* instead of *AD*, *Single Nucleotide Polymorphisms* instead of *SNPs*).
+- **Abstract Formatting**: Verify that the abstract is directly before the TOC, double-spaced, contains title and student name in ALL CAPS, and does **not** list committee members.
+- **Copyright Page**: Confirm page `ii` contains `Copyright 20XX` followed by `by` (lowercase), your full name, and `ALL RIGHTS RESERVED`. Do **not** use the `©` symbol.
+- **Publishing Agreement**: Confirm `\includepdf[pages={1}, pagecommand={\thispagestyle{fancy}}]{publishing_agreement.pdf}` is the last page, numbered, and not listed in the TOC.
+- **Table / Figure Captions**: Confirm table captions are positioned **above** the table and figure captions are positioned **below** the figure.
+
+---
+
+### Stage 6: ProQuest ETD Submission Checklist
+
+Before final upload to ProQuest ETD:
+1. Verify degree conferral date matches the last month of your graduation term and year.
+2. Confirm both a UCSF email and a permanent personal email are entered in ProQuest.
+3. Confirm committee members match your official Advance to Candidacy petition on file.
+4. Verify all fonts are embedded and the PDF has no password protection or security restrictions (`IV.D_PDF_SPEC`).
+
+---
+
+## 🧪 Continuous Integration & Testing
+
+Run the test suite at any point to verify pipeline integrity:
+```bash
+python3 -m unittest discover tests -v
+```
+All 30 unit and integration tests must report `OK`.
