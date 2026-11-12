@@ -126,10 +126,6 @@ Audit the project against the full institutional rubric:
 python3 run_pipeline.py validate-rubric -t dissertation_master.tex -j audit_report.json
 ```
 
-Or using the standalone script:
-```bash
-python3 agentic_scripts/format_validator.py dissertation_master.tex
-```
 
 #### Diagnostic Remediation Checklist:
 - **Title Abbreviations**: If `I.C_TITLE_ABBREVIATIONS` fails, expand all acronyms (e.g., *Alzheimer's Disease* instead of *AD*, *Single Nucleotide Polymorphisms* instead of *SNPs*).

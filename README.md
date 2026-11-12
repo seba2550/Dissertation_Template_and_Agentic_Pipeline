@@ -32,8 +32,6 @@ A modular, zero-dependency agentic pipeline and LaTeX template framework designe
 
 ```
 ├── agentic_scripts/
-│   ├── extract_docx_references.py      # Standalone reference extractor
-│   ├── format_validator.py             # Standalone 26-rule rubric verification script
 │   ├── bib_unifier.py                  # Merge & deduplicate multiple .bib files
 │   ├── pandoc_ingest.py                # Alternative Pandoc-based DOCX/Markdown ingestion
 │   └── setup_synthetic_test.py         # Regenerates the synthetic_test_run/ example
@@ -97,18 +95,14 @@ python3 run_pipeline.py full-pipeline --docx manuscript.docx -o ch1_intro.tex -t
 
 ---
 
-### 2. Standalone Agentic Scripts (`agentic_scripts/`)
+### 2. Helper Scripts (`agentic_scripts/`)
 
-For modular or script-based workflows, use the standalone tools directly:
-
-#### Reference Extractor
 ```bash
-python3 agentic_scripts/extract_docx_references.py manuscript.docx -o references.bib -d dois.txt
-```
+# Merge several .bib files into one, removing duplicates by DOI/title
+python3 agentic_scripts/bib_unifier.py a.bib b.bib -o unified_references.bib
 
-#### Rubric Format Validator
-```bash
-python3 agentic_scripts/format_validator.py dissertation_master.tex --json audit_report.json
+# Alternative DOCX/Markdown -> LaTeX conversion via Pandoc (requires pandoc)
+python3 agentic_scripts/pandoc_ingest.py --help
 ```
 
 ---

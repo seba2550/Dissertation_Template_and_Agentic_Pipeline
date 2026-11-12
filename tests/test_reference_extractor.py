@@ -6,7 +6,6 @@ import unittest
 import os
 import tempfile
 import json
-import subprocess
 from pipeline.utils import (
     clean_doi,
     clean_pmid,
@@ -225,42 +224,6 @@ class TestReferenceExtractor(unittest.TestCase):
             self.assertEqual(doi, "10.1000/pmc.8086086")
         finally:
             os.remove(temp_bib_path)
-
-    def test_standalone_script_execution(self):
-        script_candidates = [
-            "agentic_scripts/extract_docx_references.py",
-            "docx_reference_extractor/extract_docx_references.py",
-        ]
-        chosen_script = None
-        for s in script_candidates:
-            if os.path.isfile(s):
-                chosen_script = s
-                break
-
-        if not chosen_script:
-            self.skipTest("No standalone reference extraction script found")
-
-        with tempfile.TemporaryDirectory() as tmpdir:
-            sample_docx = os.path.join(tmpdir, "sample.docx")
-            create_sample_docx(sample_docx)
-
-            out_bib = os.path.join(tmpdir, "test.bib")
-            out_dois = os.path.join(tmpdir, "test.dois")
-            out_map = os.path.join(tmpdir, "test.map")
-
-            cmd = [
-                "python3",
-                chosen_script,
-                sample_docx,
-                "-o", out_bib,
-                "-d", out_dois,
-                "-m", out_map,
-            ]
-            res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-            self.assertEqual(res.returncode, 0, f"Error: {res.stderr}")
-            self.assertTrue(os.path.isfile(out_bib))
-            self.assertTrue(os.path.isfile(out_dois))
-            self.assertTrue(os.path.isfile(out_map))
 
 
 if __name__ == "__main__":
