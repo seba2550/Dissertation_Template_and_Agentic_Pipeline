@@ -6,6 +6,7 @@ import unittest
 import os
 import tempfile
 import json
+import shutil
 from pipeline.cli import main
 from pipeline.compiler import compile_dissertation
 from pipeline.rubric_validator import RubricValidator
@@ -79,6 +80,16 @@ class TestPipelineIntegration(unittest.TestCase):
             self.skipTest(f"{target_tex} not present in workspace")
 
         with tempfile.TemporaryDirectory() as tmpdir:
+            # Build from a copy so the test never writes PDFs or LaTeX build files into the repo.
+            build_dir = os.path.join(tmpdir, "build")
+            shutil.copytree(
+                os.path.dirname(os.path.abspath(target_tex)), build_dir,
+                ignore=shutil.ignore_patterns(
+                    "*.aux", "*.bbl", "*.bcf", "*.blg", "*.fdb_latexmk", "*.fls", "*.log",
+                    "*.lof", "*.lot", "*.out", "*.run.xml", "*.toc", "*.synctex.gz"),
+            )
+            target_tex = os.path.join(build_dir, os.path.basename(target_tex))
+
             docx_file = "Dissertation Chapter 4 (v1).docx"
             if not os.path.isfile(docx_file):
                 docx_file = os.path.join(tmpdir, "sample_ch.docx")
@@ -90,6 +101,10 @@ class TestPipelineIntegration(unittest.TestCase):
                 "--docx", docx_file,
                 "-o", out_tex,
                 "-t", target_tex,
+                # Keep all extraction outputs out of the template directory.
+                "-b", os.path.join(tmpdir, "references.bib"),
+                "-d", os.path.join(tmpdir, "extracted_dois.txt"),
+                "-m", os.path.join(tmpdir, "citation_map.json"),
             ])
             self.assertEqual(ret, 0)
     def test_convert_ch_cli_alias(self):
