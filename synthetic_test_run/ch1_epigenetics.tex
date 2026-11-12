@@ -1,0 +1,41 @@
+\chapter{Epigenetic clock prediction performance across diverse populations}
+
+\section{Epigenetic clocks and biological aging dynamics}
+
+Biological aging is characterized by systematic molecular remodeling across the epigenome. The pioneer pan-tissue clock developed by Horvath \cite{Horvath2013} demonstrated that DNA methylation status at 353 CpG dinucleotides accurately tracks chronological age across diverse human tissues. Similarly, Hannum and colleagues \cite{Hannum2013} identified a blood-specific methylation predictor consisting of 71 markers that captured clinical markers of physiological decline.
+
+\subsection{Second-generation clocks and mortality prediction}
+
+Subsequent investigations introduced biomarkers trained on physiological phenotypes and mortality risks rather than purely chronological time. Specifically, PhenoAge \cite{Levine2018} and GrimAge \cite{Lu2019} demonstrated superior predictive validity for morbidity and all-cause mortality. However, recent cross-population benchmarks \cite{Smith2024} revealed notable calibration disparities when applied across ancestrally diverse cohorts. Furthermore, Gopalan et al. \cite{Cell2020} highlighted divergence in age-associated methylation dynamics between global populations.
+
+\subsection{Methodological harmonization across cohorts}
+
+To address platform discrepancies, we evaluated quality control filters where \textbf{probe failure rates exceeded 15\% \& sample heterozygosity} was systematically audited. In particular, \textit{cross-reactive probes and non-specific hybridization} were masked prior to regularized elastic net fitting.
+
+\begin{quotation}
+\begin{singlespace}
+  Biological age acceleration represents the mathematical divergence between chronological time and physiological vitality. Epigenetic markers provide an empirical substrate to map this divergence across human lifespans, integrating genetic variation, environmental exposures, and social determinants into an actionable, quantitative metric of organismal resilience.
+\end{singlespace}
+\end{quotation}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Multi-ancestry DNA methylation profiling cohorts and technology platforms.}
+  \begin{tabular}{lccc}
+    \toprule
+    \textbf{Cohort Name} & \textbf{Ancestral Group} & \textbf{Sample Size (N)} & \textbf{Platform} \\
+    \midrule
+    Discovery Cohort & Multi-Ancestry & 621 & EPIC BeadChip \\
+    Validation Cohort A & African American & 1,394 & 450K BeadChip \\
+    Validation Cohort B & European & 729 & 450K BeadChip \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsubsection{Deep learning implementations}
+
+Novel neural network architectures have shown promising accuracy for high-dimensional methylation modeling as described by Chen and colleagues \cite{Pubmed2024}. Preprints on population stratification further underscore this need \cite{Biorxiv2023}.
+
+\subsection{Discussion and future perspectives}
+
+Our findings underscore the imperative of ancestry-inclusive training datasets to ensure equitable clinical utility of molecular aging biomarkers.

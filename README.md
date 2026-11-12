@@ -33,7 +33,10 @@ A modular, zero-dependency agentic pipeline and LaTeX template framework designe
 ```
 ├── agentic_scripts/
 │   ├── extract_docx_references.py      # Standalone reference extractor
-│   └── format_validator.py             # Standalone 26-rule rubric verification script
+│   ├── format_validator.py             # Standalone 26-rule rubric verification script
+│   ├── bib_unifier.py                  # Merge & deduplicate multiple .bib files
+│   ├── pandoc_ingest.py                # Alternative Pandoc-based DOCX/Markdown ingestion
+│   └── setup_synthetic_test.py         # Regenerates the synthetic_test_run/ example
 ├── pipeline/
 │   ├── __init__.py                     # Modular package exports
 │   ├── cli.py                          # Unified CLI entrypoint
@@ -45,16 +48,23 @@ A modular, zero-dependency agentic pipeline and LaTeX template framework designe
 ├── templates/
 │   └── latex/
 │       ├── dissertation_master_template.tex  # Master LaTeX template (all 26 rubric rules baked in)
+│       ├── dissertation_master_template.pdf  # Compiled preview of the template
 │       ├── ch1_intro_template.tex            # Starter chapter with rubric-compliant headings/tables/figures
-│       └── references_template.bib           # Starter bibliography
+│       ├── references_template.bib           # Starter bibliography
+│       └── Title_Page / publishing_agreement # Front-matter .tex sources and the PDFs the master includes
+├── synthetic_test_run/                 # Worked example: synthetic chapters run through the whole pipeline
+├── rubric/                             # UCSF Dissertation Rubric (Rev 04/24), original + plain text
 ├── tests/
 │   ├── __init__.py
+│   ├── test_helpers.py                 # Shared fixtures (generates sample .docx files)
 │   ├── test_reference_extractor.py     # Unit tests for URL/DOI resolution & extraction
 │   ├── test_docx_converter.py          # Unit tests for DOCX parsing & citation mapping
 │   ├── test_rubric_validator.py        # Unit tests covering all 26 rubric rules & edge cases
-│   └── test_pipeline_integration.py     # End-to-end integration & CLI tests
+│   ├── test_pipeline_integration.py    # End-to-end integration & CLI tests
+│   └── test_review_regressions.py      # Regression tests for fixed bugs
 ├── run_pipeline.py                     # Top-level CLI driver
 ├── dissertation_agentic_workflow_guide.md # Comprehensive agentic workflow guide
+├── LICENSE
 └── README.md
 ```
 
@@ -69,6 +79,8 @@ The pipeline provides a consolidated command-line interface for all tasks:
 ```bash
 # 1. Extract references and DOIs from a Word manuscript
 python3 run_pipeline.py extract-refs manuscript.docx -o references.bib -d dois.txt -m citation_map.json
+#    Tip: add -e you@institution.edu so Crossref/PubMed can contact you and give
+#    your requests "polite pool" priority. Without it, requests are anonymous.
 
 # 2. Convert Word manuscript to LaTeX chapter using citation map
 python3 run_pipeline.py convert-docx manuscript.docx -o ch1_intro.tex -m citation_map.json
@@ -138,22 +150,31 @@ The validator programmatically checks every requirement specified in the **UCSF 
 
 ## 🧪 Running the Test Suite
 
-The repository includes a comprehensive 30-test suite with zero external dependencies:
+The repository includes a comprehensive test suite with zero external dependencies:
 
 ```bash
 # Run all unit and integration tests
 python3 -m unittest discover tests -v
 ```
 
-All 30 tests pass cleanly, verifying:
+The suite verifies:
 - Local and remote DOI/PMID/URL resolution.
 - Embedded Word relationship parsing and footnote extraction.
 - DOCX-to-LaTeX conversion with live citation dictionary remapping.
 - Every individual rubric check with positive and negative test cases.
 - Pre-compilation and post-compilation health checks.
 
+Tests that compile LaTeX need a TeX distribution with `latexmk` (or `pdflatex`) and `biber`. Tests that build
+or extract work in temporary directories and never modify files in `templates/`.
+
+To regenerate the synthetic example in `synthetic_test_run/`:
+
+```bash
+python3 agentic_scripts/setup_synthetic_test.py --run-pipeline
+```
+
 ---
 
 ## 📄 License & Attribution
 
-Developed for academic dissertation authoring and computational biology workflows. Free and open source under the MIT License.
+Developed for academic dissertation authoring and computational biology workflows. Free and open source under the [MIT License](LICENSE).

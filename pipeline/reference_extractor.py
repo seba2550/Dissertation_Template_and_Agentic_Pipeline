@@ -33,7 +33,7 @@ from .utils import (
 
 # SSL context for compatibility across systems
 ssl_context = ssl._create_unverified_context()
-DEFAULT_USER_AGENT = "DocxReferenceExtractor/2.0 (mailto:lab-tools@academic.edu)"
+DEFAULT_USER_AGENT = "DocxReferenceExtractor/2.0"
 
 
 class ReferenceExtractor:

@@ -1,0 +1,243 @@
+{
+  "is_compliant": true,
+  "total_checks": 26,
+  "passed": 26,
+  "failed": 0,
+  "warnings": 0,
+  "results": [
+    {
+      "section": "I. General",
+      "rule_id": "I.A_FONT",
+      "name": "Font Selection & Base Point Size (12pt)",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Approved font [Times New Roman 12pt] configured with standard 12pt base size.",
+      "remediation": "Ensure \\documentclass[12pt,...]{report} and \\usepackage{mathptmx} are present."
+    },
+    {
+      "section": "I. General",
+      "rule_id": "I.B_MARGINS",
+      "name": "One-inch Margins on All Sides",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Geometry defines uniform 1.0-inch margins (letterpaper, top=1in, bottom=1in, left=1in, right=1in).",
+      "remediation": "Use: \\usepackage[letterpaper, top=1in, bottom=1in, left=1in, right=1in]{geometry}"
+    },
+    {
+      "section": "I. General",
+      "rule_id": "I.B.2_PAGENUM_POS",
+      "name": "Page Number Distance (>= 0.5 in from edge)",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Footskip explicitly set to 0.6in (>= 0.5 inches from paper edge).",
+      "remediation": "Add: \\setlength{\\footskip}{0.6in} to LaTeX preamble."
+    },
+    {
+      "section": "I. General",
+      "rule_id": "I.C_TITLE_ABBREVIATIONS",
+      "name": "Title Free of Abbreviations (Rubric Sec I.C)",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Dissertation title ('COMPUTATIONAL EVALUATION OF EPIGENETIC CLOCKS AND TRANSCRIPT...') contains no forbidden abbreviations.",
+      "remediation": "Expand all acronyms in the dissertation title into their full spelling (e.g., Alzheimer's Disease instead of AD)."
+    },
+    {
+      "section": "I. General",
+      "rule_id": "I.F_SPACING",
+      "name": "Double Spacing Throughout Manuscript",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Setspace package configured with double spacing throughout document.",
+      "remediation": "Ensure \\usepackage{setspace} and \\doublespacing are present."
+    },
+    {
+      "section": "I. General",
+      "rule_id": "I.G_TITLE_PAGE",
+      "name": "Title Page Setup & Counter Initialization",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Title page is appended as page 1 (unnumbered) and page counter correctly initialized to 2.",
+      "remediation": "Title page must be counted as page i (unnumbered), with \\setcounter{page}{2} for page ii."
+    },
+    {
+      "section": "I. General",
+      "rule_id": "I.H_PAGINATION",
+      "name": "Preliminary (Roman) and Body (Arabic) Pagination",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Preliminary pages use roman numerals; main body switches to Arabic numerals at page 1.",
+      "remediation": "Use \\pagenumbering{roman} for preliminary pages and \\pagenumbering{arabic} \\setcounter{page}{1} at Chapter 1."
+    },
+    {
+      "section": "I. General",
+      "rule_id": "I.H_NUMBERING_SCHEME",
+      "name": "Chapter-Based Numbering Scheme (1.1, 2.1) Without Suffixes",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Chapter-based numbering scheme (1.1, 2.1) enforced with no prohibited letter suffixes (e.g. 21a, 21b).",
+      "remediation": "Ensure report documentclass is used and figure/table numbers do not use letter suffixes."
+    },
+    {
+      "section": "I. General",
+      "rule_id": "I.H_CITATION_BRACKETS",
+      "name": "Citation Formatting Consistency (Square Brackets)",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "In-text citations consistently use square brackets ([1], [2-4]) without subscripts per Rubric Sec I.H.",
+      "remediation": "Use biblatex with style=numeric-comp and natbib=true (no subscripts)."
+    },
+    {
+      "section": "I. General",
+      "rule_id": "I.I_COPYRIGHT",
+      "name": "Copyright Page Formatting (Page ii)",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Copyright page correctly formatted: year present, 'by' lowercased, 'ALL RIGHTS RESERVED' all caps, no (c) symbol.",
+      "remediation": "Format copyright page: 'Copyright 20XX\\n\\nby\\n\\nAuthor Full Name\\n\\nALL RIGHTS RESERVED'"
+    },
+    {
+      "section": "I. General",
+      "rule_id": "I.J_PUBLISHING_AGREEMENT",
+      "name": "UCSF Publishing Agreement Included as Numbered Final Page",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "UCSF Publishing Agreement is included as the final page, omitted from TOC, and explicitly numbered via pagecommand.",
+      "remediation": "Include publishing agreement at the very end with \\includepdf[pages={1}, pagecommand={\\thispagestyle{fancy}}]{publishing_agreement_signed.pdf} (omit from TOC)."
+    },
+    {
+      "section": "I. General",
+      "rule_id": "I.K_LAYOUT",
+      "name": "Portrait Orientation & US Letter Paper",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Standard portrait US Letter (8.5x11 in) single-column layout confirmed.",
+      "remediation": "Ensure \\documentclass has letterpaper option and single-column layout."
+    },
+    {
+      "section": "I. General",
+      "rule_id": "I.L_WIDOWS_ORPHANS",
+      "name": "Widows and Orphans Prevention Penalties",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "TeX penalty parameters for widows and orphans (\\clubpenalty, \\widowpenalty) enforced.",
+      "remediation": "Add: \\clubpenalty=10000 \\widowpenalty=10000 \\displaywidowpenalty=10000 to preamble."
+    },
+    {
+      "section": "I. General",
+      "rule_id": "I.N_ABSTRACT_PLACEMENT",
+      "name": "Abstract Placement, Double Spacing & ALL CAPS Heading",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Abstract appears directly before TOC, is double-spaced, with title and student name in ALL CAPITAL LETTERS.",
+      "remediation": "Place \\chapter*{ABSTRACT} directly before \\tableofcontents with \\doublespacing and ALL CAPS title/name."
+    },
+    {
+      "section": "I. General",
+      "rule_id": "I.P_ABBREVIATIONS",
+      "name": "List of Abbreviations Component",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "List of Abbreviations section present.",
+      "remediation": "Add \\chapter*{LIST OF ABBREVIATIONS} before Chapter 1."
+    },
+    {
+      "section": "I. General",
+      "rule_id": "I.DEOQ_PROQUEST_CHECKLIST",
+      "name": "ProQuest ETD Submission Guidelines Checklist",
+      "passed": true,
+      "severity": "INFO",
+      "details": "Verified: (1) Committee members match Advance to Candidacy petition; (2) Keywords identified; (3) Degree date matches graduation term; (4) Dual UCSF & personal emails required in ProQuest.",
+      "remediation": "Ensure ProQuest ETD metadata matches UCSF Registrar records exactly upon upload."
+    },
+    {
+      "section": "II. Organization",
+      "rule_id": "II.A_SEQUENTIAL_ORDER",
+      "name": "Sequential Ordering of Components",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "All 14 detected sections follow strict UCSF sequential order.",
+      "remediation": "Ensure preliminary and body sections appear in exact order specified in Rubric Section II.A."
+    },
+    {
+      "section": "III. Headings",
+      "rule_id": "III.J_HEADINGS",
+      "name": "Heading Hierarchy & Styling (Primary/Secondary/Tertiary)",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "UCSF 4-level heading hierarchy (Primary Centered Bold Caps, Secondary Bold Left, Tertiary Italic) configured via titlesec.",
+      "remediation": "Configure \\titleformat for chapter, section, subsection, subsubsection per rubric Sec III.J."
+    },
+    {
+      "section": "III. Tables",
+      "rule_id": "III.A_TABLE_CAPTIONS",
+      "name": "Table Captions Placement (Above Table), Single Spacing & Bold Reference",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Table captions configured above tables with bold labels and single spacing per Rubric Sec III.A.",
+      "remediation": "Use: \\captionsetup[table]{position=above, skip=6pt, font={small,singlespacing}} and labelfont=bf, and place \\caption above \\begin{tabular}."
+    },
+    {
+      "section": "III. Figures",
+      "rule_id": "III.B_FIGURE_CAPTIONS",
+      "name": "Figure Captions Placement (Below Figure) & Single Spacing",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Figure captions configured below figures with single spacing per Rubric Sec III.B.",
+      "remediation": "Use: \\captionsetup[figure]{position=below, skip=6pt, font={small,singlespacing}} and place \\caption below \\includegraphics."
+    },
+    {
+      "section": "III. Quotations",
+      "rule_id": "III.C_QUOTATIONS",
+      "name": "Block Quotation Formatting (Single-spaced & Indented)",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Block quotations configured with single spacing per Rubric Sec I.F & III.C.",
+      "remediation": "Add \\usepackage{etoolbox} \\AtBeginEnvironment{quotation}{\\singlespacing} to preamble."
+    },
+    {
+      "section": "III. TOC",
+      "rule_id": "III.E_TOC_CLEANLINESS",
+      "name": "Table of Contents (ALL CAPS Title & Prelim Exclusion)",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "TOC correctly configured with ALL CAPS heading, double spacing, and excludes preliminary sections.",
+      "remediation": "Use \\renewcommand{\\contentsname}{TABLE OF CONTENTS} and unstarred \\chapter*{} for prelims."
+    },
+    {
+      "section": "III. Lists",
+      "rule_id": "III.FG_LOF_LOT_SEPARATE",
+      "name": "List of Figures & Tables (Separate Pages & ALL CAPS Title)",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "List of Figures and List of Tables configured with ALL CAPS headings on separate pages.",
+      "remediation": "Use \\renewcommand{\\listfigurename}{LIST OF FIGURES} \\renewcommand{\\listtablename}{LIST OF TABLES} and separate with \\clearpage."
+    },
+    {
+      "section": "IV. References",
+      "rule_id": "IV.B_REFERENCES",
+      "name": "References Section Formatting & TOC Entry",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Unified References section titled 'REFERENCES' and registered into Table of Contents.",
+      "remediation": "Ensure: \\printbibliography[heading=bibintoc, title={REFERENCES}] is used."
+    },
+    {
+      "section": "IV. Electronic Publishing",
+      "rule_id": "IV.D_PDF_SPEC",
+      "name": "Electronic Publishing PDF Specifications (No Security)",
+      "passed": true,
+      "severity": "ERROR",
+      "details": "Compiled PDF has no password/security restrictions and is prepared for electronic publishing.",
+      "remediation": "Ensure dissertation PDF is compiled without security encryption or password restrictions."
+    },
+    {
+      "section": "Compilation",
+      "rule_id": "COMP_LOG_HEALTH",
+      "name": "Compilation Log Quality (Zero Undefined Citations/Labels)",
+      "passed": true,
+      "severity": "WARNING",
+      "details": "Clean compilation log: zero undefined citations, references, or fatal errors.",
+      "remediation": "Check .bib resources and run biber to resolve missing citations."
+    }
+  ]
+}

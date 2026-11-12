@@ -20,3 +20,14 @@ __pycache__/
 *.fdb_latexmk
 *.fls
 *.synctex.gz
+
+# Keep the synthetic example's compile log: the rubric test reads it
+!synthetic_test_run/synthetic_master.log
+
+# R / editors / environments
+.Rhistory
+.Rproj.user/
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/

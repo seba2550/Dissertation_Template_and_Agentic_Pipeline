@@ -39,7 +39,7 @@ if _parent_dir not in sys.path:
 ssl_context = ssl._create_unverified_context()
 
 # Common headers for polite API requests
-DEFAULT_USER_AGENT = "DocxReferenceExtractor/1.0 (mailto:lab-tools@academic.edu)"
+DEFAULT_USER_AGENT = "DocxReferenceExtractor/1.0"
 
 
 # ==============================================================================
