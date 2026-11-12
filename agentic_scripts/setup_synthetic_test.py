@@ -380,6 +380,49 @@ def generate_synthetic_master_tex(path: str):
 \usepackage{mathptmx} % Times New Roman 12pt TrueType font
 \usepackage{microtype} % Protrusion and font expansion to prevent overfull hboxes
 \usepackage{setspace}
+
+% Unicode symbols common in biomedical text and Crossref titles (e.g., TGF-β, ≥ 0.5).
+% pdfLaTeX cannot print these on its own; map them to math symbols.
+\usepackage{newunicodechar}
+\newunicodechar{α}{\ensuremath{\alpha}}
+\newunicodechar{β}{\ensuremath{\beta}}
+\newunicodechar{γ}{\ensuremath{\gamma}}
+\newunicodechar{δ}{\ensuremath{\delta}}
+\newunicodechar{ε}{\ensuremath{\epsilon}}
+\newunicodechar{ζ}{\ensuremath{\zeta}}
+\newunicodechar{η}{\ensuremath{\eta}}
+\newunicodechar{θ}{\ensuremath{\theta}}
+\newunicodechar{ι}{\ensuremath{\iota}}
+\newunicodechar{κ}{\ensuremath{\kappa}}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{μ}{\ensuremath{\mu}}
+\newunicodechar{ν}{\ensuremath{\nu}}
+\newunicodechar{ξ}{\ensuremath{\xi}}
+\newunicodechar{π}{\ensuremath{\pi}}
+\newunicodechar{ρ}{\ensuremath{\rho}}
+\newunicodechar{σ}{\ensuremath{\sigma}}
+\newunicodechar{τ}{\ensuremath{\tau}}
+\newunicodechar{υ}{\ensuremath{\upsilon}}
+\newunicodechar{φ}{\ensuremath{\phi}}
+\newunicodechar{χ}{\ensuremath{\chi}}
+\newunicodechar{ψ}{\ensuremath{\psi}}
+\newunicodechar{ω}{\ensuremath{\omega}}
+\newunicodechar{Γ}{\ensuremath{\Gamma}}
+\newunicodechar{Δ}{\ensuremath{\Delta}}
+\newunicodechar{Θ}{\ensuremath{\Theta}}
+\newunicodechar{Λ}{\ensuremath{\Lambda}}
+\newunicodechar{Ξ}{\ensuremath{\Xi}}
+\newunicodechar{Π}{\ensuremath{\Pi}}
+\newunicodechar{Σ}{\ensuremath{\Sigma}}
+\newunicodechar{Υ}{\ensuremath{\Upsilon}}
+\newunicodechar{Φ}{\ensuremath{\Phi}}
+\newunicodechar{Ψ}{\ensuremath{\Psi}}
+\newunicodechar{Ω}{\ensuremath{\Omega}}
+\newunicodechar{µ}{\ensuremath{\mu}}
+\newunicodechar{≤}{\ensuremath{\leq}}
+\newunicodechar{≥}{\ensuremath{\geq}}
+\newunicodechar{∼}{\ensuremath{\sim}}
+\newunicodechar{≈}{\ensuremath{\approx}}
 \doublespacing % Double spacing throughout text
 
 \usepackage{graphicx}

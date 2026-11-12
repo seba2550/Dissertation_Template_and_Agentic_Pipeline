@@ -967,7 +967,9 @@ class RubricValidator:
 
         undefined_citations = re.findall(r'Citation [`\']([^`\']+)[\'] on page \d+ undefined', log_text)
         undefined_references = re.findall(r'Reference [`\']([^`\']+)[\'] on page \d+ undefined', log_text)
-        fatal_errors = re.findall(r'! Emergency stop|! Fatal error occurred', log_text)
+        # Any line starting with "! " is a TeX error (e.g. "! LaTeX Error: ...", "! Undefined control
+        # sequence"). In nonstopmode TeX may still emit a partial PDF, so these must fail the check.
+        fatal_errors = re.findall(r'^! .*$', log_text, flags=re.MULTILINE)
 
         passed = len(undefined_citations) == 0 and len(undefined_references) == 0 and len(fatal_errors) == 0
 
@@ -977,7 +979,7 @@ class RubricValidator:
         if undefined_references:
             details_list.append(f"{len(undefined_references)} undefined references ({undefined_references[:3]}...)")
         if fatal_errors:
-            details_list.append("Fatal TeX engine error occurred.")
+            details_list.append(f"{len(fatal_errors)} LaTeX error(s), first: {fatal_errors[0][2:].strip()}")
 
         details = "; ".join(details_list) if details_list else "Clean compilation log: zero undefined citations, references, or fatal errors."
 
@@ -988,5 +990,6 @@ class RubricValidator:
             passed=passed,
             severity="ERROR" if fatal_errors else "WARNING",
             details=details,
-            remediation="Check .bib resources and run biber to resolve missing citations."
+            remediation=("Fix the LaTeX errors listed in the .log file and rebuild." if fatal_errors
+                         else "Check .bib resources and run biber to resolve missing citations.")
         ))

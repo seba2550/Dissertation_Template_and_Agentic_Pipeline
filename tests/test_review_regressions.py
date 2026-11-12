@@ -4,10 +4,14 @@ Regression tests for code-review fixes:
 2. DOIs inside URLs must be converted as whole URLs, not leave URL fragments around a \\cite.
 3. Hyperlink relationship IDs (rIdN) must be scoped per document in multi-document runs.
 4. The dead _extract_paragraphs helper stays removed.
+5. LaTeX errors in the build log fail the rubric audit (not just "Emergency stop").
+6. The master template builds when references contain Greek letters (e.g. Crossref "TGF-β").
 """
 
 import json
 import os
+import shutil
+import subprocess
 import tempfile
 import unittest
 from unittest import mock
@@ -15,6 +19,7 @@ from unittest import mock
 from pipeline.cli import main, _merge_bib_entries
 from pipeline.docx_converter import DocxConverter
 from pipeline.reference_extractor import ReferenceExtractor
+from pipeline.rubric_validator import RubricValidator
 from tests.test_helpers import create_sample_docx
 
 LOCAL_CACHE = "synthetic_test_run/local_cache.bib"
@@ -135,6 +140,45 @@ class TestDeadCodeRemoved(unittest.TestCase):
 
     def test_extract_paragraphs_removed(self):
         self.assertFalse(hasattr(DocxConverter, "_extract_paragraphs"))
+
+
+class TestCompilationLogErrors(unittest.TestCase):
+
+    def test_latex_error_fails_log_check(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tex = os.path.join(tmpdir, "d.tex")
+            with open(tex, "w") as f:
+                f.write("\\documentclass{report}\\begin{document}x\\end{document}\n")
+            with open(os.path.join(tmpdir, "d.log"), "w") as f:
+                f.write("! LaTeX Error: Unicode character \u03b2 (U+03B2)\n"
+                        "               not set up for use with LaTeX.\nl.211 ...\n")
+            report = RubricValidator(master_tex_path=tex).validate_all()
+            log_checks = [r for r in report.results if r.rule_id == "COMP_LOG_HEALTH"]
+            self.assertEqual(len(log_checks), 1)
+            self.assertFalse(log_checks[0].passed)
+            self.assertIn("Unicode character", log_checks[0].details)
+            self.assertFalse(report.is_compliant)
+
+
+@unittest.skipUnless(shutil.which("latexmk"), "latexmk not installed")
+class TestTemplateHandlesGreekReferences(unittest.TestCase):
+
+    def test_template_builds_with_greek_in_bibliography(self):
+        src = os.path.join("templates", "latex")
+        with tempfile.TemporaryDirectory() as tmpdir:
+            for name in ("dissertation_master_template.tex", "ch1_intro.tex",
+                         "Title_Page.pdf", "publishing_agreement.pdf"):
+                shutil.copy(os.path.join(src, name), tmpdir)
+            with open(os.path.join(tmpdir, "references.bib"), "w", encoding="utf-8") as f:
+                f.write("@article{Horvath2013, author={Horvath, S}, year={2013},\n"
+                        "  title={LRG1 modulates TGF-\u03b2 signalling at \u2265 5 \u03bcM}, journal={Nature}}\n")
+            res = subprocess.run(
+                ["latexmk", "-pdf", "-interaction=nonstopmode", "dissertation_master_template.tex"],
+                cwd=tmpdir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            with open(os.path.join(tmpdir, "dissertation_master_template.log"), errors="replace") as f:
+                errors = [l for l in f if l.startswith("! ")]
+            self.assertEqual(errors, [], errors)
+            self.assertEqual(res.returncode, 0)
 
 
 if __name__ == "__main__":
