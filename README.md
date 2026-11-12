@@ -2,6 +2,8 @@
 
 A modular, zero-dependency agentic pipeline and LaTeX template framework designed to streamline the compilation, reference extraction, and institutional rubric validation of scientific doctoral dissertations (fully compliant with the **UCSF Dissertation Rubric Rev 04/24**).
 
+> **New here, or not a programmer?** Start with the step-by-step **[TUTORIAL.md](TUTORIAL.md)**. It takes you from Word chapters to a checked, UCSF-ready PDF without any LaTeX knowledge.
+
 ---
 
 ## 🌟 Key Capabilities
@@ -62,6 +64,7 @@ A modular, zero-dependency agentic pipeline and LaTeX template framework designe
 │   └── test_review_regressions.py      # Regression tests for fixed bugs
 ├── run_pipeline.py                     # Top-level CLI driver
 ├── dissertation_agentic_workflow_guide.md # Comprehensive agentic workflow guide
+├── TUTORIAL.md                         # Step-by-step guide for non-programmers
 ├── LICENSE
 └── README.md
 ```
