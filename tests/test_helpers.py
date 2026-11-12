@@ -60,6 +60,27 @@ def create_sample_docx(path: str):
       <w:r><w:t>Aging is a multifaceted biological decline driven by molecular and cellular damage accumulating progressively over chronological time throughout organismal lifespan.</w:t></w:r>
     </w:p>
     <w:p>
+      <w:pPr><w:pStyle w:val="Caption"/></w:pPr>
+      <w:r><w:t>Table 1.1: Summary of profiling technologies and cohort sample sizes.</w:t></w:r>
+    </w:p>
+    <w:tbl>
+      <w:tr>
+        <w:tc><w:p><w:r><w:t>Cohort</w:t></w:r></w:p></w:tc>
+        <w:tc><w:p><w:r><w:t>Ancestry</w:t></w:r></w:p></w:tc>
+        <w:tc><w:p><w:r><w:t>Sample Size</w:t></w:r></w:p></w:tc>
+      </w:tr>
+      <w:tr>
+        <w:tc><w:p><w:r><w:t>Discovery</w:t></w:r></w:p></w:tc>
+        <w:tc><w:p><w:r><w:t>Multi-Ancestry</w:t></w:r></w:p></w:tc>
+        <w:tc><w:p><w:r><w:t>621</w:t></w:r></w:p></w:tc>
+      </w:tr>
+      <w:tr>
+        <w:tc><w:p><w:r><w:t>Validation</w:t></w:r></w:p></w:tc>
+        <w:tc><w:p><w:r><w:t>European</w:t></w:r></w:p></w:tc>
+        <w:tc><w:p><w:r><w:t>729</w:t></w:r></w:p></w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p>
       <w:r><w:t># Discussion and Future Perspectives</w:t></w:r>
     </w:p>
     <w:p>

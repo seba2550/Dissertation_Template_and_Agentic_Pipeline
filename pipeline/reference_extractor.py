@@ -394,26 +394,44 @@ class ReferenceExtractor:
 
     def process(
         self,
-        docx_file: str,
+        docx_file: Any,  # str or List[str]
         output_bib: str = "references.bib",
         output_dois: str = "doi_list.txt",
         output_map: Optional[str] = None,
         verbose: bool = False,
     ) -> Dict[str, Any]:
         """
-        Executes reference extraction pipeline on a docx file.
-        Outputs .bib, .txt, and returns a summary dict including the citation mapping.
+        Executes reference extraction pipeline on one or more .docx files.
+        Outputs consolidated .bib, .txt, and returns a summary dict including citation mapping.
         """
-        urls, direct_dois, rel_id_map = self.extract_links_from_docx(docx_file)
+        if isinstance(docx_file, (list, tuple)):
+            docx_files = list(docx_file)
+        else:
+            docx_files = [docx_file]
+
+        all_urls: Set[str] = set()
+        all_dois: Set[str] = set()
+        combined_rel_map: Dict[str, str] = {}
+
+        for df in docx_files:
+            urls, direct_dois, rel_id_map = self.extract_links_from_docx(df)
+            all_urls.update(urls)
+            all_dois.update(direct_dois)
+            base = os.path.basename(df)
+            for r_id, target in rel_id_map.items():
+                combined_rel_map[f"{base}::{r_id}"] = target
+                # Bare rIds are only unambiguous for single-document runs
+                if len(docx_files) == 1:
+                    combined_rel_map[r_id] = target
 
         resolved_bibtex: Dict[str, str] = {}
-        resolved_dois: Set[str] = set(direct_dois)
+        resolved_dois: Set[str] = set(all_dois)
         unresolved_urls: List[str] = []
-        citation_map: Dict[str, str] = {}  # maps original target/DOI to citekey
+        citation_map: Dict[str, str] = {}  # maps original target/DOI/URL to citekey
         active_keys: Set[str] = set()
 
         # 1. Process explicit DOIs
-        for doi in direct_dois:
+        for doi in sorted(list(all_dois)):
             bib = self.fetch_bibtex_from_doi(doi)
             if bib:
                 m_key = re.search(r'@[a-zA-Z]+\{([^,]+),', bib)
@@ -432,7 +450,7 @@ class ReferenceExtractor:
                 citation_map[doi] = key
 
         # 2. Process URLs
-        for url in urls:
+        for url in sorted(list(all_urls)):
             ident = self.resolve_url_to_identifier(url)
             itype = ident['type']
             ival = ident['id']
@@ -462,7 +480,7 @@ class ReferenceExtractor:
                 if ival in self.pmid_to_local_entry:
                     entry = self.pmid_to_local_entry[ival]
                     bib = entry['raw']
-                    doi = entry.get('doi', '')
+                    doi = clean_doi(entry.get('doi_normalized') or entry.get('doi', ''))
                 else:
                     bib, doi = self.fetch_metadata_from_pubmed(ival)
 
@@ -511,7 +529,7 @@ class ReferenceExtractor:
                     resolved_bibtex[key] = cached_match['raw']
                     active_keys.add(key)
                     citation_map[url] = key
-                    doi_c = cached_match.get('doi_normalized')
+                    doi_c = clean_doi(cached_match.get('doi_normalized') or cached_match.get('doi', ''))
                     if doi_c:
                         resolved_dois.add(doi_c)
                         citation_map[doi_c] = key
@@ -521,33 +539,42 @@ class ReferenceExtractor:
                     citation_map[url] = key
                     unresolved_urls.append(url)
 
-        # 3. Map all Word Relationship IDs (rId...) to resolved citekeys
-        for r_id, target in rel_id_map.items():
+        # 3. Map all Word Relationship IDs to resolved citekeys
+        for r_id_key, target in combined_rel_map.items():
             if target in citation_map:
-                citation_map[r_id] = citation_map[target]
+                citation_map[r_id_key] = citation_map[target]
+            else:
+                c_doi = clean_doi(target)
+                if c_doi and c_doi in citation_map:
+                    citation_map[r_id_key] = citation_map[c_doi]
 
-        # 3. Write BibTeX file
+        # 4. Write BibTeX file
+        os.makedirs(os.path.dirname(os.path.abspath(output_bib)) or ".", exist_ok=True)
         with open(output_bib, 'w', encoding='utf-8') as f:
+            src_desc = os.path.basename(docx_files[0]) if len(docx_files) == 1 else f"{len(docx_files)} manuscripts"
             f.write("% =========================================================\n")
-            f.write(f"% BibTeX Library generated from {os.path.basename(docx_file)}\n")
+            f.write(f"% BibTeX Library generated from {src_desc}\n")
             f.write(f"% Total Entries: {len(resolved_bibtex)}\n")
             f.write("% =========================================================\n\n")
             f.write('\n\n'.join(resolved_bibtex.values()))
             f.write('\n')
 
-        # 4. Write DOI list
+        # 5. Write DOI list
         sorted_dois = sorted(list(resolved_dois))
+        os.makedirs(os.path.dirname(os.path.abspath(output_dois)) or ".", exist_ok=True)
         with open(output_dois, 'w', encoding='utf-8') as f:
             for d in sorted_dois:
                 f.write(f"{d}\n")
 
-        # 5. Optionally save citation map
+        # 6. Optionally save citation map
         if output_map:
+            os.makedirs(os.path.dirname(os.path.abspath(output_map)) or ".", exist_ok=True)
             with open(output_map, 'w', encoding='utf-8') as f:
                 json.dump(citation_map, f, indent=2)
 
         summary = {
-            'docx_file': docx_file,
+            'docx_file': docx_files[0] if len(docx_files) == 1 else docx_files,
+            'docx_files': docx_files,
             'total_extracted': len(resolved_bibtex),
             'formal_dois': len(sorted_dois),
             'fallbacks': len(unresolved_urls),
@@ -560,7 +587,7 @@ class ReferenceExtractor:
 
 
 def extract_docx_references(
-    docx_file: str,
+    docx_file: Any,  # str or List[str]
     output_bib: str = "references.bib",
     output_dois: str = "doi_list.txt",
     output_map: Optional[str] = None,
@@ -568,7 +595,7 @@ def extract_docx_references(
     local_bib_paths: Optional[List[str]] = None,
     verbose: bool = False,
 ) -> Dict[str, Any]:
-    """Convenience wrapper for ReferenceExtractor.process."""
+    """Convenience wrapper for ReferenceExtractor.process supporting one or multiple docx files."""
     user_agent = f"DocxReferenceExtractor/2.0 (mailto:{email})" if email else DEFAULT_USER_AGENT
     extractor = ReferenceExtractor(
         user_agent=user_agent,

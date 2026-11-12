@@ -92,8 +92,67 @@ class TestPipelineIntegration(unittest.TestCase):
                 "-t", target_tex,
             ])
             self.assertEqual(ret, 0)
+    def test_convert_ch_cli_alias(self):
+        """Tests that 'convert-ch' alias invokes docx conversion identically to 'convert-docx'."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            sample_docx = os.path.join(tmpdir, "sample.docx")
+            create_sample_docx(sample_docx)
+            out_tex = os.path.join(tmpdir, "ch_alias.tex")
+
+            ret = main([
+                "convert-ch",
+                sample_docx,
+                "-o", out_tex,
+                "-t", "Sample Title",
+            ])
+            self.assertEqual(ret, 0)
             self.assertTrue(os.path.isfile(out_tex))
+            with open(out_tex, 'r', encoding='utf-8') as f:
+                content = f.read()
+            self.assertIn(r"\chapter{Sample Title}", content)
+
+    def test_multi_docx_extract_refs(self):
+        """Tests extract-refs command on multiple docx files consolidating references."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            ch1_docx = os.path.join(tmpdir, "ch1.docx")
+            ch2_docx = os.path.join(tmpdir, "ch2.docx")
+            create_sample_docx(ch1_docx)
+            create_sample_docx(ch2_docx)
+
+            out_bib = os.path.join(tmpdir, "merged.bib")
+            out_dois = os.path.join(tmpdir, "merged_dois.txt")
+            out_map = os.path.join(tmpdir, "merged_map.json")
+            local_bib = "synthetic_test_run/local_cache.bib" if os.path.isfile("synthetic_test_run/local_cache.bib") else "dissertation_references.bib"
+
+            ret = main([
+                "extract-refs",
+                ch1_docx, ch2_docx,
+                "-o", out_bib,
+                "-d", out_dois,
+                "-m", out_map,
+                "-l", local_bib,
+            ])
+            self.assertEqual(ret, 0)
+            self.assertTrue(os.path.isfile(out_bib))
+            self.assertTrue(os.path.isfile(out_dois))
+            self.assertTrue(os.path.isfile(out_map))
+            with open(out_map, 'r', encoding='utf-8') as f:
+                cmap = json.load(f)
+            self.assertIn("10.1038/nature12345", cmap)
+
+    def test_synthetic_directory_artifacts(self):
+        """Validates that synthetic_test_run contains valid generated artifacts and passes rubric."""
+        syn_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "synthetic_test_run")
+        master_tex = os.path.join(syn_dir, "synthetic_master.tex")
+        if not os.path.isfile(master_tex):
+            self.skipTest(f"{master_tex} not found")
+
+        validator = RubricValidator(master_tex_path=master_tex)
+        report = validator.validate_all()
+        self.assertTrue(report.is_compliant)
+        self.assertEqual(report.failed_count, 0)
 
 
 if __name__ == "__main__":
     unittest.main()
+

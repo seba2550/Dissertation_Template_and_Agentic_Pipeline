@@ -38,9 +38,16 @@ class TestDocxConverter(unittest.TestCase):
             self.assertIn(r"\label{ch:epigenetics}", latex_out)
             self.assertIn(r"\cite{Horvath2013}", latex_out)
             self.assertIn(r"\cite{Smith2024}", latex_out)
+            self.assertIn(r"\cite{Cell2020}", latex_out)
             self.assertIn(r"\subsection{Methods and statistical procedures}", latex_out)
             self.assertIn(r"\begin{quotation}", latex_out)
             self.assertIn(r"\begin{singlespace}", latex_out)
+            self.assertIn(r"\begin{table}[htbp]", latex_out)
+            self.assertIn(r"\caption{Summary of profiling technologies and cohort sample sizes.}", latex_out)
+            self.assertIn(r"\begin{tabular}", latex_out)
+            self.assertIn(r"\toprule", latex_out)
+            self.assertIn(r"\midrule", latex_out)
+            self.assertIn(r"\bottomrule", latex_out)
             self.assertIn(r"\section{Discussion and future perspectives}", latex_out)
 
     def test_citation_mapping_clean_doi_resolution(self):

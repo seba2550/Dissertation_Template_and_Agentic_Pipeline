@@ -54,7 +54,8 @@ class DocxConverter:
         if not os.path.isfile(docx_path):
             raise FileNotFoundError(f"File not found: {docx_path}")
 
-        paragraphs, rel_map = self._extract_paragraphs(docx_path)
+        self._doc_base = os.path.basename(docx_path)
+        elements, rel_map = self._extract_elements(docx_path)
         latex_lines: List[str] = []
 
         # If a chapter header is explicitly requested
@@ -67,12 +68,29 @@ class DocxConverter:
         else:
             first_heading_seen = False
 
-        for para in paragraphs:
+        pending_table_caption = None
+
+        for idx, elem in enumerate(elements):
+            if elem.get('type') == 'table':
+                table_latex = self._format_table(elem, caption=pending_table_caption)
+                if table_latex:
+                    latex_lines.append(table_latex)
+                    latex_lines.append("")
+                pending_table_caption = None
+                continue
+
+            para = elem
             style = para.get('style', '').lower()
             text = para.get('text', '').strip()
             runs = para.get('runs', [])
 
             if not text:
+                continue
+
+            # Check if this paragraph is a table caption for an upcoming table
+            next_elem = elements[idx + 1] if idx + 1 < len(elements) else None
+            if next_elem and next_elem.get('type') == 'table' and ('caption' in style or re.match(r'^Table\s+\d', text, re.IGNORECASE)):
+                pending_table_caption = text
                 continue
 
             # Detect Markdown-style heading prefixes (# Heading, ## Heading, etc.)
@@ -134,10 +152,10 @@ class DocxConverter:
 
         return full_latex
 
-    def _extract_paragraphs(self, docx_path: str) -> Tuple[List[Dict[str, Any]], Dict[str, str]]:
-        """Extracts structured paragraph objects and relationship mapping."""
+    def _extract_elements(self, docx_path: str) -> Tuple[List[Dict[str, Any]], Dict[str, str]]:
+        """Extracts structured paragraph and table objects along with relationship mapping."""
         rel_map: Dict[str, str] = {}
-        paragraphs: List[Dict[str, Any]] = []
+        elements: List[Dict[str, Any]] = []
 
         with zipfile.ZipFile(docx_path, 'r') as docx_zip:
             # 1. Parse document relationships
@@ -156,15 +174,77 @@ class DocxConverter:
                 xml_data = docx_zip.read('word/document.xml')
                 root = ET.fromstring(xml_data)
 
-                # Iterate through body children (paragraphs, tables)
+                # Iterate through body children (paragraphs and tables in document order)
                 body = root.find(f'{{{W_NS}}}body')
                 if body is not None:
                     for child in body:
                         if child.tag == f'{{{W_NS}}}p':
                             para_info = self._parse_paragraph_node(child)
-                            paragraphs.append(para_info)
+                            elements.append(para_info)
+                        elif child.tag == f'{{{W_NS}}}tbl':
+                            tbl_info = self._parse_table_node(child)
+                            elements.append(tbl_info)
 
-        return paragraphs, rel_map
+        return elements, rel_map
+
+    def _parse_table_node(self, tbl_node: ET.Element) -> Dict[str, Any]:
+        """Parses a <w:tbl> node into structured rows and cells."""
+        rows = []
+        for tr in tbl_node.findall(f'{{{W_NS}}}tr'):
+            row = []
+            for tc in tr.findall(f'{{{W_NS}}}tc'):
+                cell_texts = []
+                for p in tc.findall(f'{{{W_NS}}}p'):
+                    for r in p.findall(f'{{{W_NS}}}r'):
+                        for t in r.findall(f'{{{W_NS}}}t'):
+                            if t.text:
+                                cell_texts.append(t.text)
+                row.append(" ".join(cell_texts).strip())
+            rows.append(row)
+        return {
+            'type': 'table',
+            'rows': rows,
+        }
+
+    def _format_table(self, table_info: Dict[str, Any], caption: Optional[str] = None) -> str:
+        """Formats a table into rubric-compliant LaTeX tabular environment with caption above."""
+        rows = table_info.get('rows', [])
+        if not rows:
+            return ""
+        col_count = max(len(r) for r in rows) if rows else 1
+        col_align = "l" + "c" * (col_count - 1)
+
+        latex = ["\\begin{table}[htbp]", "  \\centering"]
+        if caption:
+            c_match = re.match(r'^(Table\s+[\d\.]+)[:\.\s]*(.*)$', caption, re.IGNORECASE)
+            if c_match:
+                cap_text = c_match.group(2).strip() or caption
+                latex.append(f"  \\caption{{{sanitize_latex_text(cap_text)}}}")
+            else:
+                latex.append(f"  \\caption{{{sanitize_latex_text(caption)}}}")
+        latex.append(f"  \\begin{{tabular}}{{{col_align}}}")
+        latex.append("    \\toprule")
+
+        # Header row
+        if rows:
+            hdr = rows[0]
+            hdr_cells = [f"\\textbf{{{sanitize_latex_text(c)}}}" for c in hdr]
+            while len(hdr_cells) < col_count:
+                hdr_cells.append("")
+            latex.append("    " + " & ".join(hdr_cells) + " \\\\")
+            latex.append("    \\midrule")
+
+        # Data rows
+        for row in rows[1:]:
+            row_cells = [sanitize_latex_text(c) for c in row]
+            while len(row_cells) < col_count:
+                row_cells.append("")
+            latex.append("    " + " & ".join(row_cells) + " \\\\")
+
+        latex.append("    \\bottomrule")
+        latex.append("  \\end{tabular}")
+        latex.append("\\end{table}")
+        return "\n".join(latex)
 
     def _parse_paragraph_node(self, p_node: ET.Element) -> Dict[str, Any]:
         """Parses a <w:p> node to extract style, runs, and hyperlinks."""
@@ -201,6 +281,7 @@ class DocxConverter:
                     full_text_parts.append(run_data['text'])
 
         return {
+            'type': 'paragraph',
             'style': style,
             'indented': indented,
             'text': "".join(full_text_parts),
@@ -230,6 +311,71 @@ class DocxConverter:
             'r_id': None,
         }
 
+    def _format_text_with_inline_citations(self, text: str) -> str:
+        """
+        Detects inline DOIs and URLs within a text run, protects them from LaTeX escaping,
+        and converts them to \\cite{...} if present in citation_map.
+        """
+        placeholders = {}
+        token_idx = 0
+
+        # 1. Match parenthesized or bracketed DOIs: (10.xxx) or [10.xxx] or (doi: 10.xxx)
+        def repl_bracketed_doi(m):
+            nonlocal token_idx
+            raw = m.group(1)
+            cd = clean_doi(raw)
+            key = self.citation_map.get(cd) or self.citation_map.get(raw)
+            if key:
+                token_idx += 1
+                ph = f"@@CITETOKEN{token_idx}@@"
+                placeholders[ph] = f"\\cite{{{key}}}"
+                return ph
+            return m.group(0)
+
+        text = re.sub(r'[\(\[]\s*(?:doi:\s*)?(10\.\d{4,9}/[^\s,;\)\]\}]+)\s*[\)\]]', repl_bracketed_doi, text, flags=re.IGNORECASE)
+
+        # 2. Match URLs
+        def repl_url(m):
+            nonlocal token_idx
+            raw = m.group(0).rstrip('.,;:')
+            trailing = m.group(0)[len(raw):]
+            key = self.citation_map.get(raw) or self.citation_map.get(clean_doi(raw))
+            if key:
+                token_idx += 1
+                ph = f"@@CITETOKEN{token_idx}@@"
+                placeholders[ph] = f"\\cite{{{key}}}"
+                return ph + trailing
+            return m.group(0)
+
+        text = re.sub(r'https?://[^\s<>"\'\)\]\}]+', repl_url, text)
+
+        # 3. Match bare DOIs (after URLs, so DOIs inside URLs are handled as whole URLs): 10.xxx/yyy
+        def repl_bare_doi(m):
+            nonlocal token_idx
+            full_match = m.group(0)
+            trailing_punct = re.search(r'[.,;:!?]+$', full_match)
+            punct = trailing_punct.group(0) if trailing_punct else ""
+            raw = full_match[:-len(punct)] if punct else full_match
+            cd = clean_doi(raw)
+            key = self.citation_map.get(cd) or self.citation_map.get(raw)
+            if key:
+                token_idx += 1
+                ph = f"@@CITETOKEN{token_idx}@@"
+                placeholders[ph] = f"\\cite{{{key}}}"
+                return ph + punct
+            return full_match
+
+        text = re.sub(r'\b10\.\d{4,9}/[^\s,;\)\]\}]+', repl_bare_doi, text)
+
+        # 4. Sanitize text for LaTeX
+        sanitized = sanitize_latex_text(text)
+
+        # 5. Restore citation commands
+        for ph, cite_cmd in placeholders.items():
+            sanitized = sanitized.replace(ph, cite_cmd)
+
+        return sanitized
+
     def _format_runs(self, runs: List[Dict[str, Any]], rel_map: Dict[str, str]) -> str:
         """Formats runs into LaTeX text, applying formatting and citation replacements."""
         formatted_chunks = []
@@ -244,9 +390,8 @@ class DocxConverter:
 
             # Check if this run is an embedded citation hyperlink
             cite_key = None
-            if r_id and r_id in self.citation_map:
-                cite_key = self.citation_map[r_id]
-            elif target:
+            # 1. Prioritize target URL/DOI first (globally unique; prevents cross-document rId collision)
+            if target:
                 if target in self.citation_map:
                     cite_key = self.citation_map[target]
                 else:
@@ -258,14 +403,25 @@ class DocxConverter:
                         if doi_match:
                             doi = clean_doi(doi_match.group(1))
                             cite_key = self.citation_map.get(doi)
-            elif text.strip() in self.citation_map:
+
+            # 2. Fallback to r_id only if target was not resolved
+            # Use the document-scoped key ("chapter.docx::rId5"); bare rIds collide across documents.
+            if not cite_key and r_id:
+                base = getattr(self, '_doc_base', None)
+                scoped = f"{base}::{r_id}" if base else None
+                if scoped and scoped in self.citation_map:
+                    cite_key = self.citation_map[scoped]
+                elif r_id in self.citation_map:
+                    cite_key = self.citation_map[r_id]
+
+            # 3. Exact match of run text in citation map
+            if not cite_key and text.strip() in self.citation_map:
                 cite_key = self.citation_map[text.strip()]
 
             if cite_key:
                 formatted_chunks.append(f"\\cite{{{cite_key}}}")
             else:
-                # Escape special characters
-                safe_text = sanitize_latex_text(text)
+                safe_text = self._format_text_with_inline_citations(text)
                 if r.get('bold') and r.get('italic'):
                     formatted_chunks.append(f"\\textbf{{\\textit{{{safe_text}}}}}")
                 elif r.get('bold'):

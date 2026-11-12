@@ -55,6 +55,41 @@ def clean_pmcid(pmcid: str) -> str:
     return m.group(1).upper() if m else ""
 
 
+def extract_bibtex_field(raw_entry: str, field: str) -> Optional[str]:
+    """
+    Extracts a BibTeX field value handling balanced braces, quotes, and bare values.
+    Prevents corruption when a field is the last element before the record closing brace.
+    """
+    pattern = re.compile(rf'\b{field}\s*=\s*', re.IGNORECASE)
+    m = pattern.search(raw_entry)
+    if not m:
+        return None
+    start = m.end()
+    if start >= len(raw_entry):
+        return None
+    char = raw_entry[start]
+    if char == '{':
+        depth = 0
+        for i in range(start, len(raw_entry)):
+            if raw_entry[i] == '{':
+                depth += 1
+            elif raw_entry[i] == '}':
+                depth -= 1
+                if depth == 0:
+                    val = raw_entry[start + 1:i].strip()
+                    return re.sub(r'\s+', ' ', val)
+    elif char == '"':
+        for i in range(start + 1, len(raw_entry)):
+            if raw_entry[i] == '"' and raw_entry[i - 1] != '\\':
+                val = raw_entry[start + 1:i].strip()
+                return re.sub(r'\s+', ' ', val)
+    else:
+        m_bare = re.match(r'([^\s,}]+)', raw_entry[start:])
+        if m_bare:
+            return m_bare.group(1).strip()
+    return None
+
+
 def parse_bibtex_file(bib_path: str) -> Dict[str, Dict[str, str]]:
     """
     Parses a .bib BibTeX file into a dictionary of entries:
@@ -101,12 +136,9 @@ def parse_bibtex_file(bib_path: str) -> Dict[str, Dict[str, str]]:
         }
 
         # Extract common fields
-        for field in ['title', 'author', 'journal', 'year', 'volume', 'pages', 'doi', 'url', 'pmid', 'note']:
-            # match field = {value} or field = "value"
-            f_match = re.search(rf'\b{field}\s*=\s*[\{{"](.*?)[\}}"]\s*(?:,|$)', raw_entry, re.IGNORECASE | re.DOTALL)
-            if f_match:
-                val = f_match.group(1).strip()
-                val = re.sub(r'\s+', ' ', val)
+        for field in ['title', 'author', 'journal', 'year', 'volume', 'pages', 'doi', 'url', 'pmid', 'note', 'eprint', 'howpublished']:
+            val = extract_bibtex_field(raw_entry, field)
+            if val is not None:
                 data[field] = val
 
         if 'doi' in data:
