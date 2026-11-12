@@ -27,7 +27,7 @@ class TestPipelineIntegration(unittest.TestCase):
             out_dois = os.path.join(tmpdir, "intro_dois.txt")
             out_map = os.path.join(tmpdir, "intro_map.json")
 
-            local_bib = "dissertation_references.bib" if os.path.isfile("dissertation_references.bib") else "templates/latex/references_template.bib"
+            local_bib = "dissertation_references.bib" if os.path.isfile("dissertation_references.bib") else "templates/latex/references.bib"
             cmd_args = [
                 "extract-refs",
                 docx_file,

@@ -49,8 +49,8 @@ A modular, zero-dependency agentic pipeline and LaTeX template framework designe
 │   └── latex/
 │       ├── dissertation_master_template.tex  # Master LaTeX template (all 26 rubric rules baked in)
 │       ├── dissertation_master_template.pdf  # Compiled preview of the template
-│       ├── ch1_intro_template.tex            # Starter chapter with rubric-compliant headings/tables/figures
-│       ├── references_template.bib           # Starter bibliography
+│       ├── ch1_intro.tex                     # Starter chapter with rubric-compliant headings/tables/figures
+│       ├── references.bib                    # Starter bibliography
 │       └── Title_Page / publishing_agreement # Front-matter .tex sources and the PDFs the master includes
 ├── synthetic_test_run/                 # Worked example: synthetic chapters run through the whole pipeline
 ├── rubric/                             # UCSF Dissertation Rubric (Rev 04/24), original + plain text
