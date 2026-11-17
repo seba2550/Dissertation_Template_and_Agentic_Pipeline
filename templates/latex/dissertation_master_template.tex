@@ -2,12 +2,20 @@
 
 %%% ========================================================================= %%%
 %%% UCSF DISSERTATION MASTER LATEX TEMPLATE                                   %%%
-%%% Fully compliant with UCSF Dissertation Rubric (Rev 04/24)                 %%%
+%%% UCSF Dissertation Rubric (Rev 04/24)                                      %%%
+%%%                                                                           %%%
+%%% Build:                                                                    %%%
+%%%   1. ../../agentic_scripts/embed_fonts.sh <figure dirs> <included PDFs>   %%%
+%%%      whenever a figure, the title page or the publishing agreement       %%%
+%%%      changes (writes font-embedded copies to build_embedded/)            %%%
+%%%   2. latexmk -pdf dissertation_master_template.tex  (pdflatex + biber)    %%%
+%%%   3. python3 ../../agentic_scripts/layout_audit.py <pdf>   -> 0 issue(s)  %%%
+%%%   4. python3 ../../agentic_scripts/format_validator.py <tex>              %%%
 %%% ========================================================================= %%%
 
 %%% ------------ I. MARGINS, FONT & SPACING (RUBRIC SEC I.A, I.B, I.F) ------------ %%%
 \usepackage[letterpaper, top=1in, bottom=1in, left=1in, right=1in]{geometry}
-\usepackage{mathptmx} % Times New Roman 12pt TrueType font
+\usepackage{mathptmx} % Times New Roman 12pt
 \usepackage{setspace}
 
 % Unicode symbols common in biomedical text and Crossref titles (e.g., TGF-β, ≥ 0.5).
@@ -55,13 +63,35 @@
 \doublespacing % Double spacing throughout text
 
 \usepackage{graphicx}
+% build_embedded/ holds font-embedded copies of every figure and included PDF (agentic_scripts/embed_fonts.sh)
+% and is searched first, so the originals never need editing. Rubric IV.D: all fonts embedded.
+\graphicspath{{./build_embedded/}{./}{./figures/}}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{array}
+\usepackage{longtable} % long tables (e.g. List of Abbreviations) that break across pages
 \usepackage{pdfpages}
+\usepackage{subcaption}
 \usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black, breaklinks=true]{hyperref}
 \usepackage[capitalise, noabbrev, nameinlink]{cleveref}
+
+%%% ------------ BOLD FIGURE & TABLE REFERENCES (RUBRIC SEC III.A.7) ------------ %%%
+% Every in-text reference to a table or figure is bold, panel letter included (e.g. Figure 2.4A).
+% Use \FIG[A]{name} / \TABLE{name} (defined below) or \cref{...}; never type "Figure 2.1" by hand.
+\crefformat{table}{#2\textbf{Table~#1}#3}
+\Crefformat{table}{#2\textbf{Table~#1}#3}
+\crefmultiformat{table}{#2\textbf{Tables~#1}#3}{ and~#2\textbf{#1}#3}{, #2\textbf{#1}#3}{ and~#2\textbf{#1}#3}
+\crefrangeformat{table}{\textbf{Tables~#3#1#4 to~#5#2#6}}
+\makeatletter
+\@for\reftype:=figure,subfigure\do{%
+  \expandafter\crefformat\expandafter{\reftype}{#2\textbf{Figure~#1}#3}%
+  \expandafter\Crefformat\expandafter{\reftype}{#2\textbf{Figure~#1}#3}%
+  \expandafter\crefmultiformat\expandafter{\reftype}{#2\textbf{Figures~#1}#3}{ and~#2\textbf{#1}#3}{, #2\textbf{#1}#3}{ and~#2\textbf{#1}#3}%
+  \expandafter\Crefmultiformat\expandafter{\reftype}{#2\textbf{Figures~#1}#3}{ and~#2\textbf{#1}#3}{, #2\textbf{#1}#3}{ and~#2\textbf{#1}#3}%
+  \expandafter\crefrangeformat\expandafter{\reftype}{\textbf{Figures~#3#1#4 to~#5#2#6}}%
+}
+\makeatother
 
 %%% ------------ CITATION FORMATTING (RUBRIC SEC I.H) ------------ %%%
 % Consistent square brackets [1], numeric-comp style, no subscripts
@@ -70,16 +100,122 @@
   backend=biber,
   style=numeric-comp,
   natbib=true,
+  maxbibnames=10,
+  minbibnames=3,
+  giveninits=true,
+  terseinits=true,
   doi=true,
   url=false,
-  isbn=false
+  isbn=false,
+  eprint=false
 ]{biblatex}
+
+% Strip clutter that reference managers export (ISSN, abstracts, notes, access dates...),
+% and drop the URL when a DOI exists, so every entry has the same shape.
+\DeclareSourcemap{
+  \maps[datatype=bibtex]{
+    \map{
+      \step[fieldset=issn, null]
+      \step[fieldset=isbn, null]
+      \step[fieldset=urldate, null]
+      \step[fieldset=language, null]
+      \step[fieldset=eprint, null]
+      \step[fieldset=note, null]
+      \step[fieldset=month, null]
+      \step[fieldset=abstract, null]
+    }
+    \map{
+      \step[fieldsource=doi, final]
+      \step[fieldset=url, null]
+    }
+  }
+}
+\AtEveryBibitem{%
+  \clearlist{language}%
+  \clearfield{urldate}%
+  \clearfield{note}%
+  \clearfield{addendum}%
+  \clearfield{eprint}%
+  \clearfield{isbn}%
+  \clearfield{issn}%
+  \ifentrytype{article}{%
+    \clearname{editor}%
+    \clearlist{publisher}%
+    \clearlist{location}%
+  }{}%
+}
+% Let long DOIs/URLs break anywhere instead of running into the margin (rubric I.B.1)
+\setcounter{biburlnumpenalty}{9000}
+\setcounter{biburlucpenalty}{9000}
+\setcounter{biburllcpenalty}{9000}
+% Optional house style: sentence-case reference titles with agentic_scripts/sentence_case.py
 \addbibresource{references.bib}
+
+\usepackage[section]{placeins} % floats never drift past the end of their section
 
 %%% ------------ WIDOWS & ORPHANS (RUBRIC SEC I.L) ------------ %%%
 \clubpenalty=10000
 \widowpenalty=10000
 \displaywidowpenalty=10000
+\brokenpenalty=10000 % never end a page on a hyphenated word
+% "Widows" in the rubric's sense (very short last lines of paragraphs): the last line of every
+% paragraph must fill at least ~30% of the line width.
+\setlength{\parfillskip}{0pt plus 0.7\linewidth}
+
+%%% ------------ FLOAT PLACEMENT POLICY ------------ %%%
+% No figure or table may occupy a whole page in the middle of running text (text, figure page, text
+% continuing). Floats go "here", at the top, or at the bottom of a text page; a float too large to
+% share a page with text is held back and placed once its (sub)section's text has finished (see the
+% \FloatBarrier hook on \subsection below). Do not use [p] or [htbp] in chapter files: use [htb] or
+% leave the option out.
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.7}
+\renewcommand{\textfraction}{0.12}
+\renewcommand{\floatpagefraction}{0.5} % lets held-back figures share a page with each other
+\setcounter{topnumber}{2}
+\setcounter{bottomnumber}{1}
+\setcounter{totalnumber}{3}
+\makeatletter
+\def\fps@figure{htb}
+\def\fps@table{htb}
+\makeatother
+
+%%% ------------ TOC / LOF / LOT SPACING ------------ %%%
+\usepackage[titles]{tocloft}
+\cftsetrmarg{7.0em}       % room for long entries to wrap before the page number
+\cftsetpnumwidth{3.5em}
+\renewcommand{\cftdotsep}{4.0}
+% Chapters: bold, no dot leaders
+\renewcommand{\cftchapfont}{\normalfont\bfseries}
+\renewcommand{\cftchappagefont}{\normalfont\bfseries}
+\renewcommand{\cftchapleader}{\hfill}
+\setlength{\cftbeforechapskip}{0.7em}
+\setlength{\cftchapnumwidth}{2.0em}
+% Sections and subsections: indented, dot leaders
+\renewcommand{\cftsecfont}{\normalfont}
+\renewcommand{\cftsecpagefont}{\normalfont}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftsecindent}{1.8em}
+\setlength{\cftsecnumwidth}{2.8em}
+\setlength{\cftbeforesecskip}{0.15em}
+\renewcommand{\cftsubsecfont}{\normalfont}
+\renewcommand{\cftsubsecpagefont}{\normalfont}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftsubsecindent}{4.6em}
+\setlength{\cftsubsecnumwidth}{3.6em}
+\setlength{\cftbeforesubsecskip}{0.1em}
+% List of Figures / List of Tables: wide number column for "2.10", "3.12" etc.
+\setlength{\cftfigindent}{0pt}
+\setlength{\cftfignumwidth}{3.5em}
+\renewcommand{\cftfigleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforefigskip}{0.4em}
+\setlength{\cfttabindent}{0pt}
+\setlength{\cfttabnumwidth}{3.5em}
+\renewcommand{\cfttableader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforetabskip}{0.4em}
+
+\usepackage{url}
+\usepackage{xurl} % URLs may break at any character (no text running into the margin)
 
 %%% ------------ HEADING HIERARCHY (RUBRIC SEC III.J) ------------ %%%
 \usepackage{titlesec}
@@ -128,6 +264,7 @@
 \usepackage{etoolbox}
 \AtBeginEnvironment{quotation}{\singlespacing}
 \AtBeginEnvironment{quote}{\singlespacing}
+\pretocmd{\subsection}{\FloatBarrier}{}{} % held-back floats appear only after the subsection text ends
 
 %%% ------------ ALL CAPS COMPONENT HEADINGS (RUBRIC SEC III.E, III.F, III.G) ------------ %%%
 \renewcommand{\contentsname}{TABLE OF CONTENTS}
@@ -140,7 +277,29 @@
 \fancyhf{}
 \cfoot{\thepage} % Bottom center pagination
 \renewcommand{\headrulewidth}{0pt}
-\setlength{\footskip}{0.6in} % Footer distance >= 0.5in from edge
+% Rubric I.B.2: page number no closer than 0.5in to the paper edge.
+% \footskip is measured DOWN from the bottom of the text block, not up from the paper edge:
+% the number's baseline sits (bottom margin - footskip) above the edge. With a 1in bottom margin,
+% 0.42in puts it 0.58in from the edge. Any footskip above 0.5in would break the rule.
+\setlength{\footskip}{0.42in}
+
+% Rubric I.B.1 / I.M: keep all text inside the 1in margins (allow slightly looser lines instead of overflow)
+\setlength{\emergencystretch}{2.5em}
+
+%%% ------------ HELPER MACROS FOR CHAPTERS ------------ %%%
+% Bold in-text references (Rubric III.A.7). Optional argument = panel letter: \FIG[A]{workflow} -> Figure 1.1A
+\newcommand{\FIG}[2][]{\textbf{Figure~\ref{fig:#2}#1}}
+\newcommand{\TABLE}[1]{\textbf{Table~\ref{tab:#1}}}
+% Panel labels that \cref can resolve to "Figure 3.6A": call \labelphantom{fig:name:A} AFTER the figure's \caption.
+\renewcommand{\thesubfigure}{\Alph{subfigure}}
+\providecommand{\labelphantom}[1]{\refstepcounter{subfigure}\label{#1}}
+
+%%% ------------ PUBLISHING AGREEMENT PAGE NUMBER (RUBRIC SEC I.J) ------------ %%%
+% The agreement must be the numbered last page. The signed DocuSign copy UCSF returns usually has
+% its page number already printed on it: then set this to {empty}, or the page shows two numbers.
+% Either way, check that the printed number equals the PDF's final page number; if a later edit
+% moves the last page, you need a newly signed copy with the new number.
+\newcommand{\AgreementPageStyle}{fancy} % {fancy} = LaTeX numbers the page; {empty} = number already on the PDF
 
 \begin{document}
 
@@ -150,7 +309,7 @@
 \pagenumbering{roman}
 
 % --- TITLE PAGE (Page i, unnumbered, Rubric Sec I.G) ---
-% Note: Use the official UCSF title page PDF template signed via DocuSign
+% Use the official UCSF title page PDF signed via DocuSign (run embed_fonts.sh on it: DocuSign leaves Arial unembedded)
 \includepdf[pages={1}]{Title_Page.pdf}
 \setcounter{page}{2} % Copyright page is Page ii
 
@@ -211,8 +370,11 @@ Descriptions of student and co-author contributions for adapted manuscript chapt
 \clearpage
 
 % --- TABLE OF CONTENTS (Required, Rubric Sec III.E) ---
-% Excludes preliminary pages and publishing agreement; ALL CAPS centered title
+% Excludes preliminary pages and publishing agreement; ALL CAPS centered title.
+% Rubric III.E.3: double-spaced. Wrapped explicitly so a \setstretch on an earlier page cannot leak in.
+\begin{doublespace}
 \tableofcontents
+\end{doublespace}
 \clearpage
 
 % --- LIST OF FIGURES (Required if figures present, Rubric Sec III.G) ---
@@ -226,13 +388,18 @@ Descriptions of student and co-author contributions for adapted manuscript chapt
 \clearpage
 
 % --- LIST OF ABBREVIATIONS (Required if abbreviations used, Rubric Sec I.P & III.H) ---
+% Every abbreviation used in the text, alphabetical. longtable lets a long list break across pages.
+% Dataset or cohort names that are not abbreviations of anything do not belong here.
 \chapter*{LIST OF ABBREVIATIONS}
-\doublespacing
-\begin{tabular}{lp{5in}}
+\begin{setstretch}{1.2}
+\renewcommand{\arraystretch}{1.45}
+\setlength{\LTleft}{0pt}
+\begin{longtable}{@{}lp{5in}@{}}
   \textbf{DNA} & Deoxyribonucleic Acid \\
   \textbf{RNA} & Ribonucleic Acid \\
   \textbf{UCSF} & University of California, San Francisco \\
-\end{tabular}
+\end{longtable}
+\end{setstretch}
 \clearpage
 
 %%% ========================================================================= %%%
@@ -254,8 +421,9 @@ Descriptions of student and co-author contributions for adapted manuscript chapt
 
 %%% ========================================================================= %%%
 %%% UCSF PUBLISHING AGREEMENT (Required, Rubric Sec I.J & IV.C)               %%%
-%%% Final page, numbered via pagecommand, omitted from Table of Contents     %%%
+%%% Final page, numbered, omitted from Table of Contents                      %%%
+%%% See \AgreementPageStyle in the preamble.                                  %%%
 %%% ========================================================================= %%%
-\includepdf[pages={1}, pagecommand={\thispagestyle{fancy}}]{publishing_agreement.pdf}
+\includepdf[pages={1}, pagecommand={\thispagestyle{\AgreementPageStyle}}]{publishing_agreement.pdf}
 
 \end{document}

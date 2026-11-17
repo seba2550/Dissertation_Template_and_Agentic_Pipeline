@@ -208,3 +208,59 @@ def sanitize_latex_text(text: str) -> str:
     for char, escaped in replacements:
         text = text.replace(char, escaped)
     return text
+
+
+# ==============================================================================
+# PDF font embedding (UCSF Rubric IV.D)
+# ==============================================================================
+
+def _pdf_chunks(data: bytes):
+    """Yield the raw PDF bytes plus every Flate-decodable stream (object streams hold most dicts)."""
+    import zlib
+    yield data
+    for m in re.finditer(rb'stream\r?\n', data):
+        start = m.end()
+        end = data.find(b'endstream', start)
+        if end == -1:
+            continue
+        try:
+            yield zlib.decompress(data[start:end])
+        except zlib.error:
+            continue
+
+
+def find_unembedded_fonts(pdf_path: str) -> List[str]:
+    """Return the names of fonts used in `pdf_path` that are not embedded.
+
+    Uses poppler's `pdffonts` when it is installed. Otherwise scans the PDF (standard library only):
+    a FontDescriptor without /FontFile, /FontFile2 or /FontFile3 is unembedded, and so is a simple
+    font (Type1/TrueType) that has no FontDescriptor at all, which is how R's pdf() device
+    references Helvetica.
+    """
+    import shutil
+    import subprocess
+    if shutil.which('pdffonts'):
+        out = subprocess.run(['pdffonts', pdf_path], capture_output=True, text=True).stdout.splitlines()
+        names = []
+        for line in out[2:]:
+            cols = line.split()
+            # columns: name type [encoding words...] emb sub uni object ID ; "emb" is the 5th field from the end
+            if len(cols) >= 6 and cols[-5] == 'no':
+                names.append(cols[0])
+        return sorted(set(names))
+
+    with open(pdf_path, 'rb') as f:
+        data = f.read()
+    missing = set()
+    for chunk in _pdf_chunks(data):
+        for m in re.finditer(rb'<<((?:[^<>]|<<[^<>]*>>)*?/Type\s*/FontDescriptor(?:[^<>]|<<[^<>]*>>)*?)>>', chunk):
+            d = m.group(1)
+            if not re.search(rb'/FontFile[23]?\b', d):
+                n = re.search(rb'/FontName\s*/([^\s/<>\[\]()]+)', d)
+                missing.add(n.group(1).decode('latin-1') if n else '?')
+        for m in re.finditer(rb'<<((?:[^<>]|<<[^<>]*>>)*?/Subtype\s*/(?:Type1|TrueType|MMType1)\b(?:[^<>]|<<[^<>]*>>)*?)>>', chunk):
+            d = m.group(1)
+            if b'/FontDescriptor' not in d and re.search(rb'/Type\s*/Font\b', d):
+                n = re.search(rb'/BaseFont\s*/([^\s/<>\[\]()]+)', d)
+                missing.add(n.group(1).decode('latin-1') if n else '?')
+    return sorted(missing)

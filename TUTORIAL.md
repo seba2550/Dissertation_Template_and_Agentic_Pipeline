@@ -13,7 +13,7 @@ You give it your Word chapters. It:
 1. **Finds your citations.** It reads the links and DOIs in your chapters and looks up each paper's full details (authors, journal, year).
 2. **Converts your chapters.** It turns each Word file into the format the dissertation template uses, with your headings, tables and citations in place.
 3. **Builds the PDF.** It assembles the title page, copyright page, abstract, table of contents, your chapters, the reference list and the publishing agreement into one PDF.
-4. **Checks the formatting.** It checks the result against all 26 rules in the UCSF Dissertation Rubric (fonts, margins, page numbers, captions and so on) and tells you what, if anything, to fix.
+4. **Checks the formatting.** It checks the result against 30 formatting checks based on the UCSF Dissertation Rubric (fonts, margins, page numbers, captions and so on) and tells you what, if anything, to fix.
 
 You never have to write LaTeX yourself. You will make a few small text edits, such as typing your name and abstract.
 
@@ -119,7 +119,9 @@ What this creates in `my_dissertation`:
 - `citation_map.json`: a lookup table the next step uses (you don't need to open it)
 - `dois.txt`: a plain list of the DOIs found (handy for importing into Zotero)
 
-It needs an internet connection and may take a minute. At the end it says how many references it found. **Does that number look right?** If it's much lower than expected, your citations probably aren't links or DOIs (see Part 2).
+It needs an internet connection and may take a minute. At the end it says how many references it found.
+
+> **Running it again:** the tool won't replace a `references.bib` that already has entries, so your bibliography can't be wiped by accident. To redo this step, add `--overwrite` to the end of the command. The old file is kept as a backup named `references.bib.bak-` followed by the date and time. **Does that number look right?** If it's much lower than expected, your citations probably aren't links or DOIs (see Part 2).
 
 ### Step 3: Convert the chapters
 
@@ -127,7 +129,7 @@ It needs an internet connection and may take a minute. At the end it says how ma
 python3 run_pipeline.py convert-docx my_dissertation/chapter1.docx my_dissertation/chapter2.docx -o my_dissertation/chapter1.tex my_dissertation/chapter2.tex -m my_dissertation/citation_map.json
 ```
 
-List the Word files and the output names in the same order. This creates `chapter1.tex`, `chapter2.tex` and so on.
+List the Word files and the output names in the same order. This creates `chapter1.tex`, `chapter2.tex` and so on. As with references, an existing chapter file is never replaced unless you add `--overwrite` (the old one is backed up first). This protects any edits you made to the `.tex` files.
 
 > **Quick check:** open `chapter1.tex` in any text editor (TextEdit on Mac, Notepad on Windows). It's plain text with some `\commands`. Your citations should look like `\cite{Horvath_2013}`. If you see raw web addresses or `[1]` instead, those citations weren't recognized.
 
@@ -164,6 +166,8 @@ and replace it with one line per chapter, in order, with `\clearpage` between th
 **Replace the two PDFs:**
 - `Title_Page.pdf` → your official UCSF title page (the DocuSign-signed PDF), saved with the same name.
 - `publishing_agreement.pdf` → your signed publishing agreement, saved with the same name.
+
+**Publishing agreement page number:** the agreement must be the last page and must be numbered. The signed copy UCSF sends back usually has its page number already printed on it. If yours does, open `dissertation.tex`, find the line `\newcommand{\AgreementPageStyle}{fancy}` and change `fancy` to `empty`, otherwise the page will show two numbers. Then check that the printed number matches the actual last page of your PDF. If later edits change the page count, you will need a newly signed copy.
 
 ### Special characters in your text
 
@@ -214,7 +218,7 @@ Captions go *below* figures, as UCSF requires. To refer to it in your text, writ
 | `latexmk: command not found` or the build can't start | The LaTeX install (Part 1, step 2) isn't finished, or you didn't reopen Terminal afterwards. |
 | `File not found` | You're not in the tool's folder (see "Opening a terminal inside the tool's folder"), or a file name is misspelled. |
 | `Build FAILED` with an error message | Read the message: it usually names the problem and line. Most often it's an unescaped `%`, `&`, `#` or `_` you typed (see Part 4). |
-| `[?]` or **"citation undefined"** in the PDF | A `\cite{...}` key in a chapter isn't in `references.bib`. Rerun Part 3, Step 2 with **all** chapters listed. |
+| `[?]` or **"citation undefined"** in the PDF | A `\cite{...}` key in a chapter isn't in `references.bib`. Rerun Part 3, Step 2 with **all** chapters listed, adding `--overwrite`. |
 | Fewer references found than expected | Your citations aren't hyperlinks or DOIs. Add links in Word (Part 2) and rerun Part 3. |
 | `Compilation Log Quality` fails | The build had errors. Fix those first, rebuild, then re-check. |
 

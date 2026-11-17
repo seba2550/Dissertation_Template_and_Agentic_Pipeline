@@ -6,7 +6,7 @@ A comprehensive, step-by-step operational guide for PhD candidates and AI assist
 
 ## 🎯 Architectural Philosophy
 
-Doctoral dissertations often incorporate manuscripts originally prepared across disparate word processors, co-authors, and journal formats. This pipeline establishes an automated, deterministic bridge between Microsoft Word drafts (`.docx`) and an institutionally certified LaTeX dissertation project compliant with all 26 rules of the **UCSF Dissertation Rubric (Rev 04/24)**.
+Doctoral dissertations often incorporate manuscripts originally prepared across disparate word processors, co-authors, and journal formats. This pipeline establishes an automated, deterministic bridge between Microsoft Word drafts (`.docx`) and an institutionally certified LaTeX dissertation project compliant with all 30 rules (rubric plus layout checks) of the **UCSF Dissertation Rubric (Rev 04/24)**.
 
 ---
 
@@ -16,7 +16,7 @@ Doctoral dissertations often incorporate manuscripts originally prepared across 
 [DOCX Manuscript]
        │
        ▼
-[Stage 1: Reference & DOI Extraction] ──► (references.bib, doi_list.txt, citation_map.json)
+[Stage 1: Reference & DOI Extraction] ──► (extracted_references.bib, doi_list.txt, citation_map.json)
        │
        ▼
 [Stage 2: DOCX to LaTeX Conversion]   ──► (chX_chapter.tex with \cite{} keys)
@@ -25,10 +25,13 @@ Doctoral dissertations often incorporate manuscripts originally prepared across 
 [Stage 3: Template Integration]       ──► (dissertation_master.tex)
        │
        ▼
-[Stage 4: Multi-Pass Compilation]     ──► (dissertation_master.pdf + .log)
+[Stage 4: Fonts + Compilation]        ──► (build_embedded/, dissertation_master.pdf + .log)
        │
        ▼
-[Stage 5: 26-Rule Rubric Audit]       ──► (audit_report.json + summary table)
+[Stage 4b: PDF Layout Audit]         ──► (layout_audit.py: 0 issue(s))
+       │
+       ▼
+[Stage 5: 30-Rule Rubric Audit]       ──► (audit_report.json + summary table)
        │
        ▼
 [Stage 6: ProQuest ETD Archival]      ──► (Final certified PDF submission)
@@ -52,6 +55,7 @@ python3 run_pipeline.py extract-refs "Chapter_Draft.docx" \
 ```
 
 **Key Behaviors**:
+- **Never writes over your bibliography**: the default output is `extracted_references.bib`, and an output `.bib` that already has entries (or an existing chapter `.tex`) is refused unless you pass `--overwrite` (the old file is then backed up to `<name>.bak-<timestamp>`). An output that is also a `-l` cache file is always refused. Treat extracted entries as unverified: check them, then merge by hand.
 - **Offline Cache Priority**: If an existing master `.bib` file is provided via `-l/--local-bib`, the extractor queries local entries first, avoiding redundant network API calls.
 - **Identifier Resolution**: Unpacks embedded relationships and converts URLs from Nature, Science, Springer, Cell Press, PMC, and bioRxiv into clean DOIs/PMIDs.
 - **Citation Map**: Creates `citation_map.json`, mapping raw URLs and citation markers (e.g. `rId4` or DOI URLs) directly to BibTeX keys (e.g. `Horvath2013`).
@@ -87,8 +91,9 @@ Ensure the master document (`dissertation_master.tex` or `templates/latex/disser
 \usepackage{setspace}
 \doublespacing
 
-% Footskip >= 0.5 inches from paper edge
-\setlength{\footskip}{0.6in}
+% Page number >= 0.5in from the paper edge. \footskip is measured DOWN from the text block,
+% so the number sits (bottom margin - footskip) above the edge: 1in - 0.42in = 0.58in.
+\setlength{\footskip}{0.42in}
 
 % Captions: Tables above, Figures below (single-spaced, bold labels)
 \usepackage[labelfont=bf, textfont=normalfont, singlelinecheck=off, font={small,singlespacing}]{caption}
@@ -108,18 +113,34 @@ Ensure the master document (`dissertation_master.tex` or `templates/latex/disser
 
 ---
 
-### Stage 4: Multi-Pass Compilation
+The template's preamble also carries the layout rules (float placement, short last lines, bold references, bibliography clean-up); copy the whole preamble rather than this excerpt.
 
-Compile the complete dissertation via `latexmk` or multi-pass `pdflatex` + `biber`:
+---
+
+### Stage 4: Fonts and Multi-Pass Compilation
+
+R's `pdf()` device leaves Helvetica unembedded, and DocuSign title pages and agreements leave Arial unembedded (Rubric IV.D). Whenever a figure, the title page or the publishing agreement changes, write font-embedded copies first:
+```bash
+agentic_scripts/embed_fonts.sh figures/ Title_Page.pdf publishing_agreement.pdf
+```
+Then compile the complete dissertation via `latexmk` or multi-pass `pdflatex` + `biber`:
 ```bash
 python3 run_pipeline.py build -t dissertation_master.tex --validate
 ```
 
 The build runner checks exit codes, counts total PDF pages, inspects log files, and automatically runs the rubric audit.
 
+### Stage 4b: PDF Layout Audit
+
+The rubric audit reads the `.tex`; only the compiled PDF shows where floats and paragraph ends actually landed:
+```bash
+python3 agentic_scripts/layout_audit.py dissertation_master.pdf
+```
+Expect `0 issue(s)`, then look at the pages it names (it works from extracted text). Fix a reported case per figure: resize it, or move the figure to the end of the subsection that cites it. Do not reintroduce `[p]` floats.
+
 ---
 
-### Stage 5: Programmatic 26-Rule Rubric Audit
+### Stage 5: Programmatic 30-Rule Rubric Audit
 
 Audit the project against the full institutional rubric:
 ```bash
@@ -131,7 +152,9 @@ python3 run_pipeline.py validate-rubric -t dissertation_master.tex -j audit_repo
 - **Title Abbreviations**: If `I.C_TITLE_ABBREVIATIONS` fails, expand all acronyms (e.g., *Alzheimer's Disease* instead of *AD*, *Single Nucleotide Polymorphisms* instead of *SNPs*).
 - **Abstract Formatting**: Verify that the abstract is directly before the TOC, double-spaced, contains title and student name in ALL CAPS, and does **not** list committee members.
 - **Copyright Page**: Confirm page `ii` contains `Copyright 20XX` followed by `by` (lowercase), your full name, and `ALL RIGHTS RESERVED`. Do **not** use the `©` symbol.
-- **Publishing Agreement**: Confirm `\includepdf[pages={1}, pagecommand={\thispagestyle{fancy}}]{publishing_agreement.pdf}` is the last page, numbered, and not listed in the TOC.
+- **Publishing Agreement**: Last page, numbered, not in the TOC. Set `\AgreementPageStyle` in the preamble: `{fancy}` if LaTeX should number it, `{empty}` if the signed DocuSign copy already has its page number printed on it. In that case the printed number must equal the PDF's final page number, and any edit that moves the last page means getting a newly signed copy.
+- **Bold References**: If `III.A.7_BOLD_REFERENCES` fails, replace hand-typed `Figure 2.1` / `Table~\ref{...}` with `\FIG[A]{name}`, `\TABLE{name}` or `\cref{...}`.
+- **Embedded Fonts**: If `IV.D_FONTS_EMBEDDED` fails, run `embed_fonts.sh` on the offending figures and rebuild.
 - **Table / Figure Captions**: Confirm table captions are positioned **above** the table and figure captions are positioned **below** the figure.
 
 ---
@@ -152,4 +175,22 @@ Run the test suite at any point to verify pipeline integrity:
 ```bash
 python3 -m unittest discover tests -v
 ```
-All 30 unit and integration tests must report `OK`.
+The full unit and integration suite must report `OK`.
+
+---
+
+## 📓 Lessons Learned (from a finished UCSF dissertation, Nov 2026)
+
+These are the problems that came up while finishing a real dissertation with this pipeline; the template and validator now handle each one.
+
+1. **Archive, never delete.** Before integrating a new manuscript version, copy the previous chapter sources and PDF into `archive/<date>_<what>/`. Treat the manuscript export (e.g. the Overleaf download) as read-only. Make dissertation-specific edits with a script that applies exact-match edits to it, and re-run that script when the manuscript changes, instead of hand-editing the generated chapter.
+2. **Keep the extractor away from your real bibliography.** Run with its old defaults inside the dissertation folder, the extractor replaced the curated `.bib` with an empty one. Keep a dated backup of the bibliography, and only merge extracted entries after checking them (the extractor also matched some citations to the wrong papers).
+3. **Page number distance:** `\footskip` is not the distance from the paper edge. 0.6in put the number 0.40in from the edge, which violates I.B.2.
+4. **No full-page figures splitting text.** Text, then a figure page, then more text on the next page is not acceptable. The text should finish first, then the figure follows. The float policy plus a `\FloatBarrier` on every `\subsection` handles most cases; `layout_audit.py` finds the rest.
+5. **Widows and orphans in the rubric's sense** include very short last lines of paragraphs, which TeX's widow penalty does not cover. `\parfillskip` discourages them but cannot forbid them, so check the audit.
+6. **Bold every figure and table reference**, panel letter included, through macros, never by hand. Mixed bold and plain references are easy to miss when reading.
+7. **The signed publishing agreement has its page number printed on it.** Include it unnumbered and keep the final page count fixed.
+8. **Embed fonts in figures.** R figures and DocuSign PDFs fail IV.D until they go through `embed_fonts.sh`.
+9. **Bibliography style:** one consistent format (initials, DOI rather than URL, no ISSN/notes), and optionally sentence-case titles (`sentence_case.py --dry-run` first: add any proper nouns it would lower-case with `--keep`).
+10. **List of Abbreviations:** dataset or cohort names that are not abbreviations of anything (e.g. a cohort called by a code name) do not belong in it. Check expansions against the source rather than copying them from a draft, since drafts can carry wrong expansions.
+11. **Keep tests hermetic.** A test that reads "the real file if present" will one day run inside the real dissertation folder.

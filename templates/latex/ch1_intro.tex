@@ -20,9 +20,9 @@ Tertiary headings are italicized and unbolded in sentence case. Paragraph text b
 Quaternary headings run directly in line with paragraph text, followed immediately by a period.
 
 \section{Table Formatting Example}
-Per Rubric Sec III.A, table titles/captions must be placed \textbf{above} the table, single-spaced, with bolded table references.
+Per Rubric Sec III.A, table titles/captions must be placed \textbf{above} the table, single-spaced, with bolded table references. Cohort characteristics are summarized in \TABLE{demographics}.
 
-\begin{table}[htbp]
+\begin{table}[htb]
   \centering
   \caption[Sample demographic summary table.]{Demographic summary of study cohorts evaluated across chapters.}
   \label{tab:demographics}
@@ -38,9 +38,9 @@ Per Rubric Sec III.A, table titles/captions must be placed \textbf{above} the ta
 \end{table}
 
 \section{Figure Formatting Example}
-Per Rubric Sec III.B, figure titles and legends must be placed \textbf{below} the figure and single-spaced.
+Per Rubric Sec III.B, figure titles and legends must be placed \textbf{below} the figure and single-spaced. The analytical workflow is outlined in \FIG{workflow}, and its preprocessing step in \FIG[A]{workflow}.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
   \centering
   % Replace with your figure graphic (e.g., \includegraphics[width=0.85\linewidth]{figures/fig1.pdf})
   \rule{0.8\linewidth}{2in} % Placeholder graphic box
@@ -51,8 +51,17 @@ Per Rubric Sec III.B, figure titles and legends must be placed \textbf{below} th
   \label{fig:workflow}
 \end{figure}
 
+\section{Figure and Table Reference Example}
+Every in-text reference to a figure or table is bold, panel letter included (Rubric Sec III.A.7). Write references with the macros, never by hand:
+\begin{itemize}
+  \item \verb|\FIG{workflow}| gives \FIG{workflow}; \verb|\FIG[A]{workflow}| gives \FIG[A]{workflow}.
+  \item \verb|\TABLE{demographics}| gives \TABLE{demographics}.
+  \item \verb|\cref{fig:workflow}| gives \cref{fig:workflow} (bolded by the preamble's \verb|\crefformat| block).
+\end{itemize}
+Floats use \verb|[htb]| (or no option). Never \verb|[p]| or \verb|[htbp]|: a float page in the middle of running text is not allowed.
+
 \section{Block Quotation Formatting Example}
-Per Rubric Sec I.F and III.C, prose quotations over 4 lines must be single-spaced and indented uniformly:
+Per Rubric Sec I.F and III.C, prose quotations longer than four lines must be single-spaced and indented uniformly from the left margin, as in the following example:
 
 \begin{quotation}
   Biological aging is a complex, multifaceted process characterized by the gradual deterioration of physiological function and increased susceptibility to disease. Epigenetic modifications, particularly DNA methylation at cytosine-phosphate-guanine dinucleotides, provide a dynamic and quantifiable record of cellular chronological and physiological history.

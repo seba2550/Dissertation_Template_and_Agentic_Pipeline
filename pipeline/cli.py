@@ -12,7 +12,7 @@ import argparse
 import json
 from typing import List, Optional
 
-from .reference_extractor import ReferenceExtractor, extract_docx_references
+from .reference_extractor import ReferenceExtractor, extract_docx_references, guard_outputs, OutputExistsError
 from .docx_converter import DocxConverter, convert_docx_to_latex
 from .rubric_validator import RubricValidator, RubricReport
 from .compiler import LatexCompiler, compile_dissertation
@@ -53,13 +53,17 @@ def build_parser() -> argparse.ArgumentParser:
     # 1. extract-refs
     p_extract = subparsers.add_parser("extract-refs", help="Extract references and DOIs from Word (.docx) manuscript(s)")
     p_extract.add_argument("docx_file", nargs="+", help="Input .docx Word manuscript(s)")
-    p_extract.add_argument("-o", "--output-bib", default="references.bib", help="Output BibTeX file (default: references.bib)")
+    p_extract.add_argument("-o", "--output-bib", default="extracted_references.bib",
+                           help="Output BibTeX file (default: extracted_references.bib). Extracted entries are unverified: "
+                                "review them, then merge them into the bib your master .tex loads.")
     p_extract.add_argument("-d", "--dois", default="doi_list.txt", help="Output DOI list file (default: doi_list.txt)")
     p_extract.add_argument("-m", "--map", default="citation_map.json", help="Output citation mapping JSON file")
     p_extract.add_argument("-l", "--local-bib", nargs="*", default=["dissertation_references.bib"],
                            help="Existing .bib files for offline / local metadata cache lookup")
     p_extract.add_argument("-e", "--email", help="Polite User-Agent email for Crossref/PubMed")
     p_extract.add_argument("-v", "--verbose", action="store_true", help="Verbose console output")
+    p_extract.add_argument("--overwrite", action="store_true",
+                           help="Allow replacing an output .bib that already has entries (the old file is backed up first)")
 
     # 2. convert-docx
     p_convert = subparsers.add_parser("convert-docx", aliases=["convert-ch"], help="Convert Word (.docx) manuscript(s) to rubric-compliant LaTeX")
@@ -68,6 +72,8 @@ def build_parser() -> argparse.ArgumentParser:
     p_convert.add_argument("-m", "--map", help="Citation mapping JSON from extract-refs")
     p_convert.add_argument("-t", "--title", help="Explicit Chapter title (single document only)")
     p_convert.add_argument("--label", help="LaTeX chapter label (single document only)")
+    p_convert.add_argument("--overwrite", action="store_true",
+                           help="Allow replacing existing chapter .tex files (the old files are backed up first)")
 
     # 3. validate-rubric
     p_validate = subparsers.add_parser("validate-rubric", help="Audit dissertation project against UCSF Dissertation Rubric")
@@ -89,11 +95,21 @@ def build_parser() -> argparse.ArgumentParser:
     p_full.add_argument("-d", "--dois", help="Output DOI list file (default: extracted_dois.txt)")
     p_full.add_argument("-m", "--map", help="Citation mapping JSON file (default: citation_map.json)")
     p_full.add_argument("-l", "--local-bib", nargs="*", default=["dissertation_references.bib"], help="Local bib files")
+    p_full.add_argument("--overwrite", action="store_true",
+                        help="Allow replacing an explicit -b .bib or existing chapter .tex files (backed up first)")
 
     return parser
 
 
 def main(argv: Optional[List[str]] = None) -> int:
+    try:
+        return _main(argv)
+    except OutputExistsError as e:
+        print(f"[!] Refusing to overwrite: {e}", file=sys.stderr)
+        return 2
+
+
+def _main(argv: Optional[List[str]] = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
 
@@ -117,6 +133,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             email=args.email,
             local_bib_paths=valid_local,
             verbose=args.verbose,
+            overwrite=args.overwrite,
         )
         print(f"[✓] Extraction complete. Found {res['total_extracted']} references, {res['formal_dois']} DOIs.")
         print(f"    - BibTeX: {args.output_bib}")
@@ -135,8 +152,10 @@ def main(argv: Optional[List[str]] = None) -> int:
                 cmap = json.load(f)
             print(f"[*] Loaded citation map with {len(cmap)} entries.")
 
+        planned = [outputs[i] if i < len(outputs) else f"{os.path.splitext(d)[0]}.tex" for i, d in enumerate(doc_list)]
+        guard_outputs(planned, overwrite=args.overwrite)  # check every output before writing any
         for i, docx_p in enumerate(doc_list):
-            out_t = outputs[i] if i < len(outputs) else f"{os.path.splitext(docx_p)[0]}.tex"
+            out_t = planned[i]
             ch_title = args.title if len(doc_list) == 1 else None
             ch_label = args.label if len(doc_list) == 1 else None
             print(f"\n[*] Converting DOCX to LaTeX: {docx_p} -> {out_t}")
@@ -228,6 +247,11 @@ def main(argv: Optional[List[str]] = None) -> int:
         cmap = {}
         if args.docx:
             doc_list = args.docx if isinstance(args.docx, list) else [args.docx]
+            outputs = args.output_tex if isinstance(args.output_tex, list) else ([args.output_tex] if args.output_tex else [])
+            planned = [outputs[i] if i < len(outputs) else f"{os.path.splitext(d)[0]}.tex" for i, d in enumerate(doc_list)]
+            # check the chapter outputs before writing anything (the extractor checks the .bib itself,
+            # also before writing), so a refusal never leaves a half-finished run
+            guard_outputs(planned, overwrite=args.overwrite)
             print(f"\n--- [1/4] Extracting References from {len(doc_list)} manuscript(s): {doc_list} ---")
             valid_local = [p for p in args.local_bib if os.path.isfile(p)] if args.local_bib else []
             if valid_local:
@@ -243,6 +267,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                 output_dois=out_dois,
                 output_map=out_map,
                 local_bib_paths=valid_local,
+                # the sibling .extracted.bib is a scratch file, deleted after merging
+                overwrite=True if merge_into else args.overwrite,
             )
             cmap = res_ext['citation_map']
             if merge_into:
@@ -254,10 +280,9 @@ def main(argv: Optional[List[str]] = None) -> int:
             print(f"    - DOIs:   {out_dois}")
             print(f"    - Map:    {out_map}")
 
-            outputs = args.output_tex if isinstance(args.output_tex, list) else ([args.output_tex] if args.output_tex else [])
             print(f"\n--- [2/4] Converting {len(doc_list)} DOCX manuscript(s) to LaTeX ---")
             for i, docx_p in enumerate(doc_list):
-                out_t = outputs[i] if i < len(outputs) else f"{os.path.splitext(docx_p)[0]}.tex"
+                out_t = planned[i]
                 print(f"[*] Converting: {docx_p} -> {out_t}")
                 convert_docx_to_latex(
                     docx_path=docx_p,

@@ -63,7 +63,7 @@ class TestFullPipelinePreservesBibliography(unittest.TestCase):
             self.assertFalse(os.path.exists(os.path.join(tmpdir, "refs.extracted.bib")),
                              "temporary extraction file was left behind")
 
-    def test_explicit_output_bib_is_written_directly(self):
+    def test_explicit_output_bib_with_entries_is_refused(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             explicit = os.path.join(tmpdir, "explicit.bib")
             with open(explicit, "w", encoding="utf-8") as f:
@@ -72,7 +72,20 @@ class TestFullPipelinePreservesBibliography(unittest.TestCase):
             self._run_full_pipeline(tmpdir, ["-b", explicit])
 
             with open(explicit, encoding="utf-8") as f:
+                self.assertEqual(f.read(), HAND_ENTRY)
+
+    def test_explicit_output_bib_is_written_directly_with_overwrite(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            explicit = os.path.join(tmpdir, "explicit.bib")
+            with open(explicit, "w", encoding="utf-8") as f:
+                f.write(HAND_ENTRY)
+
+            self._run_full_pipeline(tmpdir, ["-b", explicit, "--overwrite"])
+
+            with open(explicit, encoding="utf-8") as f:
                 self.assertNotIn("HandCurated2020", f.read())
+            backups = [n for n in os.listdir(tmpdir) if n.startswith("explicit.bib.bak-")]
+            self.assertEqual(len(backups), 1, "old bibliography was not backed up")
 
     def test_merge_skips_duplicate_keys(self):
         with tempfile.TemporaryDirectory() as tmpdir:

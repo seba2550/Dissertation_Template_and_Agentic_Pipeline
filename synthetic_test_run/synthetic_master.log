@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  5 NOV 2026 15:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  17 NOV 2026 12:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -785,7 +785,7 @@ Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
 \@quotelevel=\count444
 \@quotereset=\count445
 LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 1
-00.
+09.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
@@ -793,24 +793,24 @@ File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 (./synthetic_master.aux)
 \openout1 = `synthetic_master.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 100.
-LaTeX Font Info:    ... okay on input line 100.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 100.
-LaTeX Font Info:    ... okay on input line 100.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 100.
-LaTeX Font Info:    ... okay on input line 100.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 100.
-LaTeX Font Info:    ... okay on input line 100.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 100.
-LaTeX Font Info:    ... okay on input line 100.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 100.
-LaTeX Font Info:    ... okay on input line 100.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 100.
-LaTeX Font Info:    ... okay on input line 100.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 100.
-LaTeX Font Info:    ... okay on input line 100.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 100.
-LaTeX Font Info:    ... okay on input line 100.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -832,7 +832,7 @@ LaTeX Font Info:    ... okay on input line 100.
 * \headheight=12.0pt
 * \headsep=25.0pt
 * \topskip=12.0pt
-* \footskip=43.36243pt
+* \footskip=30.35326pt
 * \marginparwidth=44.0pt
 * \marginparsep=10.0pt
 * \columnsep=10.0pt
@@ -846,20 +846,20 @@ LaTeX Font Info:    ... okay on input line 100.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \microtypecontext on input line 100.
-Package microtype Info: Applying patch `item' on input line 100.
-Package microtype Info: Applying patch `toc' on input line 100.
-Package microtype Info: Applying patch `eqnum' on input line 100.
-Package microtype Info: Applying patch `footnote' on input line 100.
-Package microtype Info: Applying patch `verbatim' on input line 100.
-LaTeX Info: Redefining \microtypesetup on input line 100.
+LaTeX Info: Redefining \microtypecontext on input line 109.
+Package microtype Info: Applying patch `item' on input line 109.
+Package microtype Info: Applying patch `toc' on input line 109.
+Package microtype Info: Applying patch `eqnum' on input line 109.
+Package microtype Info: Applying patch `footnote' on input line 109.
+Package microtype Info: Applying patch `verbatim' on input line 109.
+LaTeX Info: Redefining \microtypesetup on input line 109.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 100.
+LaTeX Info: Redefining \showhyphens on input line 109.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -900,7 +900,7 @@ Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
 )
 Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 ))
-Package hyperref Info: Link coloring ON on input line 100.
+Package hyperref Info: Link coloring ON on input line 109.
 
 (./synthetic_master.out) (./synthetic_master.out)
 \@outlinefile=\write4
@@ -921,37 +921,37 @@ Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'synthetic_master.bbl' found.
 
 (./synthetic_master.bbl)
-Package biblatex Info: Reference section=0 on input line 100.
-Package biblatex Info: Reference segment=0 on input line 100.
+Package biblatex Info: Reference section=0 on input line 109.
+Package biblatex Info: Reference segment=0 on input line 109.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 <Title_Page.pdf, id=44, 614.295pt x 794.97pt>
 File: Title_Page.pdf Graphic file (type pdf)
 <use Title_Page.pdf>
-Package pdftex.def Info: Title_Page.pdf  used on input line 108.
+Package pdftex.def Info: Title_Page.pdf  used on input line 117.
 (pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
 <Title_Page.pdf, id=46, page=1, 614.295pt x 794.97pt>
 File: Title_Page.pdf Graphic file (type pdf)
 <use Title_Page.pdf, page 1>
-Package pdftex.def Info: Title_Page.pdf , page1 used on input line 108.
+Package pdftex.def Info: Title_Page.pdf , page1 used on input line 117.
 (pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
 File: Title_Page.pdf Graphic file (type pdf)
 <use Title_Page.pdf, page 1>
-Package pdftex.def Info: Title_Page.pdf , page1 used on input line 108.
+Package pdftex.def Info: Title_Page.pdf , page1 used on input line 117.
 (pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
 File: Title_Page.pdf Graphic file (type pdf)
 <use Title_Page.pdf, page 1>
-Package pdftex.def Info: Title_Page.pdf , page1 used on input line 108.
+Package pdftex.def Info: Title_Page.pdf , page1 used on input line 117.
 (pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
 File: Title_Page.pdf Graphic file (type pdf)
 <use Title_Page.pdf, page 1>
-Package pdftex.def Info: Title_Page.pdf , page1 used on input line 108.
+Package pdftex.def Info: Title_Page.pdf , page1 used on input line 117.
 (pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
 
 
 File: Title_Page.pdf Graphic file (type pdf)
 <use Title_Page.pdf, page 1>
-Package pdftex.def Info: Title_Page.pdf , page1 used on input line 108.
+Package pdftex.def Info: Title_Page.pdf , page1 used on input line 117.
 (pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
 [1
 
@@ -1091,35 +1091,35 @@ Package microtype Info: Loading generic protrusion settings for font family
 <publishing_agreement.pdf, id=185, 614.295pt x 794.97pt>
 File: publishing_agreement.pdf Graphic file (type pdf)
 <use publishing_agreement.pdf>
-Package pdftex.def Info: publishing_agreement.pdf  used on input line 226.
+Package pdftex.def Info: publishing_agreement.pdf  used on input line 235.
 (pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
 <publishing_agreement.pdf, id=187, page=1, 614.295pt x 794.97pt>
 File: publishing_agreement.pdf Graphic file (type pdf)
 <use publishing_agreement.pdf, page 1>
-Package pdftex.def Info: publishing_agreement.pdf , page1 used on input line 22
-6.
+Package pdftex.def Info: publishing_agreement.pdf , page1 used on input line 23
+5.
 (pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
 File: publishing_agreement.pdf Graphic file (type pdf)
 <use publishing_agreement.pdf, page 1>
-Package pdftex.def Info: publishing_agreement.pdf , page1 used on input line 22
-6.
+Package pdftex.def Info: publishing_agreement.pdf , page1 used on input line 23
+5.
 (pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
 File: publishing_agreement.pdf Graphic file (type pdf)
 <use publishing_agreement.pdf, page 1>
-Package pdftex.def Info: publishing_agreement.pdf , page1 used on input line 22
-6.
+Package pdftex.def Info: publishing_agreement.pdf , page1 used on input line 23
+5.
 (pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
 File: publishing_agreement.pdf Graphic file (type pdf)
 <use publishing_agreement.pdf, page 1>
-Package pdftex.def Info: publishing_agreement.pdf , page1 used on input line 22
-6.
+Package pdftex.def Info: publishing_agreement.pdf , page1 used on input line 23
+5.
 (pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
 
 
 File: publishing_agreement.pdf Graphic file (type pdf)
 <use publishing_agreement.pdf, page 1>
-Package pdftex.def Info: publishing_agreement.pdf , page1 used on input line 22
-6.
+Package pdftex.def Info: publishing_agreement.pdf , page1 used on input line 23
+5.
 (pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
 [6
 
@@ -1136,18 +1136,18 @@ Package logreq Info: Writing requests to 'synthetic_master.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 24990 strings out of 473190
- 443365 string characters out of 5715801
+ 24987 strings out of 473190
+ 443341 string characters out of 5715801
  1299301 words of memory out of 5000000
  47752 multiletter control sequences out of 15000+600000
- 589243 words of font info for 173 fonts, out of 8000000 for 9000
+ 589124 words of font info for 171 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,17n,104p,1013b,1334s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/loc
 al/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive
 /2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on synthetic_master.pdf (17 pages, 85583 bytes).
+Output written on synthetic_master.pdf (17 pages, 85690 bytes).
 PDF statistics:
  237 PDF objects out of 1000 (max. 8388607)
  197 compressed objects within 2 object streams

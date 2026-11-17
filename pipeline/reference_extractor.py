@@ -19,6 +19,7 @@ import urllib.request
 import urllib.parse
 import ssl
 import time
+import shutil
 from typing import Dict, List, Optional, Set, Tuple, Any
 
 from .utils import (
@@ -34,6 +35,48 @@ from .utils import (
 # SSL context for compatibility across systems
 ssl_context = ssl._create_unverified_context()
 DEFAULT_USER_AGENT = "DocxReferenceExtractor/2.0"
+DEFAULT_OUTPUT_BIB = "extracted_references.bib"
+
+
+class OutputExistsError(FileExistsError):
+    """Raised when writing would replace a bibliography or chapter that already has content."""
+
+
+def _has_content(path: str) -> bool:
+    """True if `path` is a .bib with at least one entry, or any other non-blank file."""
+    if not os.path.isfile(path):
+        return False
+    with open(path, 'r', encoding='utf-8', errors='replace') as f:
+        text = f.read()
+    if path.lower().endswith('.bib'):
+        return bool(re.search(r'^\s*@\w+\s*\{', text, re.M))
+    return bool(text.strip())
+
+
+def guard_outputs(paths: List[Optional[str]], protected: Optional[List[str]] = None, overwrite: bool = False) -> None:
+    """Refuse to overwrite outputs that already hold content.
+
+    Background: run inside a dissertation folder, an earlier version of the extractor replaced the
+    hand-curated bibliography with an empty file. An output that already has content is only
+    replaced when `overwrite=True`, and even then the old file is first copied to
+    `<name>.bak-<timestamp>`. An output that is also one of the `protected` local cache bibs is always
+    refused: reading and writing the same file in one run is never what is wanted.
+    """
+    protected_abs = {os.path.abspath(p) for p in (protected or [])}
+    for p in paths:
+        if not p:
+            continue
+        if os.path.abspath(p) in protected_abs:
+            raise OutputExistsError(
+                f"Output '{p}' is also a local cache bibliography (--local-bib). Choose a different output file.")
+        if _has_content(p):
+            if not overwrite:
+                raise OutputExistsError(
+                    f"Output '{p}' already exists and has content. Choose a different output file, "
+                    f"or pass --overwrite (the old file is backed up first).")
+            backup = f"{p}.bak-{time.strftime('%Y%m%d-%H%M%S')}"
+            shutil.copy2(p, backup)
+            print(f"[*] Backed up existing '{p}' to '{backup}' before overwriting.")
 
 
 class ReferenceExtractor:
@@ -50,6 +93,7 @@ class ReferenceExtractor:
     ):
         self.user_agent = user_agent
         self.timeout = timeout
+        self.local_bib_paths: List[str] = list(local_bib_paths or [])
         self.local_entries: Dict[str, Dict[str, str]] = {}
         self.doi_to_local_entry: Dict[str, Dict[str, str]] = {}
         self.pmid_to_local_entry: Dict[str, Dict[str, str]] = {}
@@ -395,15 +439,20 @@ class ReferenceExtractor:
     def process(
         self,
         docx_file: Any,  # str or List[str]
-        output_bib: str = "references.bib",
+        output_bib: str = DEFAULT_OUTPUT_BIB,
         output_dois: str = "doi_list.txt",
         output_map: Optional[str] = None,
         verbose: bool = False,
+        overwrite: bool = False,
     ) -> Dict[str, Any]:
         """
         Executes reference extraction pipeline on one or more .docx files.
         Outputs consolidated .bib, .txt, and returns a summary dict including citation mapping.
+        Raises OutputExistsError before doing any work if output_bib already has entries and
+        overwrite is False (see guard_outputs). The citation map and DOI list are derived files
+        and are always rewritten.
         """
+        guard_outputs([output_bib], protected=self.local_bib_paths, overwrite=overwrite)
         if isinstance(docx_file, (list, tuple)):
             docx_files = list(docx_file)
         else:
@@ -588,12 +637,13 @@ class ReferenceExtractor:
 
 def extract_docx_references(
     docx_file: Any,  # str or List[str]
-    output_bib: str = "references.bib",
+    output_bib: str = DEFAULT_OUTPUT_BIB,
     output_dois: str = "doi_list.txt",
     output_map: Optional[str] = None,
     email: Optional[str] = None,
     local_bib_paths: Optional[List[str]] = None,
     verbose: bool = False,
+    overwrite: bool = False,
 ) -> Dict[str, Any]:
     """Convenience wrapper for ReferenceExtractor.process supporting one or multiple docx files."""
     user_agent = f"DocxReferenceExtractor/2.0 (mailto:{email})" if email else DEFAULT_USER_AGENT
@@ -607,4 +657,5 @@ def extract_docx_references(
         output_dois=output_dois,
         output_map=output_map,
         verbose=verbose,
+        overwrite=overwrite,
     )

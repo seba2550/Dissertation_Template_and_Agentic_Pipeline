@@ -214,7 +214,7 @@ class DocxConverter:
         col_count = max(len(r) for r in rows) if rows else 1
         col_align = "l" + "c" * (col_count - 1)
 
-        latex = ["\\begin{table}[htbp]", "  \\centering"]
+        latex = ["\\begin{table}[htb]", "  \\centering"]  # never [p]: no float pages mid-text
         if caption:
             c_match = re.match(r'^(Table\s+[\d\.]+)[:\.\s]*(.*)$', caption, re.IGNORECASE)
             if c_match:

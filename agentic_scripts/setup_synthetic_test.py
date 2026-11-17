@@ -508,7 +508,16 @@ def generate_synthetic_master_tex(path: str):
 \fancyhf{}
 \cfoot{\thepage} % Bottom center pagination
 \renewcommand{\headrulewidth}{0pt}
-\setlength{\footskip}{0.6in} % Footer distance >= 0.5in from edge
+% Page number >= 0.5in from the paper edge: it sits (bottom margin - footskip) = 1in - 0.42in = 0.58in up.
+\setlength{\footskip}{0.42in}
+
+%%% ------------ LAYOUT (see templates/latex/dissertation_master_template.tex) ------------ %%%
+\brokenpenalty=10000
+\setlength{\parfillskip}{0pt plus 0.7\linewidth}
+\makeatletter
+\def\fps@figure{htb}
+\def\fps@table{htb}
+\makeatother
 
 \begin{document}
 
@@ -612,7 +621,7 @@ Descriptions of student and co-author contributions for adapted manuscript chapt
 \clearpage
 
 % Insert Figure 1.1 to satisfy List of Figures (Rubric Sec III.G)
-\begin{figure}[htbp]
+\begin{figure}[htb]
   \centering
   \rule{0.8\linewidth}{2in}
   \caption[Conceptual diagram of multi-ancestry clock evaluation and meQTL mapping.]{
@@ -685,6 +694,12 @@ def main():
         ch2_tex = os.path.join(SYNTHETIC_DIR, "ch2_meqtl.tex")
         ref_bib = os.path.join(SYNTHETIC_DIR, "references.bib")
         cmap_json = os.path.join(SYNTHETIC_DIR, "citation_map.json")
+
+        # The example is regenerated from scratch and versioned in git: clear the previous run's
+        # outputs so the pipeline's no-overwrite guard does not stop the rerun.
+        for generated in (ch1_tex, ch2_tex, ref_bib):
+            if os.path.isfile(generated):
+                os.remove(generated)
 
         cmd = [
             "full-pipeline",

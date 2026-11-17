@@ -157,11 +157,9 @@ class TestReferenceExtractor(unittest.TestCase):
             self.assertIn('rId1', summary['citation_map'])
 
     def test_process_real_docx(self):
-        docx_file = "dissertation_intro_scg_v1.docx"
         with tempfile.TemporaryDirectory() as tmpdir:
-            if not os.path.isfile(docx_file):
-                docx_file = os.path.join(tmpdir, "intro_fixture.docx")
-                create_sample_docx(docx_file)
+            docx_file = os.path.join(tmpdir, "intro_fixture.docx")
+            create_sample_docx(docx_file)
 
             out_bib = os.path.join(tmpdir, "out.bib")
             out_dois = os.path.join(tmpdir, "dois.txt")

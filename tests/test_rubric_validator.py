@@ -12,12 +12,10 @@ from pipeline.rubric_validator import RubricValidator, RubricCheckResult, Rubric
 class TestRubricValidator(unittest.TestCase):
 
     def test_real_master_dissertation_compliance(self):
-        """Verifies that dissertation_master.tex (or dissertation_master_template.tex) passes 100% of required UCSF rubric checks."""
-        master_tex = "dissertation_master.tex"
+        """Verifies that the bundled template passes 100% of required UCSF rubric checks."""
+        master_tex = "templates/latex/dissertation_master_template.tex"
         if not os.path.isfile(master_tex):
-            master_tex = "templates/latex/dissertation_master_template.tex"
-        if not os.path.isfile(master_tex):
-            self.skipTest("dissertation_master.tex not found in workspace")
+            self.skipTest("template not found")
 
         validator = RubricValidator(master_tex)
         report = validator.validate_all()
@@ -162,8 +160,8 @@ Hello
         finally:
             os.remove(p)
 
-    def test_publishing_agreement_unnumbered_violation(self):
-        """Violates rubric Sec I.J by omitting pagecommand on publishing agreement includepdf."""
+    def test_publishing_agreement_unnumbered_warning(self):
+        """An agreement LaTeX does not number is a WARNING (correct only if the signed PDF carries its own number)."""
         dummy_tex = r"""
 \documentclass[12pt]{report}
 \begin{document}
@@ -177,8 +175,9 @@ Hello
             val = RubricValidator(p)
             report = RubricReport()
             val._check_publishing_agreement(report)
-            self.assertEqual(report.failed_count, 1)
-            self.assertIn("lacks pagecommand", report.results[0].details)
+            self.assertEqual(report.failed_count, 0)
+            self.assertEqual(report.warning_count, 1)
+            self.assertIn("already has its page number printed", report.results[0].details)
         finally:
             os.remove(p)
 

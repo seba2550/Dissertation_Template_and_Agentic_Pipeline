@@ -95,7 +95,16 @@
 \fancyhf{}
 \cfoot{\thepage} % Bottom center pagination
 \renewcommand{\headrulewidth}{0pt}
-\setlength{\footskip}{0.6in} % Footer distance >= 0.5in from edge
+% Page number >= 0.5in from the paper edge: it sits (bottom margin - footskip) = 1in - 0.42in = 0.58in up.
+\setlength{\footskip}{0.42in}
+
+%%% ------------ LAYOUT (see templates/latex/dissertation_master_template.tex) ------------ %%%
+\brokenpenalty=10000
+\setlength{\parfillskip}{0pt plus 0.7\linewidth}
+\makeatletter
+\def\fps@figure{htb}
+\def\fps@table{htb}
+\makeatother
 
 \begin{document}
 
@@ -199,7 +208,7 @@ Descriptions of student and co-author contributions for adapted manuscript chapt
 \clearpage
 
 % Insert Figure 1.1 to satisfy List of Figures (Rubric Sec III.G)
-\begin{figure}[htbp]
+\begin{figure}[htb]
   \centering
   \rule{0.8\linewidth}{2in}
   \caption[Conceptual diagram of multi-ancestry clock evaluation and meQTL mapping.]{

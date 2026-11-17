@@ -42,7 +42,7 @@ class TestDocxConverter(unittest.TestCase):
             self.assertIn(r"\subsection{Methods and statistical procedures}", latex_out)
             self.assertIn(r"\begin{quotation}", latex_out)
             self.assertIn(r"\begin{singlespace}", latex_out)
-            self.assertIn(r"\begin{table}[htbp]", latex_out)
+            self.assertIn(r"\begin{table}[htb]", latex_out)
             self.assertIn(r"\caption{Summary of profiling technologies and cohort sample sizes.}", latex_out)
             self.assertIn(r"\begin{tabular}", latex_out)
             self.assertIn(r"\toprule", latex_out)
@@ -82,11 +82,9 @@ class TestDocxConverter(unittest.TestCase):
         self.assertIn(r"\cite{Smith2024}", formatted)
 
     def test_convert_real_docx(self):
-        docx_file = "Dissertation Chapter 4 (v1).docx"
         with tempfile.TemporaryDirectory() as tmpdir:
-            if not os.path.isfile(docx_file):
-                docx_file = os.path.join(tmpdir, "ch4_fixture.docx")
-                create_sample_docx(docx_file)
+            docx_file = os.path.join(tmpdir, "ch4_fixture.docx")
+            create_sample_docx(docx_file)
 
             converter = DocxConverter()
             out_tex = os.path.join(tmpdir, "ch4_test.tex")

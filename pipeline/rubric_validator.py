@@ -13,6 +13,16 @@ import re
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Set, Tuple, Any
 
+from .utils import find_unembedded_fonts
+
+_UNIT_IN = {'in': 1.0, 'pt': 1 / 72.27, 'bp': 1 / 72.0, 'cm': 1 / 2.54, 'mm': 1 / 25.4}
+
+
+def _length_in_inches(val: str) -> Optional[float]:
+    """Convert a simple TeX length ('0.42in', '30pt', '1.5cm') to inches; None if not a plain length."""
+    m = re.fullmatch(r'\s*([0-9]*\.?[0-9]+)\s*(in|pt|bp|cm|mm)\s*', val)
+    return float(m.group(1)) * _UNIT_IN[m.group(2)] if m else None
+
 
 @dataclass
 class RubricCheckResult:
@@ -177,6 +187,8 @@ class RubricValidator:
         self._check_publishing_agreement(report)
         self._check_orientation_and_layout(report)
         self._check_widows_and_orphans(report)
+        self._check_short_last_lines(report)
+        self._check_float_placement(report)
         self._check_abstract_rules(report)
         self._check_abbreviations_rules(report)
         self._check_proquest_guidelines(report)
@@ -187,6 +199,7 @@ class RubricValidator:
         # Section III: Content & Headings
         self._check_heading_hierarchy(report)
         self._check_table_captions_placement(report)
+        self._check_bold_figure_table_references(report)
         self._check_figure_captions_placement(report)
         self._check_blockquotes(report)
         self._check_table_of_contents_rules(report)
@@ -195,6 +208,7 @@ class RubricValidator:
         # Section IV: References & Electronic Publishing
         self._check_references_formatting(report)
         self._check_electronic_publishing_spec(report)
+        self._check_fonts_embedded(report)
 
         # Compilation log checks (citations, overfull hboxes)
         self._check_compilation_log(report)
@@ -278,30 +292,36 @@ class RubricValidator:
         ))
 
     def _check_footer_and_page_number_position(self, report: RubricReport):
-        """Rubric Sec I.B.2: Page number prints no closer than 0.5 inches from the edge."""
+        """Rubric Sec I.B.2: Page number prints no closer than 0.5 inches from the edge.
+
+        \\footskip is measured from the bottom of the text block DOWN to the footer baseline, so the
+        page number sits (bottom margin - footskip) above the paper edge. A large footskip moves the
+        number toward the edge: with 1in margins, footskip must be at most 0.5in.
+        """
         passed = False
         details = ""
+
+        bottom = 1.0
+        m_geo = re.search(r'\\usepackage\[([^\]]*)\]\{geometry\}', self.preamble)
+        if m_geo:
+            m_b = re.search(r'(?:bottom|margin)\s*=\s*([^,\]]+)', m_geo.group(1))
+            if m_b and _length_in_inches(m_b.group(1)) is not None:
+                bottom = _length_in_inches(m_b.group(1))
 
         footskip_match = re.search(r'\\setlength\{\\footskip\}\{([^}]+)\}', self.preamble)
         if footskip_match:
             val = footskip_match.group(1).strip()
-            # check if >= 0.5in
-            m_in = re.match(r'([0-9\.]+)\s*in', val)
-            m_pt = re.match(r'([0-9\.]+)\s*pt', val)
-            if m_in and float(m_in.group(1)) >= 0.5:
-                passed = True
-                details = f"Footskip explicitly set to {val} (>= 0.5 inches from paper edge)."
-            elif m_pt and float(m_pt.group(1)) >= 36.0:
-                passed = True
-                details = f"Footskip explicitly set to {val} (>= 36 pt / 0.5 inches)."
-            else:
-                details = f"Footskip ({val}) may be closer than 0.5 inches to edge."
-        elif '\\pagestyle{fancy}' in self.preamble and '\\cfoot' in self.preamble:
-            # Default LaTeX footskip in report class 12pt is 30pt (approx 0.42in), footskip should be set
-            details = "Fancyhdr is used, but \\setlength{\\footskip}{0.6in} is recommended to ensure >= 0.5in clearance."
-            passed = True  # Warning level
+            fs = _length_in_inches(val)
         else:
-            details = "No explicit footskip configuration found."
+            val, fs = "30pt (report class 12pt default)", 30 / 72.27
+
+        if fs is None:
+            details = f"Footskip ({val}) is not a plain length; cannot verify the page number's distance from the edge."
+        else:
+            edge = bottom - fs
+            passed = edge >= 0.5 - 1e-6
+            details = (f"Page number baseline sits {edge:.2f} in from the paper edge "
+                       f"(bottom margin {bottom:.2f} in - footskip {val}); rubric minimum is 0.50 in.")
 
         report.add_result(RubricCheckResult(
             section="I. General",
@@ -309,7 +329,7 @@ class RubricValidator:
             name="Page Number Distance (>= 0.5 in from edge)",
             passed=passed,
             details=details,
-            remediation="Add: \\setlength{\\footskip}{0.6in} to LaTeX preamble."
+            remediation="With 1in margins use \\setlength{\\footskip}{0.42in} (number 0.58in from the edge); footskip must not exceed bottom margin - 0.5in."
         ))
 
     def _check_title_abbreviations(self, report: RubricReport):
@@ -492,31 +512,42 @@ class RubricValidator:
         ))
 
     def _check_publishing_agreement(self, report: RubricReport):
-        """Rubric Sec I.J & III.C & IV.C: Last page, numbered, NOT in Table of Contents."""
+        """Rubric Sec I.J & III.C & IV.C: Last page, numbered, NOT in Table of Contents.
+
+        The signed DocuSign agreement usually arrives with its page number already printed on it. In that
+        case the correct LaTeX is pagecommand={\\thispagestyle{empty}} (else the page shows two numbers),
+        so an unnumbered include is reported as a WARNING to confirm by eye, not as a failure.
+        """
         passed = False
+        severity = "ERROR"
         details = ""
         search_target = self.full_body or self.body
 
-        # Search for publishing agreement at the end of body
         pub_match = re.search(r'\\includepdf(?:\s*\[[^\]]*\])?\s*\{[^}]*(?:publishing_agreement|Publishing_Agreement|release)[^}]*\}', search_target, re.IGNORECASE | re.DOTALL)
         if pub_match:
             after_text = search_target[pub_match.end():]
-            # Ensure no further chapters
-            if '\\chapter' not in after_text:
-                if 'addcontentsline{toc}' not in after_text:
-                    # Rubric Sec I.J & IV.C: "The publishing agreement, is the last page, signed and dated by the student (via DocuSign), and should be numbered."
-                    # In pdfpages, omitting pagecommand defaults to empty page style (unnumbered). Check pagecommand:
-                    chunk = pub_match.group(0)
-                    has_pagecommand = bool(re.search(r'pagecommand\s*=\s*\{(?!\s*\\thispagestyle\{empty\})', chunk))
-                    if has_pagecommand:
-                        passed = True
-                        details = "UCSF Publishing Agreement is included as the final page, omitted from TOC, and explicitly numbered via pagecommand."
-                    else:
-                        details = "UCSF Publishing Agreement is included as final page and omitted from TOC, but lacks pagecommand={\\thispagestyle{fancy}} to ensure it is numbered per rubric Sec I.J."
-                else:
-                    details = "Publishing Agreement must NOT be listed in the Table of Contents per rubric Sec I.J."
-            else:
+            if '\\chapter' in after_text:
                 details = "Publishing agreement is not the final component in the manuscript."
+            elif 'addcontentsline{toc}' in after_text:
+                details = "Publishing Agreement must NOT be listed in the Table of Contents per rubric Sec I.J."
+            else:
+                chunk = pub_match.group(0)
+                style = None
+                m_pc = re.search(r'pagecommand\s*=\s*\{\s*\\thispagestyle\{([^}]*)\}', chunk)
+                if m_pc:
+                    style = m_pc.group(1).strip()
+                    if style.startswith('\\'):
+                        # style given by a macro, e.g. \AgreementPageStyle: resolve its definition
+                        m_def = re.search(r'\\(?:re)?newcommand\{?' + re.escape(style) + r'\}?\s*\{([^}]*)\}', self.preamble)
+                        style = m_def.group(1).strip() if m_def else None
+                if style and style != 'empty':
+                    passed = True
+                    details = f"Publishing Agreement is the final page, omitted from the TOC, and numbered by LaTeX (page style '{style}')."
+                else:
+                    severity = "WARNING"
+                    details = ("Publishing Agreement is the final page and omitted from the TOC, but LaTeX does not number it. "
+                               "That is correct only if the signed PDF already has its page number printed on it: confirm the printed "
+                               "number equals the PDF's last page number (a mismatch needs a newly signed copy).")
         else:
             details = "UCSF Publishing Agreement file not included in document."
 
@@ -525,8 +556,10 @@ class RubricValidator:
             rule_id="I.J_PUBLISHING_AGREEMENT",
             name="UCSF Publishing Agreement Included as Numbered Final Page",
             passed=passed,
+            severity=severity,
             details=details,
-            remediation="Include publishing agreement at the very end with \\includepdf[pages={1}, pagecommand={\\thispagestyle{fancy}}]{publishing_agreement_signed.pdf} (omit from TOC)."
+            remediation="Include the agreement last with \\includepdf[pages={1}, pagecommand={\\thispagestyle{fancy}}]{...} (omit from TOC), "
+                        "or {empty} if its page number is already printed on the signed PDF."
         ))
 
     def _check_orientation_and_layout(self, report: RubricReport):
@@ -563,6 +596,72 @@ class RubricValidator:
             passed=passed,
             details=details,
             remediation="Add: \\clubpenalty=10000 \\widowpenalty=10000 \\displaywidowpenalty=10000 to preamble."
+        ))
+
+    def _check_short_last_lines(self, report: RubricReport):
+        """Rubric Sec I.L (widows in the rubric's sense): no very short last lines of paragraphs,
+        and no page ending on a hyphenated word. TeX's widow/club penalties do not cover either."""
+        has_parfill = bool(re.search(r'\\setlength\{?\\parfillskip\}?\{[^}]*plus\s*0?\.\d+\\linewidth', self.preamble))
+        has_broken = bool(re.search(r'\\brokenpenalty\s*=\s*\d{4,5}', self.preamble))
+        passed = has_parfill and has_broken
+        missing = [n for n, ok in (("\\parfillskip minimum last-line length", has_parfill),
+                                   ("\\brokenpenalty", has_broken)) if not ok]
+        report.add_result(RubricCheckResult(
+            section="I. General",
+            rule_id="I.L_SHORT_LAST_LINES",
+            name="Short Last Lines & Hyphenated Page Breaks",
+            passed=passed,
+            severity="WARNING",
+            details="Paragraph last lines have a minimum length and pages never end on a hyphen." if passed else
+                    f"Not configured: {', '.join(missing)}. Run agentic_scripts/layout_audit.py on the PDF to find cases.",
+            remediation="Add: \\setlength{\\parfillskip}{0pt plus 0.7\\linewidth} and \\brokenpenalty=10000 to the preamble."
+        ))
+
+    def _check_float_placement(self, report: RubricReport):
+        """Layout rule: no figure/table occupies a whole page in the middle of running text.
+        Requires default float placement without 'p', and no explicit [p]/[htbp] options in chapters."""
+        search_target = self.full_body or self.body
+        defaults_ok = bool(re.search(r'\\def\\fps@figure\{[htb!]*\}', self.preamble)) and \
+            bool(re.search(r'\\def\\fps@table\{[htb!]*\}', self.preamble))
+        explicit_p = re.findall(r'\\begin\{(figure|table)\*?\}\s*\[([^\]]*p[^\]]*)\]', search_target)
+        passed = defaults_ok and not explicit_p
+        problems = []
+        if not defaults_ok:
+            problems.append("default float placement still allows float pages (set \\fps@figure / \\fps@table to htb)")
+        if explicit_p:
+            problems.append(f"{len(explicit_p)} float(s) request a float page, e.g. \\begin{{{explicit_p[0][0]}}}[{explicit_p[0][1]}]")
+        report.add_result(RubricCheckResult(
+            section="I. General",
+            rule_id="LAYOUT_FLOAT_PAGES",
+            name="No Full-Page Floats Interrupting Text",
+            passed=passed,
+            severity="WARNING",
+            details="Floats are limited to here/top/bottom placement." if passed else "; ".join(problems) + ".",
+            remediation="Use the template's FLOAT PLACEMENT POLICY block and [htb] (or no option) on every figure/table; "
+                        "then confirm with agentic_scripts/layout_audit.py."
+        ))
+
+    def _check_bold_figure_table_references(self, report: RubricReport):
+        """Rubric Sec III.A.7: in-text table (and, by house style, figure) references are bold, panel letter included."""
+        search_target = self.full_body or self.body
+        # strip \verb|...| and caption/label arguments are left in: a caption mentioning "Figure 2.1" is still a reference
+        text = re.sub(r'\\verb(.).*?\1', '', search_target)
+        plain = re.findall(r'(?<!\\textbf\{)(?<![\w\\])((?:Fig(?:ure)?s?\.?|Tables?)(?:~|\s)+(?:\\ref\{[^}]*\}|\d+\.\d+[A-Za-z]?))', text)
+        uses_cref = bool(re.search(r'\\[cC]ref\{', text))
+        cref_bold = bool(re.search(r'\\crefformat\{table\}\{[^\n]*\\textbf', self.preamble)) and \
+            bool(re.search(r'\\crefformat\\expandafter\{\\reftype\}\{[^\n]*\\textbf|\\crefformat\{figure\}\{[^\n]*\\textbf', self.preamble))
+        problems = []
+        if plain:
+            problems.append(f"{len(plain)} unbolded reference(s), e.g. {plain[:3]}")
+        if uses_cref and not cref_bold:
+            problems.append("\\cref is used but the preamble's \\crefformat does not bold figure/table references")
+        report.add_result(RubricCheckResult(
+            section="III. Tables",
+            rule_id="III.A.7_BOLD_REFERENCES",
+            name="Bold In-Text Figure & Table References",
+            passed=not problems,
+            details="All in-text figure and table references are bold (macros / bolded \\crefformat)." if not problems else "; ".join(problems) + ".",
+            remediation="Write references as \\FIG[A]{name}, \\TABLE{name} or \\cref{...} with the template's bolding \\crefformat block; never type 'Figure 2.1' by hand."
         ))
 
     def _check_abstract_rules(self, report: RubricReport):
@@ -942,6 +1041,36 @@ class RubricValidator:
             passed=passed,
             details=details,
             remediation="Ensure dissertation PDF is compiled without security encryption or password restrictions."
+        ))
+
+    def _check_fonts_embedded(self, report: RubricReport):
+        """Rubric Sec IV.D: every font in the submitted PDF is embedded (R figures and DocuSign PDFs often are not)."""
+        pdf_path = self.master_tex_path.replace('.tex', '.pdf')
+        if not os.path.isfile(pdf_path):
+            report.add_result(RubricCheckResult(
+                section="IV. Electronic Publishing", rule_id="IV.D_FONTS_EMBEDDED",
+                name="All Fonts Embedded in PDF", passed=False, severity="WARNING",
+                details=f"Compiled PDF not found at {pdf_path}. Compile dissertation first.",
+                remediation="Run `python3 run_pipeline.py build` to generate PDF."))
+            return
+        try:
+            missing = find_unembedded_fonts(pdf_path)
+        except Exception as e:  # unreadable PDF: report, never crash the audit
+            report.add_result(RubricCheckResult(
+                section="IV. Electronic Publishing", rule_id="IV.D_FONTS_EMBEDDED",
+                name="All Fonts Embedded in PDF", passed=False, severity="WARNING",
+                details=f"Could not scan fonts in {pdf_path}: {e}",
+                remediation="Check fonts with `pdffonts` (poppler) or Acrobat."))
+            return
+        report.add_result(RubricCheckResult(
+            section="IV. Electronic Publishing",
+            rule_id="IV.D_FONTS_EMBEDDED",
+            name="All Fonts Embedded in PDF",
+            passed=not missing,
+            details="All fonts in the compiled PDF are embedded." if not missing else
+                    f"Unembedded fonts: {', '.join(missing)}.",
+            remediation="Run agentic_scripts/embed_fonts.sh on the figure folders, title page and publishing agreement "
+                        "(writes build_embedded/, which \\graphicspath searches first), then rebuild."
         ))
 
     # =========================================================================
