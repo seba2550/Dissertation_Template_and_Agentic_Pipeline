@@ -1,3 +1,7 @@
+% ACCESSIBILITY (ProQuest WCAG 2.2 / PDF/UA-1 review): this line makes LaTeX write a tagged PDF
+% (structure tree, document language, metadata, tagged links). It must come before \documentclass.
+% See ucsf-accessibility.sty (loaded below) for the rest.
+\DocumentMetadata{lang=en-US, pdfversion=1.7, pdfstandard=ua-1, testphase={phase-III,math,table,title,firstaid}}
 \documentclass[12pt,oneside]{report}
 
 %%% ========================================================================= %%%
@@ -5,17 +9,23 @@
 %%% UCSF Dissertation Rubric (Rev 04/24)                                      %%%
 %%%                                                                           %%%
 %%% Build:                                                                    %%%
-%%%   1. ../../agentic_scripts/embed_fonts.sh <figure dirs> <included PDFs>   %%%
+%%%   1. ../../agentic_scripts/embed_fonts.sh <figure dirs>                   %%%
+%%%        --forms Title_Page.pdf publishing_agreement.pdf                    %%%
 %%%      whenever a figure, the title page or the publishing agreement       %%%
 %%%      changes (writes font-embedded copies to build_embedded/)            %%%
-%%%   2. latexmk -pdf dissertation_master_template.tex  (pdflatex + biber)    %%%
+%%%   2. latexmk -lualatex dissertation_master_template.tex (LuaLaTeX+biber) %%%
+%%%      Not -pdf: pdfLaTeX cannot build the tagged (accessible) PDF.        %%%
 %%%   3. python3 ../../agentic_scripts/layout_audit.py <pdf>   -> 0 issue(s)  %%%
-%%%   4. python3 ../../agentic_scripts/format_validator.py <tex>              %%%
+%%%   4. python3 ../../run_pipeline.py validate-rubric -t <tex>              %%%
+%%%   5. python3 ../../run_pipeline.py check-accessibility <pdf> -> 0 failed  %%%
 %%% ========================================================================= %%%
 
 %%% ------------ I. MARGINS, FONT & SPACING (RUBRIC SEC I.A, I.B, I.F) ------------ %%%
 \usepackage[letterpaper, top=1in, bottom=1in, left=1in, right=1in]{geometry}
-\usepackage{mathptmx} % Times New Roman 12pt
+% Times New Roman 12pt. T1 keeps LuaLaTeX on the Times (Nimbus Roman) fonts: without it LuaLaTeX silently
+% falls back to Latin Modern. T1 also gives precomposed accented letters, so text extracts as real Unicode.
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
 \usepackage{setspace}
 
 % Unicode symbols common in biomedical text and Crossref titles (e.g., TGF-β, ≥ 0.5).
@@ -71,9 +81,15 @@
 \usepackage{multirow}
 \usepackage{array}
 \usepackage{longtable} % long tables (e.g. List of Abbreviations) that break across pages
-\usepackage{pdfpages}
 \usepackage{subcaption}
 \usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black, breaklinks=true]{hyperref}
+% PDF/UA: the title goes into the PDF metadata and the viewer's title bar (ProQuest: "metadata missing",
+% "document viewer title setting is missing"). Use the exact title and your name as on the title page.
+\hypersetup{
+  pdftitle={DISSERTATION TITLE},
+  pdfauthor={AUTHOR FULL NAME},
+  pdfdisplaydoctitle=true
+}
 \usepackage[capitalise, noabbrev, nameinlink]{cleveref}
 
 %%% ------------ BOLD FIGURE & TABLE REFERENCES (RUBRIC SEC III.A.7) ------------ %%%
@@ -259,6 +275,12 @@
 \captionsetup[table]{position=above, skip=6pt, font={small,singlespacing}}
 \captionsetup[figure]{position=below, skip=6pt, font={small,singlespacing}}
 
+%%% ------------ ACCESSIBILITY: ALT TEXT, FULL-PAGE PDFS, LANGUAGE (PROQUEST WCAG 2.2) ------------ %%%
+% Every graphic needs alt text in figure_alt_text.tex (\FigAlt{<file name>}{<description>}); a graphic
+% without one stops the build. Paragraphs in another language: \begin{langtext}{es} ... \end{langtext}.
+\usepackage{ucsf-accessibility}
+\input{figure_alt_text}
+
 %%% ------------ BLOCK QUOTATIONS (RUBRIC SEC I.F & III.C) ------------ %%%
 % Single-spaced, indented 5 spaces from left margin
 \usepackage{etoolbox}
@@ -309,8 +331,9 @@
 \pagenumbering{roman}
 
 % --- TITLE PAGE (Page i, unnumbered, Rubric Sec I.G) ---
-% Use the official UCSF title page PDF signed via DocuSign (run embed_fonts.sh on it: DocuSign leaves Arial unembedded)
-\includepdf[pages={1}]{Title_Page.pdf}
+% Use the official UCSF title page PDF signed via DocuSign. Run embed_fonts.sh with --forms on it: DocuSign leaves
+% Arial unembedded and its fonts and tags fail the accessibility check. Its alt text is in figure_alt_text.tex.
+\FullPagePDF{Title_Page.pdf}
 \setcounter{page}{2} % Copyright page is Page ii
 
 % --- COPYRIGHT PAGE (Page ii, Rubric Sec I.I & III.B) ---
@@ -424,6 +447,6 @@ Descriptions of student and co-author contributions for adapted manuscript chapt
 %%% Final page, numbered, omitted from Table of Contents                      %%%
 %%% See \AgreementPageStyle in the preamble.                                  %%%
 %%% ========================================================================= %%%
-\includepdf[pages={1}, pagecommand={\thispagestyle{\AgreementPageStyle}}]{publishing_agreement.pdf}
+\FullPagePDF[\AgreementPageStyle]{publishing_agreement.pdf}
 
 \end{document}

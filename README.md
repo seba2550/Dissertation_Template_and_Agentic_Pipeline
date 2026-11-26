@@ -26,12 +26,17 @@ A modular, zero-dependency agentic pipeline and LaTeX template framework designe
    - Produces formatted console tables and machine-readable JSON reports.
 
 4. **Automated LaTeX Compilation Manager**:
-   - Executes multi-pass compilation (`latexmk` or `pdflatex` + `biber`).
+   - Executes multi-pass compilation (`latexmk -lualatex` + `biber`). LuaLaTeX is required: the template produces a tagged PDF, which pdfLaTeX cannot build reliably.
    - Captures overfull boxes, undefined citations, and undefined cross-references.
 
 5. **PDF Layout Audit & Font Embedding** (`agentic_scripts/layout_audit.py`, `embed_fonts.sh`):
    - Reads the *compiled PDF* (the validator only reads the `.tex`) and reports float pages that split running text, headings stranded at a page bottom, short last lines, and orphan lines.
    - Writes font-embedded copies of figures, the title page and the publishing agreement into `build_embedded/`, which the template's `\graphicspath` searches first.
+
+6. **Accessible PDF for ProQuest** (`templates/latex/ucsf-accessibility.sty`, `check-accessibility`):
+   - ProQuest reviews every submitted PDF against WCAG 2.2 / PDF/UA-1. An untagged LaTeX PDF fails ten rules (no tag tree, no language, untagged links, fonts without Unicode maps, ...).
+   - The template writes a tagged PDF/UA-1 file: `\DocumentMetadata` before `\documentclass`, document title in the metadata, alt text for every graphic from `figure_alt_text.tex` (a graphic without alt text stops the build), and the signed title page and agreement converted to outlines by `embed_fonts.sh --forms`.
+   - `python3 run_pipeline.py check-accessibility <pdf>` runs the same validator ProQuest uses (veraPDF, PDF/UA-1 profile; `brew install verapdf`) and reports each failure with ProQuest's wording and the fix.
 
 > **Safety:** extraction and conversion never overwrite a file that already has content. Pass `--overwrite` to allow it; the old file is first copied to `<name>.bak-<timestamp>`. The extractor writes `extracted_references.bib` by default. Review its entries and merge them into your real bibliography by hand: they are unverified.
 
@@ -53,13 +58,17 @@ A modular, zero-dependency agentic pipeline and LaTeX template framework designe
 │   ├── reference_extractor.py          # DOCX hyperlink & reference extraction engine
 │   ├── docx_converter.py               # DOCX to LaTeX conversion engine
 │   ├── rubric_validator.py             # 30-rule institutional rubric validator
-│   ├── compiler.py                     # LaTeX multi-pass build manager
+│   ├── compiler.py                     # LaTeX multi-pass build manager (LuaLaTeX)
+│   ├── accessibility.py                # ProQuest accessibility check (veraPDF, PDF/UA-1)
 │   └── utils.py                        # Identifier cleaners & BibTeX parser utilities
 ├── templates/
 │   └── latex/
 │       ├── dissertation_master_template.tex  # Master LaTeX template (all 30 rules baked in)
 │       ├── dissertation_master_template.pdf  # Compiled preview of the template
 │       ├── ch1_intro.tex                     # Starter chapter with rubric-compliant headings/tables/figures
+│       ├── ucsf-accessibility.sty            # Tagged PDF/UA-1 helpers: alt text, \FullPagePDF, caption fix
+│       ├── figure_alt_text.tex               # Alt text for every graphic (\FigAlt{file}{text})
+│       ├── .latexmkrc                        # Makes plain `latexmk` use LuaLaTeX
 │       ├── references.bib                    # Starter bibliography
 │       └── Title_Page / publishing_agreement # Front-matter .tex sources and the PDFs the master includes
 ├── synthetic_test_run/                 # Worked example: synthetic chapters run through the whole pipeline
@@ -72,6 +81,7 @@ A modular, zero-dependency agentic pipeline and LaTeX template framework designe
 │   ├── test_rubric_validator.py        # Unit tests covering the rubric rules & edge cases
 │   ├── test_backported_rules.py        # Tests for the rules added from a finished dissertation
 │   ├── test_pipeline_integration.py    # End-to-end integration & CLI tests
+│   ├── test_accessibility.py           # PDF/UA-1: veraPDF parsing, source checks, template build
 │   └── test_review_regressions.py      # Regression tests for fixed bugs
 ├── run_pipeline.py                     # Top-level CLI driver
 ├── dissertation_agentic_workflow_guide.md # Comprehensive agentic workflow guide
@@ -97,8 +107,8 @@ python3 run_pipeline.py extract-refs manuscript.docx -o extracted_references.bib
 # 2. Convert Word manuscript to LaTeX chapter using citation map
 python3 run_pipeline.py convert-docx manuscript.docx -o ch1_intro.tex -m citation_map.json
 
-# 3. Embed fonts in figures / title page / agreement (whenever one changes), then compile
-agentic_scripts/embed_fonts.sh figures/ Title_Page.pdf publishing_agreement.pdf
+# 3. Embed fonts in figures; outline the signed title page / agreement (whenever one changes), then compile
+agentic_scripts/embed_fonts.sh figures/ --forms Title_Page.pdf publishing_agreement.pdf
 python3 run_pipeline.py build -t dissertation_master.tex
 
 # 3b. Check the compiled PDF's page layout (expect "0 issue(s)", then look at any pages it names)
@@ -106,6 +116,9 @@ python3 agentic_scripts/layout_audit.py dissertation_master.pdf
 
 # 4. Audit dissertation against all 30 rules
 python3 run_pipeline.py validate-rubric -t dissertation_master.tex -j rubric_report.json
+
+# 4b. Check the PDF as ProQuest's accessibility review does (needs veraPDF: brew install verapdf)
+python3 run_pipeline.py check-accessibility dissertation_master.pdf
 
 # 5. Execute full end-to-end pipeline (extract -> convert -> compile -> validate)
 python3 run_pipeline.py full-pipeline --docx manuscript.docx -o ch1_intro.tex -t dissertation_master.tex
@@ -160,6 +173,7 @@ The validator programmatically checks every requirement specified in the **UCSF 
 | 24 | IV. References| `IV.B_REFERENCES` | References Formatting | Titled "REFERENCES" (all caps), double spaced, listed in TOC |
 | 25 | IV. Publishing| `IV.D_PDF_SPEC` | Electronic PDF Specs | Unencrypted, no password restrictions, printable |
 | 25a | IV. Publishing| `IV.D_FONTS_EMBEDDED` | Embedded Fonts | Every font in the compiled PDF embedded (`pdffonts` if installed, else a built-in scan) |
+| 25b | IV. Publishing| `IV.PROQUEST_ACCESSIBILITY` | Accessible PDF (ProQuest) | `\DocumentMetadata` (lang, `pdfstandard=ua-1`), `ucsf-accessibility` loaded, `pdftitle`, `\FullPagePDF` not `\includepdf`, a `\FigAlt` for every graphic. Source check; `check-accessibility` validates the PDF |
 | 26 | Compilation | `COMP_LOG_HEALTH` | Compilation Health | Zero undefined citations, zero undefined labels, zero fatal errors |
 
 ---
@@ -180,7 +194,7 @@ The suite verifies:
 - Every individual rubric check with positive and negative test cases.
 - Pre-compilation and post-compilation health checks.
 
-Tests that compile LaTeX need a TeX distribution with `latexmk` (or `pdflatex`) and `biber`. Tests that build
+Tests that compile LaTeX need a TeX distribution with `latexmk`, `lualatex` and `biber`; the PDF/UA test also needs `verapdf`. Tests that build
 or extract work in temporary directories and never modify files in `templates/`.
 
 To regenerate the synthetic example in `synthetic_test_run/`:

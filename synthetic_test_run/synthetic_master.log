@@ -1,35 +1,375 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  17 NOV 2026 12:23
-entering extended mode
- restricted \write18 enabled.
- %&-line parsing enabled.
+This is LuaHBTeX, Version 1.21.0 (TeX Live 2025)  (format=lualatex 2025.3.8)  24 NOV 2026 13:48
+ restricted system commands enabled.
 **synthetic_master.tex
 (./synthetic_master.tex
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
+Lua module: luaotfload 2024-12-03 v3.29 Lua based OpenType font support
+Lua module: lualibs 2023-07-13 v2.76 ConTeXt Lua standard libraries.
+Lua module: lualibs-extended 2023-07-13 v2.76 ConTeXt Lua libraries -- extended 
+collection.
+luaotfload | conf : Root cache directory is "/Users/sgonzalez/Library/texlive/20
+25/texmf-var/luatex-cache/generic/names".
+luaotfload | init : Loading fontloader "fontloader-2023-12-28.lua" from kpse-res
+olved path "/usr/local/texlive/2025/texmf-dist/tex/luatex/luaotfload/fontloader-
+2023-12-28.lua".
+Lua-only attribute luaotfload@noligature = 1
+luaotfload | init : Context OpenType loader version 3.134
+Inserting `luaotfload.node_processor' in `pre_linebreak_filter'.
+Inserting `luaotfload.node_processor' in `hpack_filter'.
+Inserting `luaotfload.glyph_stream' in `glyph_stream_provider'.
+Inserting `luaotfload.define_font' in `define_font'.
+Lua-only attribute luaotfload_color_attribute = 2
+luaotfload | conf : Root cache directory is "/Users/sgonzalez/Library/texlive/20
+25/texmf-var/luatex-cache/generic/names".
+Inserting `luaotfload.harf.strip_prefix' in `find_opentype_file'.
+Inserting `luaotfload.harf.strip_prefix' in `find_truetype_file'.
+Removing  `luaotfload.glyph_stream' from `glyph_stream_provider'.
+Inserting `luaotfload.harf.glyphstream' in `glyph_stream_provider'.
+Inserting `luaotfload.harf.finalize_vlist' in `post_linebreak_filter'.
+Inserting `luaotfload.harf.finalize_hlist' in `hpack_filter'.
+Inserting `luaotfload.cleanup_files' in `wrapup_run'.
+Inserting `luaotfload.harf.finalize_unicode' in `finish_pdffile'.
+Inserting `luaotfload.glyphinfo' in `glyph_info'.
+Lua-only attribute luaotfload.letterspace_done = 3
+Inserting `luaotfload.aux.set_sscale_dimens' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.set_font_index' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.patch_cambria_domh' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.fixup_fontdata' in `luaotfload.patch_font_unsafe'.
+Inserting `luaotfload.aux.set_capheight' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.set_xheight' in `luaotfload.patch_font'.
+Inserting `luaotfload.rewrite_fontname' in `luaotfload.patch_font'.
+Inserting `tracingstacklevels' in `input_level_string'.
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/documentmetadata-suppor
+t.ltx
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pdfmanagement-testphase/pdfmanage
+ment-testphase.sty
+Package: pdfmanagement-testphase 2025-02-15 v0.96p LaTeX PDF management testpha
+se bundle
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tagpdf/tagpdf-base.sty
+Package: tagpdf-base 2025-03-05 v0.99o part of tagpdf - provide base, no-op ver
+sions of the user commands 
+\c@g__tag_MCID_abs_int=\count194
+\c@g__tag_struct_abs_int=\count195
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pdfmanagement-testphase/pdfmanage
+ment-testphase.ltx
+File: pdfmanagement-testphase.ltx 2025-02-15 v0.96p PDF management code (testph
+ase)
+\g__pdfmanagement_EmbeddedFiles_int=\count196
+\l__pdfmeta_xmp_indent_int=\count197
+\g_pdffile_embed_pdfa_int=\count198
+\g_pdffile_embed_nonpdfa_int=\count199
+)))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-luatex.def
+File: l3backend-luatex.def 2024-05-08 L3 backend support: PDF output (LuaTeX)
+\l__color_backend_stack_int=\count266
+Inserting `l3color' in `luaotfload.parse_color'.
+Inserting `l3opacity' in `luaotfload.parse_transparent'.
+\l__pdf_internal_box=\box52
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pdfmanagement-testphase/l3backend
+-testphase-luatex.def
+File: l3backend-testphase-luatex.def 2025-02-15 LaTeX PDF management testphase 
+bundle backend support:PDFoutput(LuaTeX)
+\l__pdf_backend_tmpa_box=\box53
+\l__pdf_backend_tmpb_box=\box54
+\g__pdf_backend_resourceid_int=\count267
+\g__pdf_backend_name_int=\count268
+\g__pdf_backend_page_int=\count269
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/phase-III-latex-lab-tes
+tphase.ltx
+File: phase-III-latex-lab-testphase.ltx 2024-02-12 v0.1c latex-lab wrapper phas
+e-III
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/phase-II-latex-lab-test
+phase.ltx
+File: phase-II-latex-lab-testphase.ltx 2023-06-15 v0.1b latex-lab wrapper phase
+-II
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-testphase-new
+-or-1.sty
+Package: latex-lab-testphase-new-or-1 2023-07-20 v0.85a Temporary output patche
+s for tagging and better link support
+ (/usr/local/texlive/2025/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2025/02/11 v2.5l e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count270
+)
+Patching header in \@outputpage
+Patching footer in \@outputpage
+Patching \@makecol for tagging
+Patching \@makecol for tagging
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-testphase-new
+-or-2.sty
+Package: latex-lab-testphase-new-or-2 2023-09-04 v0.85c Changes to the output r
+outine
+\@outputbox@depth=\dimen140
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-footnotes.ltx
+File: latex-lab-footnotes.ltx 2024-09-30 v0.8g changes to the footnote interfac
+es
+\footnotemargin=\dimen141
+)) (/usr/local/texlive/2025/texmf-dist/tex/latex/tagpdf/tagpdf.sty
+Package: tagpdf 2025-03-05 v0.99o  LaTeX kernel code for PDF tagging 
+\l__tag_tmpa_int=\count271
+\l__tag_tmpa_box=\box55
+\l__tag_tmpb_box=\box56
+\l__tag_loglevel_int=\count272
+\g__tag_unique_cnt_int=\count273
+\l__tag_tag_stop_int=\count274
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tagpdf/tagpdf-luatex.def
+File: tagpdf-luatex.def 2025-03-05 v0.99o tagpdf driver for luatex
+luaotfload | db : Font names database loaded from /Users/sgonzalez/Library/texli
+ve/2025/texmf-var/luatex-cache/generic/names/luaotfload-names.luc.gz
+Lua module: tagpdf 2025-03-05 v0.99o tagpdf lua code
+Lua-only attribute g__tag_mc_type_attr = 4
+Lua-only attribute g__tag_mc_cnt_attr = 5
+Lua-only attribute g__tag_interwordspaceOff_attr = 6
+Lua-only attribute g__tag_interwordspace_attr = 7
+Lua-only attribute g__tag_interwordfont_attr = 8
+Inserting `tagpdf.rewrite-softhyphen' in `pre_shaping_filter'.
+Inserting `tagpdf.rewrite-softhyphen' in `post_shaping_filter'.)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tagpdf/tagpdf-mc-code-lua.sty
+Package: tagpdf-mc-code-lua 2025-03-05 v0.99o tagpdf - mc code only for the lua
+mode 
+)
+\g__tag_tree_id_pad_int=\count275
+\c@g__tag_parenttree_obj_int=\count276
+
+Package tagpdf Info: reading namespace definitions tagpdf-ns-pdf.def
+
+
+Package tagpdf Info: reading namespace definitions tagpdf-ns-pdf2.def
+
+
+Package tagpdf Info: reading namespace definitions tagpdf-ns-mathml.def
+
+
+Package tagpdf Info: reading namespace definitions tagpdf-ns-latex-book.def
+
+
+Package tagpdf Info: reading namespace definitions tagpdf-ns-latex.def
+
+
+Package tagpdf Info: reading namespace definitions tagpdf-ns-latex-lab.def
+
+
+Package tagpdf Info: reading namespace definitions tagpdf-ns-pdf.def
+
+
+Package tagpdf Info: reading namespace definitions tagpdf-ns-pdf2.def
+
+\g__tag_struct_AFobj_int=\count277
+\g__tag_para_begin_int=\count278
+\g__tag_para_end_int=\count279
+\g__tag_para_main_begin_int=\count280
+\g__tag_para_main_end_int=\count281
+)
+Inserting `markspaces' in `pre_linebreak_filter'.
+Inserting `markspaces' in `hpack_filter'.)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-testphase-blo
+ck.sty
+Package: latex-lab-testphase-block 2024-10-11 v0.8v blockenv implementation
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-kernel-change
+s.sty
+Package: latex-lab-kernel-changes 2024-07-11 v0.85d General kernel and class ch
+anges
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pdftex/glyphtounicode.tex)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/glyphtounicode-cmex.tex
+))
+
+LaTeX template Info: Declaring template type 'blockenv' taking 1 argument(s)
+(template)           on line 61.
+
+
+LaTeX template Info: Declaring template type 'block' taking 1 argument(s) on
+(template)           line 62.
+
+
+LaTeX template Info: Declaring template type 'para' taking 1 argument(s) on
+(template)           line 63.
+
+
+LaTeX template Info: Declaring template type 'list' taking 1 argument(s) on
+(template)           line 64.
+
+
+LaTeX template Info: Declaring template type 'item' taking 1 argument(s) on
+(template)           line 65.
+
+\c@maxblocklevels=\count282
+\l__par_start_skip=\skip49
+\l__block_botsep_skip=\skip50
+\l__block_parbotsep_skip=\skip51
+\l__block_counter_start_int=\count283
+\l__block_one_label_box=\box57
+\g__block_labels_box=\box58
+\l__block_tmpa_skip=\skip52
+\l__block_topsepadd_skip=\skip53
+\l__block_effective_top_skip=\skip54
+LaTeX Info: Redefining \centering on input line 1210.
+LaTeX Info: Redefining \raggedleft on input line 1211.
+LaTeX Info: Redefining \raggedright on input line 1212.
+LaTeX Info: Redefining \begin on input line 1474.
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-testphase-sec
+.sty
+Package: latex-lab-testphase-sec 2024-10-04 v0.84f Code related to the tagging 
+of sectioning commands
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-testphase-toc
+.sty
+Package: latex-lab-testphase-toc 2024-09-26 v0.85e  Code related to the tagging
+ of toc-like lists
+\g__tag_toc_level_int=\count284
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-testphase-min
+ipage.sty
+Package: latex-lab-testphase-minipage 2024-09-18 v0.81e Code related to the tag
+ging of minipages and parboxes
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-testphase-gra
+phic.sty
+Package: latex-lab-testphase-graphic 2024-09-18 v0.80e Code related to the tagg
+ing of graphics
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/l3experimental/l3opacity/l3opacit
+y.sty (/usr/local/texlive/2025/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2025-01-18 L3 programming layer (loader) 
+)
+Package: l3opacity 2024-03-14 L3 Experimental opacity support
+)
+\g__tag_graphic_int=\count285
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-testphase-flo
+at.sty
+Package: latex-lab-testphase-float 2024-09-20 v0.81f Code related to the taggin
+g of floats
+\g__tag_float_int=\count286
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-testphase-bib
+.sty
+Package: latex-lab-testphase-bib 2024-07-05 v0.81b Code related to the tagging 
+of bibliography and cite command
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-testphase-tex
+t.sty
+Package: latex-lab-testphase-text 2024-09-18 v0.85b Code related to the tagging
+ of various small text commands
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-testphase-mar
+ginpar.sty
+Package: latex-lab-testphase-marginpar 2024-09-18 v0.85d Changes related to the
+ tagging of the margin notes
+\g__kernel_marginpar_int=\count287
+))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/math-latex-lab-testphas
+e.ltx
+File: math-latex-lab-testphase.ltx 2023-07-20 v0.8a latex-lab wrapper math
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-testphase-mat
+h.sty
+Package: latex-lab-testphase-math 2023-07-20 v0.8a code related to the math tag
+ging
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-math.ltx
+File: latex-lab-math.ltx 2024-10-25 v0.6i Grab all the math(s) and tag it (expe
+riments)
+\l__math_tmpa_skip=\skip55
+\g__math_mathml_total_int=\count288
+\g__math_mathml_int=\count289
+\g__math_math_total_int=\count290
+\g__math_mathml_AF_found_int=\count291
+\g__math_mathml_AF_attached_int=\count292
+\l__math_tmpa_box=\box59
+\l__math_mathstyle_int=\count293
+\g__math_mathchoice_int=\count294
+\l__math_grab_env_int=\count295
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tools/array.sty
+Package: array 2024/10/17 v2.6g Tabular extension package (FMi)
+\col@sep=\dimen142
+\ar@mcellbox=\box60
+\extrarowheight=\dimen143
+\NC@list=\toks17
+\extratabsurround=\skip56
+\backup@length=\skip57
+\ar@cellbox=\box61
+))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-amsmath.ltx
+File: latex-lab-amsmath.ltx 2024-09-18 v0.1c amsmath adaptions
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-mathtools.ltx
+File: latex-lab-mathtools.ltx 2024-07-13 v0.1a mathtools adaptions
+) (/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-mathpkg.ltx
+File: latex-lab-mathpkg.ltx 2023-01-05 v0.1a mathpkg adaptions
+)))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/table-latex-lab-testpha
+se.ltx
+File: table-latex-lab-testphase.ltx 2024-09-18 v0.85n latex-lab wrapper table
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-testphase-tab
+le.sty
+Package: latex-lab-testphase-table 2024-09-18 v0.85n Code related to the taggin
+g of tables
+))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/title-latex-lab-testpha
+se.ltx
+File: title-latex-lab-testphase.ltx 2024-02-09 v0.85c Changes related to the ta
+gging of the title
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-testphase-tit
+le.sty
+Package: latex-lab-testphase-title 2024-02-09 v0.85c Changes related to the tag
+ging of the title
+))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/firstaid-latex-lab-test
+phase.ltx
+File: firstaid-latex-lab-testphase.ltx 2025-01-27 v0.85i latex-lab wrapper firs
+taid
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/latex-lab/latex-lab-testphase-fir
+staid.sty
+Package: latex-lab-testphase-firstaid 2025-01-27 v2025-01-27 Temporary patches 
+to external packages needed for the tagging project
+))
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pdfmanagement-testphase/pdfmanage
+ment-firstaid.sty
+Package: pdfmanagement-firstaid 2025-02-15 v0.96p LaTeX PDF management testphas
+e bundle / firstaid-patches
+
+Package pdfmanagement Info: loading pdfmanagement firstaid code for pgf
+
+)
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/report.cls
 Document Class: report 2024/06/29 v1.4n Standard LaTeX document class
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/size12.clo
 File: size12.clo 2024/06/29 v1.4n Standard LaTeX file (size option)
 )
-\c@part=\count196
-\c@chapter=\count197
-\c@section=\count198
-\c@subsection=\count199
-\c@subsubsection=\count266
-\c@paragraph=\count267
-\c@subparagraph=\count268
-\c@figure=\count269
-\c@table=\count270
-\abovecaptionskip=\skip49
-\belowcaptionskip=\skip50
-\bibindent=\dimen141
+\c@part=\count296
+\c@chapter=\count297
+\c@section=\count298
+\c@subsection=\count299
+\c@subsubsection=\count300
+\c@paragraph=\count301
+\c@subparagraph=\count302
+\c@figure=\count303
+\c@table=\count304
+\abovecaptionskip=\skip58
+\belowcaptionskip=\skip59
+\bibindent=\dimen144
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
-\KV@toks@=\toks17
+\KV@toks@=\toks18
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
@@ -37,19 +377,27 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 (/usr/local/texlive/2025/texmf-dist/tex/generic/iftex/iftex.sty
 Package: iftex 2024/12/12 v1.0g TeX engine tests
 ))
-\Gm@cnth=\count271
-\Gm@cntv=\count272
-\c@Gm@tempcnt=\count273
-\Gm@bindingoffset=\dimen142
-\Gm@wd@mp=\dimen143
-\Gm@odd@mp=\dimen144
-\Gm@even@mp=\dimen145
-\Gm@layoutwidth=\dimen146
-\Gm@layoutheight=\dimen147
-\Gm@layouthoffset=\dimen148
-\Gm@layoutvoffset=\dimen149
-\Gm@dimlist=\toks18
+\Gm@cnth=\count305
+\Gm@cntv=\count306
+\c@Gm@tempcnt=\count307
+\Gm@bindingoffset=\dimen145
+\Gm@wd@mp=\dimen146
+\Gm@odd@mp=\dimen147
+\Gm@even@mp=\dimen148
+\Gm@layoutwidth=\dimen149
+\Gm@layoutheight=\dimen150
+\Gm@layouthoffset=\dimen151
+\Gm@layoutvoffset=\dimen152
+\Gm@dimlist=\toks19
 )
+(/usr/local/texlive/2025/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 11
+6.
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/lm/t1lmr.fd
+File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+))
 (/usr/local/texlive/2025/texmf-dist/tex/latex/psnfss/mathptmx.sty
 Package: mathptmx 2020/03/25 PSNFSS-v9.3 Times w/ Math, improved (SPQR, WaS) 
 LaTeX Font Info:    Redeclaring symbol font `operators' on input line 28.
@@ -88,30 +436,27 @@ LaTeX Info: Redefining \hbar on input line 50.
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/microtype.sty
 Package: microtype 2025/02/11 v3.2a Micro-typographical refinements (RS)
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/etoolbox/etoolbox.sty
-Package: etoolbox 2025/02/11 v2.5l e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count274
-)
-\MT@toks=\toks19
-\MT@tempbox=\box52
-\MT@count=\count275
+\MT@toks=\toks20
+\MT@tempbox=\box62
+\MT@count=\count308
 LaTeX Info: Redefining \noprotrusionifhmode on input line 1087.
 LaTeX Info: Redefining \leftprotrusion on input line 1088.
-\MT@prot@toks=\toks20
+\MT@prot@toks=\toks21
 LaTeX Info: Redefining \rightprotrusion on input line 1107.
 LaTeX Info: Redefining \textls on input line 1449.
-\MT@outer@kern=\dimen150
+\MT@outer@kern=\dimen153
 LaTeX Info: Redefining \microtypecontext on input line 2053.
 LaTeX Info: Redefining \textmicrotypecontext on input line 2070.
-\MT@listname@count=\count276
+\MT@listname@count=\count309
 
-(/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/microtype-pdftex.def
-File: microtype-pdftex.def 2025/02/11 v3.2a Definitions specific to pdftex (RS)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/microtype-luatex.def
+File: microtype-luatex.def 2025/02/11 v3.2a Definitions specific to luatex (RS)
 
-LaTeX Info: Redefining \lsstyle on input line 944.
-LaTeX Info: Redefining \lslig on input line 944.
-\MT@outer@space=\skip51
+Lua module: microtype 2025/02/11 v3.2a microtype module.
+Module microtype Info: overwriting function `keepligature' on input line 63
+LaTeX Info: Redefining \lsstyle on input line 779.
+LaTeX Info: Redefining \lslig on input line 779.
+\MT@outer@space=\skip60
 )
 Package microtype Info: Loading configuration file microtype.cfg.
 
@@ -123,7 +468,9 @@ LaTeX Info: Redefining \microtypesetup on input line 3065.
 (/usr/local/texlive/2025/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2022/12/04 v6.7b set line spacing
 )
-(/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/local/texlive/2025/texmf-dist/tex/latex/newunicodechar/newunicodechar.sty
+Package: newunicodechar 2018/04/08 v1.2 Defining Unicode characters
+) (/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/graphics.sty
@@ -135,17 +482,17 @@ Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
 (/usr/local/texlive/2025/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
-Package graphics Info: Driver file: pdftex.def on input line 106.
+Package graphics Info: Driver file: luatex.def on input line 106.
 
-(/usr/local/texlive/2025/texmf-dist/tex/latex/graphics-def/pdftex.def
-File: pdftex.def 2024/04/13 v1.2c Graphics/color driver for pdftex
+(/usr/local/texlive/2025/texmf-dist/tex/latex/graphics-def/luatex.def
+File: luatex.def 2024/04/13 v1.2e Graphics/color driver for luatex
 ))
-\Gin@req@height=\dimen151
-\Gin@req@width=\dimen152
+\Gin@req@height=\dimen154
+\Gin@req@width=\dimen155
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2024/11/05 v2.17t AMS math features
-\@mathmargin=\skip52
+\@mathmargin=\skip61
 
 For additional information on amsmath, use the `?' option.
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsmath/amstext.sty
@@ -153,61 +500,61 @@ Package: amstext 2021/08/26 v2.01 AMS text
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
-\@emptytoks=\toks21
-\ex@=\dimen153
+\@emptytoks=\toks22
+\ex@=\dimen156
 ))
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
-\pmbraise@=\dimen154
+\pmbraise@=\dimen157
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 2022/04/08 v2.04 operator names
 )
-\inf@bad=\count277
-LaTeX Info: Redefining \frac on input line 233.
-\uproot@=\count278
-\leftroot@=\count279
+\inf@bad=\count310
+LaTeX Info: Redefining \frac on input line 235.
+\uproot@=\count311
+\leftroot@=\count312
 LaTeX Info: Redefining \overline on input line 398.
 LaTeX Info: Redefining \colon on input line 409.
-\classnum@=\count280
-\DOTSCASE@=\count281
+\classnum@=\count313
+\DOTSCASE@=\count314
 LaTeX Info: Redefining \ldots on input line 495.
 LaTeX Info: Redefining \dots on input line 498.
 LaTeX Info: Redefining \cdots on input line 619.
-\Mathstrutbox@=\box53
-\strutbox@=\box54
+\Mathstrutbox@=\box63
+\strutbox@=\box64
 LaTeX Info: Redefining \big on input line 721.
 LaTeX Info: Redefining \Big on input line 722.
 LaTeX Info: Redefining \bigg on input line 723.
 LaTeX Info: Redefining \Bigg on input line 724.
-\big@size=\dimen155
+\big@size=\dimen158
 LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
-\macc@depth=\count282
+\macc@depth=\count315
 LaTeX Info: Redefining \bmod on input line 904.
 LaTeX Info: Redefining \pmod on input line 909.
 LaTeX Info: Redefining \smash on input line 939.
 LaTeX Info: Redefining \relbar on input line 969.
 LaTeX Info: Redefining \Relbar on input line 970.
-\c@MaxMatrixCols=\count283
+\c@MaxMatrixCols=\count316
 \dotsspace@=\muskip17
-\c@parentequation=\count284
-\dspbrk@lvl=\count285
-\tag@help=\toks22
-\row@=\count286
-\column@=\count287
-\maxfields@=\count288
-\andhelp@=\toks23
-\eqnshift@=\dimen156
-\alignsep@=\dimen157
-\tagshift@=\dimen158
-\tagwidth@=\dimen159
-\totwidth@=\dimen160
-\lineht@=\dimen161
-\@envbody=\toks24
-\multlinegap=\skip53
-\multlinetaggap=\skip54
-\mathdisplay@stack=\toks25
+\c@parentequation=\count317
+\dspbrk@lvl=\count318
+\tag@help=\toks23
+\row@=\count319
+\column@=\count320
+\maxfields@=\count321
+\andhelp@=\toks24
+\eqnshift@=\dimen159
+\alignsep@=\dimen160
+\tagshift@=\dimen161
+\tagwidth@=\dimen162
+\totwidth@=\dimen163
+\lineht@=\dimen164
+\@envbody=\toks25
+\multlinegap=\skip62
+\multlinetaggap=\skip63
+\mathdisplay@stack=\toks26
 LaTeX Info: Redefining \[ on input line 2953.
 LaTeX Info: Redefining \] on input line 2954.
 )
@@ -223,99 +570,30 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 ))
 (/usr/local/texlive/2025/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
-\heavyrulewidth=\dimen162
-\lightrulewidth=\dimen163
-\cmidrulewidth=\dimen164
-\belowrulesep=\dimen165
-\belowbottomsep=\dimen166
-\aboverulesep=\dimen167
-\abovetopsep=\dimen168
-\cmidrulesep=\dimen169
-\cmidrulekern=\dimen170
-\defaultaddspace=\dimen171
-\@cmidla=\count289
-\@cmidlb=\count290
-\@aboverulesep=\dimen172
-\@belowrulesep=\dimen173
-\@thisruleclass=\count291
-\@lastruleclass=\count292
-\@thisrulewidth=\dimen174
+\heavyrulewidth=\dimen165
+\lightrulewidth=\dimen166
+\cmidrulewidth=\dimen167
+\belowrulesep=\dimen168
+\belowbottomsep=\dimen169
+\aboverulesep=\dimen170
+\abovetopsep=\dimen171
+\cmidrulesep=\dimen172
+\cmidrulekern=\dimen173
+\defaultaddspace=\dimen174
+\@cmidla=\count322
+\@cmidlb=\count323
+\@aboverulesep=\dimen175
+\@belowrulesep=\dimen176
+\@thisruleclass=\count324
+\@lastruleclass=\count325
+\@thisrulewidth=\dimen177
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/multirow/multirow.sty
 Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
-\multirow@colwidth=\skip55
-\multirow@cntb=\count293
-\multirow@dima=\skip56
-\bigstrutjot=\dimen175
-)
-(/usr/local/texlive/2025/texmf-dist/tex/latex/tools/array.sty
-Package: array 2024/10/17 v2.6g Tabular extension package (FMi)
-\col@sep=\dimen176
-\ar@mcellbox=\box55
-\extrarowheight=\dimen177
-\NC@list=\toks26
-\extratabsurround=\skip57
-\backup@length=\skip58
-\ar@cellbox=\box56
-)
-(/usr/local/texlive/2025/texmf-dist/tex/latex/pdfpages/pdfpages.sty
-Package: pdfpages 2025/01/30 v0.6e Insert pages of external PDF documents (AM)
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/base/ifthen.sty
-Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
-)
-(/usr/local/texlive/2025/texmf-dist/tex/latex/tools/calc.sty
-Package: calc 2023/07/08 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count294
-\calc@Bcount=\count295
-\calc@Adimen=\dimen178
-\calc@Bdimen=\dimen179
-\calc@Askip=\skip59
-\calc@Bskip=\skip60
-LaTeX Info: Redefining \setlength on input line 80.
-LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count296
-\calc@Cskip=\skip61
-)
-(/usr/local/texlive/2025/texmf-dist/tex/latex/eso-pic/eso-pic.sty
-Package: eso-pic 2023/05/03 v3.0c eso-pic (RN)
-\ESO@tempdima=\dimen180
-\ESO@tempdimb=\dimen181
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/xcolor/xcolor.sty
-Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/graphics-cfg/color.cfg
-File: color.cfg 2016/01/02 v1.6 sample color configuration
-)
-Package xcolor Info: Driver file: pdftex.def on input line 274.
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/mathcolor.ltx)
-Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
-Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1353.
-Package xcolor Info: Model `RGB' extended on input line 1365.
-Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1367.
-Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1368.
-Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1369.
-Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1370.
-Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
-Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
-))
-\AM@pagewidth=\dimen182
-\AM@pageheight=\dimen183
-\AM@fboxrule=\dimen184
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/pdfpages/pppdftex.def
-File: pppdftex.def 2025/01/30 v0.6e Pdfpages driver for pdfTeX (AM)
-)
-\pdfpages@includegraphics@status=\count297
-\AM@pagebox=\box57
-\AM@global@opts=\toks27
-\AM@pagecnt=\count298
-\AM@toc@title=\toks28
-\AM@lof@heading=\toks29
-\c@AM@survey=\count299
-\AM@templatesizebox=\box58
+\multirow@colwidth=\skip64
+\multirow@cntb=\count326
+\multirow@dima=\skip65
+\bigstrutjot=\dimen178
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2024-11-05 v7.01l Hypertext links for LaTeX
@@ -342,6 +620,7 @@ Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
+\pdftexcmds@toks=\toks27
 ))
 (/usr/local/texlive/2025/texmf-dist/tex/latex/hycolor/hycolor.sty
 Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
@@ -358,30 +637,26 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
  (/usr/local/texlive/2025/texmf-dist/tex/latex/kvoptions/kvoptions.sty
 Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 ))
-\c@section@level=\count300
+\c@section@level=\count327
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/stringenc/stringenc.sty
 Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
 )
 )
-\@linkdim=\dimen185
-\Hy@linkcounter=\count301
-\Hy@pagecounter=\count302
+\@linkdim=\dimen179
+\Hy@linkcounter=\count328
+\Hy@pagecounter=\count329
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2024-11-05 v7.01l Hyperref: PDFDocEncoding definition (HO)
-Now handling font encoding PD1 ...
-... no UTF-8 mapping file for font encoding PD1
 )
 (/usr/local/texlive/2025/texmf-dist/tex/generic/intcalc/intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
-\Hy@SavedSpaceFactor=\count303
+\Hy@SavedSpaceFactor=\count330
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/hyperref/puenc.def
 File: puenc.def 2024-11-05 v7.01l Hyperref: PDF Unicode definition (HO)
-Now handling font encoding PU ...
-... no UTF-8 mapping file for font encoding PU
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 4040.
 Package hyperref Info: Option `breaklinks' set `true' on input line 4040.
@@ -392,14 +667,14 @@ Package hyperref Info: Plain pages OFF on input line 4172.
 Package hyperref Info: Backreferencing OFF on input line 4177.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4424.
-\c@Hy@tempcnt=\count304
+\c@Hy@tempcnt=\count331
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip18
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4763.
-\XeTeXLinkMargin=\dimen186
+\XeTeXLinkMargin=\dimen180
 
 (/usr/local/texlive/2025/texmf-dist/tex/generic/bitset/bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
@@ -408,9 +683,9 @@ Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
 )
 ))
-\Fld@menulength=\count305
-\Field@Width=\dimen187
-\Fld@charsize=\dimen188
+\Fld@menulength=\count332
+\Field@Width=\dimen181
+\Fld@charsize=\dimen182
 Package hyperref Info: Hyper figures OFF on input line 6042.
 Package hyperref Info: Link nesting OFF on input line 6047.
 Package hyperref Info: Hyper index ON on input line 6050.
@@ -423,34 +698,33 @@ Package hyperref Info: PDF/A mode OFF on input line 6072.
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
 )
-\Hy@abspage=\count306
-\c@Item=\count307
-\c@Hfootnote=\count308
+\Hy@abspage=\count333
+\c@Item=\count334
 )
-Package hyperref Info: Driver (autodetected): hpdftex.
+Package hyperref Info: Driver (custom): hgeneric-testphase.
 
-(/usr/local/texlive/2025/texmf-dist/tex/latex/hyperref/hpdftex.def
-File: hpdftex.def 2024-11-05 v7.01l Hyperref driver for pdfTeX
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pdfmanagement-testphase/hgeneric-
+testphase.def
+File: hgeneric-testphase.def 2025-02-15 v0.96p generic Hyperref driver for the 
+LaTeX PDF management testphase bundle
 
-(/usr/local/texlive/2025/texmf-dist/tex/latex/base/atveryend-ltx.sty
-Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
-kage
-with kernel methods
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pdfmanagement-testphase/hyperref-
+colorschemes.def)
+LaTeX Info: Redefining \href on input line 275.
+LaTeX Info: Redefining \url on input line 361.
+\l__hyp_tmpa_box=\box65
+\l__hyp_tmpa_int=\count335
+\l__hyp_dest_box=\box66
+\g__hyp_linknestlevel_int=\count336
+\HyAnn@Count=\count337
+\Fld@listcount=\count338
+\Hy@SectionHShift=\skip66
+LaTeX Info: Redefining \Hy__hypSectionAnchor on input line 3559.
+) (./ucsf-accessibility.sty
+Package: ucsf-accessibility 2026/11/24 Tagged PDF/UA-1 helpers for UCSF dissert
+ations
 )
-\Fld@listcount=\count309
-\c@bookmark@seq@number=\count310
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
-Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
-
-(/usr/local/texlive/2025/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
-Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
-)
-Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
-85.
-)
-\Hy@SectionHShift=\skip62
-) (/usr/local/texlive/2025/texmf-dist/tex/latex/cleveref/cleveref.sty
+(/usr/local/texlive/2025/texmf-dist/tex/latex/cleveref/cleveref.sty
 Package: cleveref 2018/03/27 v0.21.4 Intelligent cross-referencing
 Package cleveref Info: `hyperref' support loaded on input line 2370.
 LaTeX Info: Redefining \cref on input line 2370.
@@ -478,68 +752,71 @@ Package: biblatex 2024/03/21 v3.20 programmable bibliographies (PK/MW)
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/logreq/logreq.sty
 Package: logreq 2010/08/04 v1.0 xml request logger
-\lrq@indent=\count311
+\lrq@indent=\count339
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/logreq/logreq.def
 File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
 ))
-\c@tabx@nest=\count312
-\c@listtotal=\count313
-\c@listcount=\count314
-\c@liststart=\count315
-\c@liststop=\count316
-\c@citecount=\count317
-\c@citetotal=\count318
-\c@multicitecount=\count319
-\c@multicitetotal=\count320
-\c@instcount=\count321
-\c@maxnames=\count322
-\c@minnames=\count323
-\c@maxitems=\count324
-\c@minitems=\count325
-\c@citecounter=\count326
-\c@maxcitecounter=\count327
-\c@savedcitecounter=\count328
-\c@uniquelist=\count329
-\c@uniquename=\count330
-\c@refsection=\count331
-\c@refsegment=\count332
-\c@maxextratitle=\count333
-\c@maxextratitleyear=\count334
-\c@maxextraname=\count335
-\c@maxextradate=\count336
-\c@maxextraalpha=\count337
-\c@abbrvpenalty=\count338
-\c@highnamepenalty=\count339
-\c@lownamepenalty=\count340
-\c@maxparens=\count341
-\c@parenlevel=\count342
-\blx@tempcnta=\count343
-\blx@tempcntb=\count344
-\blx@tempcntc=\count345
-\c@blx@maxsection=\count346
-\blx@maxsegment@0=\count347
-\blx@notetype=\count348
-\blx@parenlevel@text=\count349
-\blx@parenlevel@foot=\count350
-\blx@sectionciteorder@0=\count351
-\blx@sectionciteorderinternal@0=\count352
-\blx@entrysetcounter=\count353
-\blx@biblioinstance=\count354
-\labelnumberwidth=\skip63
-\labelalphawidth=\skip64
-\biblabelsep=\skip65
-\bibitemsep=\skip66
-\bibnamesep=\skip67
-\bibinitsep=\skip68
-\bibparsep=\skip69
-\bibhang=\skip70
+(/usr/local/texlive/2025/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
+)
+\c@tabx@nest=\count340
+\c@listtotal=\count341
+\c@listcount=\count342
+\c@liststart=\count343
+\c@liststop=\count344
+\c@citecount=\count345
+\c@citetotal=\count346
+\c@multicitecount=\count347
+\c@multicitetotal=\count348
+\c@instcount=\count349
+\c@maxnames=\count350
+\c@minnames=\count351
+\c@maxitems=\count352
+\c@minitems=\count353
+\c@citecounter=\count354
+\c@maxcitecounter=\count355
+\c@savedcitecounter=\count356
+\c@uniquelist=\count357
+\c@uniquename=\count358
+\c@refsection=\count359
+\c@refsegment=\count360
+\c@maxextratitle=\count361
+\c@maxextratitleyear=\count362
+\c@maxextraname=\count363
+\c@maxextradate=\count364
+\c@maxextraalpha=\count365
+\c@abbrvpenalty=\count366
+\c@highnamepenalty=\count367
+\c@lownamepenalty=\count368
+\c@maxparens=\count369
+\c@parenlevel=\count370
+\blx@tempcnta=\count371
+\blx@tempcntb=\count372
+\blx@tempcntc=\count373
+\c@blx@maxsection=\count374
+\blx@maxsegment@0=\count375
+\blx@notetype=\count376
+\blx@parenlevel@text=\count377
+\blx@parenlevel@foot=\count378
+\blx@sectionciteorder@0=\count379
+\blx@sectionciteorderinternal@0=\count380
+\blx@entrysetcounter=\count381
+\blx@biblioinstance=\count382
+\labelnumberwidth=\skip67
+\labelalphawidth=\skip68
+\biblabelsep=\skip69
+\bibitemsep=\skip70
+\bibnamesep=\skip71
+\bibinitsep=\skip72
+\bibparsep=\skip73
+\bibhang=\skip74
 \blx@bcfin=\read2
 \blx@bcfout=\write3
-\blx@langwohyphens=\language90
-\c@mincomprange=\count355
-\c@maxcomprange=\count356
-\c@mincompwidth=\count357
+\blx@langwohyphens=\language2
+\c@mincomprange=\count383
+\c@maxcomprange=\count384
+\c@mincompwidth=\count385
 Package biblatex Info: Trying to load biblatex default data model...
 Package biblatex Info: ... file 'blx-dm.def' found.
 
@@ -550,88 +827,92 @@ Package biblatex Info: Trying to load biblatex style data model...
 Package biblatex Info: ... file 'numeric-comp.dbx' not found.
 Package biblatex Info: Trying to load biblatex custom data model...
 Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
-\c@afterword=\count358
-\c@savedafterword=\count359
-\c@annotator=\count360
-\c@savedannotator=\count361
-\c@author=\count362
-\c@savedauthor=\count363
-\c@bookauthor=\count364
-\c@savedbookauthor=\count365
-\c@commentator=\count366
-\c@savedcommentator=\count367
-\c@editor=\count368
-\c@savededitor=\count369
-\c@editora=\count370
-\c@savededitora=\count371
-\c@editorb=\count372
-\c@savededitorb=\count373
-\c@editorc=\count374
-\c@savededitorc=\count375
-\c@foreword=\count376
-\c@savedforeword=\count377
-\c@holder=\count378
-\c@savedholder=\count379
-\c@introduction=\count380
-\c@savedintroduction=\count381
-\c@namea=\count382
-\c@savednamea=\count383
-\c@nameb=\count384
-\c@savednameb=\count385
-\c@namec=\count386
-\c@savednamec=\count387
-\c@translator=\count388
-\c@savedtranslator=\count389
-\c@shortauthor=\count390
-\c@savedshortauthor=\count391
-\c@shorteditor=\count392
-\c@savedshorteditor=\count393
-\c@labelname=\count394
-\c@savedlabelname=\count395
-\c@institution=\count396
-\c@savedinstitution=\count397
-\c@lista=\count398
-\c@savedlista=\count399
-\c@listb=\count400
-\c@savedlistb=\count401
-\c@listc=\count402
-\c@savedlistc=\count403
-\c@listd=\count404
-\c@savedlistd=\count405
-\c@liste=\count406
-\c@savedliste=\count407
-\c@listf=\count408
-\c@savedlistf=\count409
-\c@location=\count410
-\c@savedlocation=\count411
-\c@organization=\count412
-\c@savedorganization=\count413
-\c@origlocation=\count414
-\c@savedoriglocation=\count415
-\c@origpublisher=\count416
-\c@savedorigpublisher=\count417
-\c@publisher=\count418
-\c@savedpublisher=\count419
-\c@language=\count420
-\c@savedlanguage=\count421
-\c@origlanguage=\count422
-\c@savedoriglanguage=\count423
-\c@pageref=\count424
-\c@savedpageref=\count425
-\shorthandwidth=\skip71
-\shortjournalwidth=\skip72
-\shortserieswidth=\skip73
-\shorttitlewidth=\skip74
-\shortauthorwidth=\skip75
-\shorteditorwidth=\skip76
-\locallabelnumberwidth=\skip77
-\locallabelalphawidth=\skip78
-\localshorthandwidth=\skip79
-\localshortjournalwidth=\skip80
-\localshortserieswidth=\skip81
-\localshorttitlewidth=\skip82
-\localshortauthorwidth=\skip83
-\localshorteditorwidth=\skip84
+\c@afterword=\count386
+\c@savedafterword=\count387
+\c@annotator=\count388
+\c@savedannotator=\count389
+\c@author=\count390
+\c@savedauthor=\count391
+\c@bookauthor=\count392
+\c@savedbookauthor=\count393
+\c@commentator=\count394
+\c@savedcommentator=\count395
+\c@editor=\count396
+\c@savededitor=\count397
+\c@editora=\count398
+\c@savededitora=\count399
+\c@editorb=\count400
+\c@savededitorb=\count401
+\c@editorc=\count402
+\c@savededitorc=\count403
+\c@foreword=\count404
+\c@savedforeword=\count405
+\c@holder=\count406
+\c@savedholder=\count407
+\c@introduction=\count408
+\c@savedintroduction=\count409
+\c@namea=\count410
+\c@savednamea=\count411
+\c@nameb=\count412
+\c@savednameb=\count413
+\c@namec=\count414
+\c@savednamec=\count415
+\c@translator=\count416
+\c@savedtranslator=\count417
+\c@shortauthor=\count418
+\c@savedshortauthor=\count419
+\c@shorteditor=\count420
+\c@savedshorteditor=\count421
+\c@labelname=\count422
+\c@savedlabelname=\count423
+\c@institution=\count424
+\c@savedinstitution=\count425
+\c@lista=\count426
+\c@savedlista=\count427
+\c@listb=\count428
+\c@savedlistb=\count429
+\c@listc=\count430
+\c@savedlistc=\count431
+\c@listd=\count432
+\c@savedlistd=\count433
+\c@liste=\count434
+\c@savedliste=\count435
+\c@listf=\count436
+\c@savedlistf=\count437
+\c@location=\count438
+\c@savedlocation=\count439
+\c@organization=\count440
+\c@savedorganization=\count441
+\c@origlocation=\count442
+\c@savedoriglocation=\count443
+\c@origpublisher=\count444
+\c@savedorigpublisher=\count445
+\c@publisher=\count446
+\c@savedpublisher=\count447
+\c@language=\count448
+\c@savedlanguage=\count449
+\c@origlanguage=\count450
+\c@savedoriglanguage=\count451
+\c@pageref=\count452
+\c@savedpageref=\count453
+\shorthandwidth=\skip75
+\shortjournalwidth=\skip76
+\shortserieswidth=\skip77
+\shorttitlewidth=\skip78
+\shortauthorwidth=\skip79
+\shorteditorwidth=\skip80
+\locallabelnumberwidth=\skip81
+\locallabelalphawidth=\skip82
+\localshorthandwidth=\skip83
+\localshortjournalwidth=\skip84
+\localshortserieswidth=\skip85
+\localshorttitlewidth=\skip86
+\localshortauthorwidth=\skip87
+\localshorteditorwidth=\skip88
+Package biblatex Info: Trying to load enhanced support for Unicode engines...
+Package biblatex Info: ... file 'blx-unicode.def' found.
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/biblatex/blx-unicode.def)
 Package biblatex Info: Trying to load compatibility code...
 Package biblatex Info: ... file 'blx-compat.def' found.
 
@@ -643,19 +924,19 @@ Package biblatex Info: ... file 'biblatex.def' found.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/biblatex/biblatex.def
 File: biblatex.def 2024/03/21 v3.20 biblatex compatibility (PK/MW)
-\c@textcitecount=\count426
-\c@textcitetotal=\count427
-\c@textcitemaxnames=\count428
-\c@biburlbigbreakpenalty=\count429
-\c@biburlbreakpenalty=\count430
-\c@biburlnumpenalty=\count431
-\c@biburlucpenalty=\count432
-\c@biburllcpenalty=\count433
+\c@textcitecount=\count454
+\c@textcitetotal=\count455
+\c@textcitemaxnames=\count456
+\c@biburlbigbreakpenalty=\count457
+\c@biburlbreakpenalty=\count458
+\c@biburlnumpenalty=\count459
+\c@biburlucpenalty=\count460
+\c@biburllcpenalty=\count461
 \biburlbigskip=\muskip19
 \biburlnumskip=\muskip20
 \biburlucskip=\muskip21
 \biburllcskip=\muskip22
-\c@smartand=\count434
+\c@smartand=\count462
 )
 Package biblatex Info: Trying to load natbib compatibility...
 Package biblatex Info: ... file 'blx-natbib.def' found.
@@ -680,18 +961,18 @@ Package biblatex Info: ... file 'standard.bbx' found.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
 File: standard.bbx 2024/03/21 v3.20 biblatex bibliography style (PK/MW)
-\c@bbx:relatedcount=\count435
-\c@bbx:relatedtotal=\count436
+\c@bbx:relatedcount=\count463
+\c@bbx:relatedtotal=\count464
 )))
 Package biblatex Info: Trying to load citation style 'numeric-comp'...
 Package biblatex Info: ... file 'numeric-comp.cbx' found.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/biblatex/cbx/numeric-comp.cbx
 File: numeric-comp.cbx 2024/03/21 v3.20 biblatex citation style (PK/MW)
-\c@cbx@tempcnta=\count437
-\c@cbx@tempcntb=\count438
-\c@cbx@tempcntc=\count439
-\c@cbx@tempcntd=\count440
+\c@cbx@tempcnta=\count465
+\c@cbx@tempcntb=\count466
+\c@cbx@tempcntc=\count467
+\c@cbx@tempcntd=\count468
 Package biblatex Info: Redefining '\cite'.
 Package biblatex Info: Redefining '\parencite'.
 Package biblatex Info: Redefining '\footcite'.
@@ -710,17 +991,9 @@ Package biblatex Info: ... file 'biblatex.cfg' found.
 (/usr/local/texlive/2025/texmf-dist/tex/latex/biblatex/biblatex.cfg
 File: biblatex.cfg 
 )
-Package biblatex Info: Input encoding 'utf8' detected.
+Package biblatex Info: LuaTeX detected.
+(biblatex)             Assuming input encoding 'utf8'.
 Package biblatex Info: Document encoding is UTF8 ....
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2025-01-18 L3 programming layer (loader) 
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count441
-\l__pdf_internal_box=\box59
-))
 Package biblatex Info: ... and expl3
 (biblatex)             2025-01-18 L3 programming layer (loader) 
 (biblatex)             is new enough (at least 2020/04/06),
@@ -734,88 +1007,113 @@ Package: blx-case-expl3 2024/03/21 v3.20 expl3 case changing code for biblatex
 ))
 (/usr/local/texlive/2025/texmf-dist/tex/latex/titlesec/titlesec.sty
 Package: titlesec 2025/01/04 v2.17 Sectioning titles
-\ttl@box=\box60
-\beforetitleunit=\skip85
-\aftertitleunit=\skip86
-\ttl@plus=\dimen189
-\ttl@minus=\dimen190
-\ttl@toksa=\toks30
-\titlewidth=\dimen191
-\titlewidthlast=\dimen192
-\titlewidthfirst=\dimen193
+\ttl@box=\box67
+\beforetitleunit=\skip89
+\aftertitleunit=\skip90
+\ttl@plus=\dimen183
+\ttl@minus=\dimen184
+\ttl@toksa=\toks28
+\titlewidth=\dimen185
+\titlewidthlast=\dimen186
+\titlewidthfirst=\dimen187
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/caption/caption.sty
 Package: caption 2023/08/05 v3.6o Customizing captions (AR)
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/caption/caption3.sty
 Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
-\caption@tempdima=\dimen194
-\captionmargin=\dimen195
-\caption@leftmargin=\dimen196
-\caption@rightmargin=\dimen197
-\caption@width=\dimen198
-\caption@indent=\dimen199
-\caption@parindent=\dimen256
-\caption@hangindent=\dimen257
+\caption@tempdima=\dimen188
+\captionmargin=\dimen189
+\caption@leftmargin=\dimen190
+\caption@rightmargin=\dimen191
+\caption@width=\dimen192
+\caption@indent=\dimen193
+\caption@parindent=\dimen194
+\caption@hangindent=\dimen195
 Package caption Info: Standard document class detected.
 )
-\c@caption@flags=\count442
-\c@continuedfloat=\count443
+\c@caption@flags=\count469
+\c@continuedfloat=\count470
 Package caption Info: hyperref package is loaded.
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
 Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
 
-\f@nch@headwidth=\skip87
-\f@nch@offset@elh=\skip88
-\f@nch@offset@erh=\skip89
-\f@nch@offset@olh=\skip90
-\f@nch@offset@orh=\skip91
-\f@nch@offset@elf=\skip92
-\f@nch@offset@erf=\skip93
-\f@nch@offset@olf=\skip94
-\f@nch@offset@orf=\skip95
-\f@nch@height=\skip96
-\f@nch@footalignment=\skip97
-\f@nch@widthL=\skip98
-\f@nch@widthC=\skip99
-\f@nch@widthR=\skip100
-\@temptokenb=\toks31
+\f@nch@headwidth=\skip91
+\f@nch@offset@elh=\skip92
+\f@nch@offset@erh=\skip93
+\f@nch@offset@olh=\skip94
+\f@nch@offset@orh=\skip95
+\f@nch@offset@elf=\skip96
+\f@nch@offset@erf=\skip97
+\f@nch@offset@olf=\skip98
+\f@nch@offset@orf=\skip99
+\f@nch@height=\skip100
+\f@nch@footalignment=\skip101
+\f@nch@widthL=\skip102
+\f@nch@widthC=\skip103
+\f@nch@widthR=\skip104
+\@temptokenb=\toks29
 )
-\@quotelevel=\count444
-\@quotereset=\count445
-LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 1
-09.
 
-(/usr/local/texlive/2025/texmf-dist/tex/latex/psnfss/ot1ptm.fd
-File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+Package tagpdf Warning: The package unicode-math is missing
+(tagpdf)                luamml will not create an MathML file.
+(tagpdf)                To avoid this warning load unicode-math 
+(tagpdf)                or disable luamml with 
+(tagpdf)                \tagpdfsetup {math/mathml/luamml/load=false}
+(tagpdf)                or force luamml with 
+(tagpdf)                \tagpdfsetup {math/mathml/luamml/load=true}
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/bookmark/bookmark.sty
+Package: bookmark 2023-12-10 v1.31 PDF bookmarks (HO)
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
+File: bkm-pdftex.def 2023-12-10 v1.31 bookmark driver for pdfTeX and luaTeX (HO
+)
+\BKM@id=\count471
+))
+
+Package biblatex Warning: Patching footnotes failed.
+(biblatex)                Footnote detection will not work.
+
+\@quotelevel=\count472
+\@quotereset=\count473
+LaTeX Font Info:    Trying to load font information for T1+ptm on input line 15
+9.
+(/usr/local/texlive/2025/texmf-dist/tex/latex/psnfss/t1ptm.fd
+File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 )
 (./synthetic_master.aux)
-\openout1 = `synthetic_master.aux'.
+\openout1 = synthetic_master.aux
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
-
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+Inserting `tagpdf' in `pre_shipout_filter'.
+Inserting `tagpdf' in `pre_shipout_filter'.
+Info: mathml file synthetic_master-mathml does not exist
+Info: mathml file synthetic_master-luamml-mathml does not exist
 *geometry* driver: auto-detecting
-*geometry* detected driver: pdftex
+*geometry* detected driver: luatex
 *geometry* verbose mode - [ preamble ] result:
-* driver: pdftex
+* driver: luatex
 * paper: letterpaper
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
@@ -846,39 +1144,39 @@ LaTeX Font Info:    ... okay on input line 109.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \microtypecontext on input line 109.
-Package microtype Info: Applying patch `item' on input line 109.
-Package microtype Info: Applying patch `toc' on input line 109.
-Package microtype Info: Applying patch `eqnum' on input line 109.
-Package microtype Info: Applying patch `footnote' on input line 109.
-Package microtype Info: Applying patch `verbatim' on input line 109.
-LaTeX Info: Redefining \microtypesetup on input line 109.
+LaTeX Info: Redefining \microtypecontext on input line 159.
+Package microtype Info: Applying patch `item' on input line 159.
+Package microtype Info: Applying patch `toc' on input line 159.
+Package microtype Info: Applying patch `eqnum' on input line 159.
+Package microtype Info: Applying patch `footnote' on input line 159.
+Package microtype Info: Applying patch `verbatim' on input line 159.
+LaTeX Info: Redefining \microtypesetup on input line 159.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 109.
+LaTeX Info: Redefining \showhyphens on input line 159.
 Package microtype Info: No adjustment of tracking.
-Package microtype Info: No adjustment of interword spacing.
-Package microtype Info: No adjustment of character kerning.
+Package microtype Info: No adjustment of spacing.
+Package microtype Info: No adjustment of kerning.
 (/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-ptm.cfg
 File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
 )
 (/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count446
-\scratchdimen=\dimen258
-\scratchbox=\box61
-\nofMPsegments=\count447
-\nofMParguments=\count448
-\everyMPshowfont=\toks32
-\MPscratchCnt=\count449
-\MPscratchDim=\dimen259
-\MPnumerator=\count450
-\makeMPintoPDFobject=\count451
-\everyMPtoPDFconversion=\toks33
+\scratchcounter=\count474
+\scratchdimen=\dimen196
+\scratchbox=\box68
+\nofMPsegments=\count475
+\nofMParguments=\count476
+\everyMPshowfont=\toks30
+\MPscratchCnt=\count477
+\MPscratchDim=\dimen197
+\MPnumerator=\count478
+\makeMPintoPDFobject=\count479
+\everyMPtoPDFconversion=\toks31
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -888,78 +1186,54 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-(/usr/local/texlive/2025/texmf-dist/tex/latex/pdflscape/pdflscape.sty
-Package: pdflscape 2022-10-27 v0.13 Display of landscape pages in PDF
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.st
-y
-Package: pdflscape-nometadata 2022-10-28 v0.13 Display of landscape pages in PD
-F (HO)
- (/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/lscape.sty
-Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/pdfmanagement-testphase/color-ltx
+.sty
+Package: color-ltx 2025-02-15 v0.96p Standard LaTeX Color (patched for l3color,
+ part of pdfmanagement-testphase, original version 2022/01/06 v1.3d) (DPC)
+ (/usr/local/texlive/2025/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
-Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
-))
-Package hyperref Info: Link coloring ON on input line 109.
+Package color Info: Driver file: luatex.def on input line 165.
 
-(./synthetic_master.out) (./synthetic_master.out)
-\@outlinefile=\write4
-\openout4 = `synthetic_master.out'.
-
+(/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+Package hyperref Info: Link coloring ON on input line 159.
 Package biblatex Info: Trying to load language 'english'...
 Package biblatex Info: ... file 'english.lbx' found.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/biblatex/lbx/english.lbx
 File: english.lbx 2024/03/21 v3.20 biblatex localization (PK/MW)
 )
-Package biblatex Info: Input encoding 'utf8' detected.
+Package biblatex Info: LuaTeX detected.
+(biblatex)             Assuming input encoding 'utf8'.
 Package biblatex Info: Automatic encoding selection.
 (biblatex)             Assuming data encoding 'utf8'.
-\openout3 = `synthetic_master.bcf'.
 
+\openout3 = synthetic_master.bcf
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'synthetic_master.bbl' found.
 
 (./synthetic_master.bbl)
-Package biblatex Info: Reference section=0 on input line 109.
-Package biblatex Info: Reference segment=0 on input line 109.
+Package biblatex Info: Reference section=0 on input line 159.
+Package biblatex Info: Reference segment=0 on input line 159.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-<Title_Page.pdf, id=44, 614.295pt x 794.97pt>
-File: Title_Page.pdf Graphic file (type pdf)
-<use Title_Page.pdf>
-Package pdftex.def Info: Title_Page.pdf  used on input line 117.
-(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
-<Title_Page.pdf, id=46, page=1, 614.295pt x 794.97pt>
-File: Title_Page.pdf Graphic file (type pdf)
-<use Title_Page.pdf, page 1>
-Package pdftex.def Info: Title_Page.pdf , page1 used on input line 117.
-(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
-File: Title_Page.pdf Graphic file (type pdf)
-<use Title_Page.pdf, page 1>
-Package pdftex.def Info: Title_Page.pdf , page1 used on input line 117.
-(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
-File: Title_Page.pdf Graphic file (type pdf)
-<use Title_Page.pdf, page 1>
-Package pdftex.def Info: Title_Page.pdf , page1 used on input line 117.
-(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
-File: Title_Page.pdf Graphic file (type pdf)
-<use Title_Page.pdf, page 1>
-Package pdftex.def Info: Title_Page.pdf , page1 used on input line 117.
-(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+
+PDF/UA-1 detected. Enabling alt text on Formula
 
 
-File: Title_Page.pdf Graphic file (type pdf)
+<Title_Page.pdf, id=13, page=1, 614.295pt x 794.97pt>
+File: Title_Page.pdf Graphicfile(typepdf)
 <use Title_Page.pdf, page 1>
-Package pdftex.def Info: Title_Page.pdf , page1 used on input line 117.
-(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+Package luatex.def Info: Title_Page.pdf , page1 used on input line 167.
+(luatex.def)             Requested size: 614.33098pt x 794.99231pt.
 [1
 
 
- <./Title_Page.pdf{/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pd
-ftex.map}>]
+<./Title_Page.pdf>]
 
-[2{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc}]
+[2
+
+{/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
 [3
 
@@ -1013,6 +1287,12 @@ LaTeX Font Info:    Trying to load font information for OMX+ztmcm on input line
 (/usr/local/texlive/2025/texmf-dist/tex/latex/psnfss/omxztmcm.fd
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
+LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 2
+.
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 2.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
@@ -1026,27 +1306,27 @@ File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 (/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ))
-\tf@toc=\write5
-\openout5 = `synthetic_master.toc'.
+\tf@toc=\write4
 
+\openout4 = synthetic_master.toc
 
 
 [8
 
 
 ] (./synthetic_master.lof)
-\tf@lof=\write6
-\openout6 = `synthetic_master.lof'.
+\tf@lof=\write5
 
+\openout5 = synthetic_master.lof
 
 
 [9
 
 
 ] (./synthetic_master.lot)
-\tf@lot=\write7
-\openout7 = `synthetic_master.lot'.
+\tf@lot=\write6
 
+\openout6 = synthetic_master.lot
 
 
 [10
@@ -1064,9 +1344,13 @@ Chapter 1.
 [1
 
 
-])
+]
+Floatstructure:186
+)
 
 [2]
+Floatstructure:227
+
 
 [3
 
@@ -1078,8 +1362,13 @@ Chapter 2.
 
 
 ]
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
+79.
+ (/usr/local/texlive/2025/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
 Package microtype Info: Loading generic protrusion settings for font family
-(microtype)             `cmtt' (encoding: OT1).
+(microtype)             `lmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
@@ -1088,69 +1377,71 @@ Package microtype Info: Loading generic protrusion settings for font family
 
 
 ]
-<publishing_agreement.pdf, id=185, 614.295pt x 794.97pt>
-File: publishing_agreement.pdf Graphic file (type pdf)
-<use publishing_agreement.pdf>
-Package pdftex.def Info: publishing_agreement.pdf  used on input line 235.
-(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
-<publishing_agreement.pdf, id=187, page=1, 614.295pt x 794.97pt>
-File: publishing_agreement.pdf Graphic file (type pdf)
-<use publishing_agreement.pdf, page 1>
-Package pdftex.def Info: publishing_agreement.pdf , page1 used on input line 23
-5.
-(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
-File: publishing_agreement.pdf Graphic file (type pdf)
-<use publishing_agreement.pdf, page 1>
-Package pdftex.def Info: publishing_agreement.pdf , page1 used on input line 23
-5.
-(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
-File: publishing_agreement.pdf Graphic file (type pdf)
-<use publishing_agreement.pdf, page 1>
-Package pdftex.def Info: publishing_agreement.pdf , page1 used on input line 23
-5.
-(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
-File: publishing_agreement.pdf Graphic file (type pdf)
-<use publishing_agreement.pdf, page 1>
-Package pdftex.def Info: publishing_agreement.pdf , page1 used on input line 23
-5.
-(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
 
-
-File: publishing_agreement.pdf Graphic file (type pdf)
+<publishing_agreement.pdf, id=590, page=1, 614.295pt x 794.97pt>
+File: publishing_agreement.pdf Graphicfile(typepdf)
 <use publishing_agreement.pdf, page 1>
-Package pdftex.def Info: publishing_agreement.pdf , page1 used on input line 23
+Package luatex.def Info: publishing_agreement.pdf , page1 used on input line 28
 5.
-(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+(luatex.def)             Requested size: 614.33098pt x 794.99231pt.
 [6
 
 
- <./publishing_agreement.pdf>] (./synthetic_master.aux)
+<./publishing_agreement.pdf>] (./synthetic_master.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-Package rerunfilecheck Info: File `synthetic_master.out' has not changed.
-(rerunfilecheck)             Checksum: 36F893257D265021B714D1EB6D14CC31;2876.
-Package logreq Info: Writing requests to 'synthetic_master.run.xml'.
-\openout1 = `synthetic_master.run.xml'.
+<<latex-list-css.html>><<latex-align-css.html>>
 
- ) 
-Here is how much of TeX's memory you used:
- 24987 strings out of 473190
- 443341 string characters out of 5715801
- 1299301 words of memory out of 5000000
- 47752 multiletter control sequences out of 15000+600000
- 589124 words of font info for 171 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 75i,17n,104p,1013b,1334s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb
-></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/loc
-al/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive
-/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on synthetic_master.pdf (17 pages, 85690 bytes).
-PDF statistics:
- 237 PDF objects out of 1000 (max. 8388607)
- 197 compressed objects within 2 object streams
- 47 named destinations out of 1000 (max. 500000)
- 49263 words of extra memory for PDF output out of 51595 (max. 10000000)
+Package tagpdf Info: Finalizing the tagging structure:
+(tagpdf)             Writing out ~328 structure objects
+(tagpdf)             with ~293 'MC' leaf nodes.
+(tagpdf)             Be patient if there are lots of objects!
+
+Package tagpdf Info: writing ParentTree
+Package tagpdf Info: writing IDTree
+Package tagpdf Info: writing RoleMap
+Package tagpdf Info: writing ClassMap
+Package tagpdf Info: writing NameSpaces
+Package tagpdf Info: writing StructElems
+
+Package tagpdf Warning: Destination 'figure.caption.11' has no related
+(tagpdf)                structure.
+(tagpdf)                /Ref not updated.
+
+
+Package tagpdf Warning: Destination 'table.caption.10' has no related
+(tagpdf)                structure.
+(tagpdf)                /Ref not updated.
+
+Package tagpdf Info: writing Root
+Package logreq Info: Writing requests to 'synthetic_master.run.xml'.
+
+\openout1 = synthetic_master.run.xml
+)
+
+Here is how much of LuaTeX's memory you used:
+ 31436 strings out of 475506
+ 125297,1648299 words of node,token memory allocated
+ 1321 words of node memory still in use:
+   8 hlist, 2 vlist, 2 rule, 1 local_par, 5 glue, 63 kern, 1 penalty, 4 glyph, 1
+35 attribute, 74 glue_spec, 51 attribute_list, 2 write, 2 pdf_action nodes
+   avail lists: 1:1,2:2174,3:596,4:91,5:154,6:41,7:4052,8:30,9:245,10:8,11:384
+ 53608 multiletter control sequences out of 65536+600000
+ 93 fonts using 6144615 bytes
+ 73i,11n,107p,1598b,1337s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/tex
+live/2025/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2025/texmf-
+dist/fonts/opentype/public/lm/lmroman10-regular.otf></usr/local/texlive/2025/tex
+mf-dist/fonts/type1/public/lm/lmtt12.pfb></usr/local/texlive/2025/texmf-dist/fon
+ts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/ur
+w/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utm
+ri8a.pfb>
+Output written on synthetic_master.pdf (17 pages, 251329 bytes).
+
+PDF statistics: 691 PDF objects out of 1000 (max. 8388607)
+ 224 compressed objects within 3 object streams
+ 57 named destinations out of 1000 (max. 131072)
+ 1976 words of extra memory for PDF output out of 10000 (max. 100000000)
 

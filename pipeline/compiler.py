@@ -2,7 +2,8 @@
 pipeline.compiler
 =================
 Automated LaTeX compiler & log analyzer.
-Compiles the master dissertation using `latexmk` or `pdflatex` + `biber`,
+Compiles the master dissertation using `latexmk -lualatex` or `lualatex` + `biber`
+(LuaLaTeX: the tagged, accessible PDF that ProQuest requires cannot be built with pdfLaTeX),
 parses logs for warnings, overfull hboxes, missing fonts, and undefined citations.
 """
 
@@ -47,9 +48,9 @@ class LatexCompiler:
             )
 
         if use_latexmk:
-            cmd = ["latexmk", "-pdf", "-interaction=nonstopmode", self.tex_filename]
+            cmd = ["latexmk", "-lualatex", "-interaction=nonstopmode", self.tex_filename]
         else:
-            cmd = ["pdflatex", "-interaction=nonstopmode", self.tex_filename]
+            cmd = ["lualatex", "-interaction=nonstopmode", self.tex_filename]
 
         try:
             proc = subprocess.run(

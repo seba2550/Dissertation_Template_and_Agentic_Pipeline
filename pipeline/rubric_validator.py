@@ -10,6 +10,7 @@ Zero external dependencies: uses Python standard library only.
 
 import os
 import re
+import unicodedata
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Set, Tuple, Any
 
@@ -209,6 +210,7 @@ class RubricValidator:
         self._check_references_formatting(report)
         self._check_electronic_publishing_spec(report)
         self._check_fonts_embedded(report)
+        self._check_pdf_accessibility(report)
 
         # Compilation log checks (citations, overfull hboxes)
         self._check_compilation_log(report)
@@ -383,7 +385,7 @@ class RubricValidator:
         details = ""
         search_target = self.full_body or self.body
 
-        has_title_page = bool(re.search(r'Title_Page|titlepage|\\maketitle|\\includepdf(?:\s*\[[^\]]*\])?\s*\{[^}]*[Tt]itle[^}]*\}', search_target, re.IGNORECASE | re.DOTALL))
+        has_title_page = bool(re.search(r'Title_Page|titlepage|\\maketitle|\\(?:includepdf|FullPagePDF)(?:\s*\[[^\]]*\])?\s*\{[^}]*[Tt]itle[^}]*\}', search_target, re.IGNORECASE | re.DOTALL))
         sets_page_2 = bool(re.search(r'\\setcounter\{page\}\{2\}', search_target))
 
         if has_title_page and sets_page_2:
@@ -523,7 +525,7 @@ class RubricValidator:
         details = ""
         search_target = self.full_body or self.body
 
-        pub_match = re.search(r'\\includepdf(?:\s*\[[^\]]*\])?\s*\{[^}]*(?:publishing_agreement|Publishing_Agreement|release)[^}]*\}', search_target, re.IGNORECASE | re.DOTALL)
+        pub_match = re.search(r'\\(?:includepdf|FullPagePDF)(?:\s*\[[^\]]*\])?\s*\{[^}]*(?:publishing_agreement|Publishing_Agreement|release)[^}]*\}', search_target, re.IGNORECASE | re.DOTALL)
         if pub_match:
             after_text = search_target[pub_match.end():]
             if '\\chapter' in after_text:
@@ -534,8 +536,12 @@ class RubricValidator:
                 chunk = pub_match.group(0)
                 style = None
                 m_pc = re.search(r'pagecommand\s*=\s*\{\s*\\thispagestyle\{([^}]*)\}', chunk)
-                if m_pc:
+                if chunk.startswith('\\FullPagePDF'):
+                    m_opt = re.match(r'\\FullPagePDF\s*\[([^\]]*)\]', chunk)
+                    style = m_opt.group(1).strip() if m_opt else 'empty'
+                elif m_pc:
                     style = m_pc.group(1).strip()
+                if style:
                     if style.startswith('\\'):
                         # style given by a macro, e.g. \AgreementPageStyle: resolve its definition
                         m_def = re.search(r'\\(?:re)?newcommand\{?' + re.escape(style) + r'\}?\s*\{([^}]*)\}', self.preamble)
@@ -558,8 +564,8 @@ class RubricValidator:
             passed=passed,
             severity=severity,
             details=details,
-            remediation="Include the agreement last with \\includepdf[pages={1}, pagecommand={\\thispagestyle{fancy}}]{...} (omit from TOC), "
-                        "or {empty} if its page number is already printed on the signed PDF."
+            remediation="Include the agreement last with \\FullPagePDF[fancy]{publishing_agreement.pdf} (omit from TOC), "
+                        "or [empty] if its page number is already printed on the signed PDF."
         ))
 
     def _check_orientation_and_layout(self, report: RubricReport):
@@ -781,7 +787,7 @@ class RubricValidator:
         """
         search_target = self.full_body or self.body
         order_specs = [
-            ("Title Page", r'Title_Page|titlepage|\\includepdf(?:\s*\[[^\]]*\])?\s*\{[^}]*[Tt]itle[^}]*\}'),
+            ("Title Page", r'Title_Page|titlepage|\\(?:includepdf|FullPagePDF)(?:\s*\[[^\]]*\])?\s*\{[^}]*[Tt]itle[^}]*\}'),
             ("Copyright", r'Copyright\s+\d{4}|\\setcounter\{page\}\{2\}'),
             ("Dedication", r'\\chapter\*\{DEDICATION\}'),
             ("Acknowledgements", r'\\chapter\*\{ACKNOWLEDGEMENTS\}'),
@@ -794,7 +800,7 @@ class RubricValidator:
             ("List of Abbreviations", r'\\chapter\*\{LIST OF ABBREVIATIONS\}'),
             ("Body", r'\\chapter\{|\\input\{ch1'),
             ("References", r'\\printbibliography|\\bibliography\{'),
-            ("Publishing Agreement", r'\\includepdf(?:\s*\[[^\]]*\])?\s*\{[^}]*(?:publishing_agreement|Publishing_Agreement|release)[^}]*\}'),
+            ("Publishing Agreement", r'\\(?:includepdf|FullPagePDF)(?:\s*\[[^\]]*\])?\s*\{[^}]*(?:publishing_agreement|Publishing_Agreement|release)[^}]*\}'),
         ]
 
         found_positions: List[Tuple[str, int]] = []
@@ -1042,6 +1048,60 @@ class RubricValidator:
             details=details,
             remediation="Ensure dissertation PDF is compiled without security encryption or password restrictions."
         ))
+
+    def _check_pdf_accessibility(self, report: RubricReport):
+        """ProQuest accessibility review (WCAG 2.2 / PDF/UA-1): the source must produce a tagged PDF
+        with a document language, and every graphic needs real alt text (see ucsf-accessibility.sty).
+        This checks the source only; run `python3 run_pipeline.py check-accessibility` on the PDF."""
+        problems = []
+        # options = everything between \DocumentMetadata and \documentclass, comments removed
+        # (they contain nested braces such as testphase={...})
+        uncommented = re.sub(r'(?<!\\)%.*', '', self.tex_content)
+        m_dm = re.search(r'\\DocumentMetadata\s*\{(.*?)\\documentclass', uncommented, re.DOTALL)
+        if not m_dm:
+            problems.append("no \\DocumentMetadata{...} before \\documentclass, so the PDF is untagged "
+                            "(ProQuest: tag tree missing, MarkInfo missing, no language, links untagged)")
+        else:
+            opts = m_dm.group(1)
+            if not re.search(r'\blang\s*=', opts):
+                problems.append("\\DocumentMetadata has no lang=... (page text and bookmarks need a language)")
+            if not re.search(r'pdfstandard\s*=\s*ua-', opts):
+                problems.append("\\DocumentMetadata has no pdfstandard=ua-1")
+        if not re.search(r'\\usepackage(?:\[[^\]]*\])?\{[^}]*ucsf-accessibility', self.preamble):
+            problems.append("ucsf-accessibility is not loaded (alt text, caption fix, LuaLaTeX guard)")
+        if not re.search(r'pdftitle\s*=', self.preamble):
+            problems.append("no pdftitle in \\hypersetup (the PDF metadata needs the dissertation title)")
+        if re.search(r'\\includepdf\b', self.full_body):
+            problems.append("\\includepdf is used; use \\FullPagePDF so each included page is one tagged figure")
+
+        # every graphic needs a \FigAlt entry (the build stops otherwise; report it here too)
+        alt_keys = set()
+        for content in [self.tex_content, self.full_body] + list(self.included_contents.values()):
+            alt_keys.update(k.strip() for k in re.findall(r'\\FigAlt\{([^}]*)\}', content))
+        base_dir = os.path.dirname(os.path.abspath(self.master_tex_path))
+        alt_file = os.path.join(base_dir, 'figure_alt_text.tex')
+        if os.path.isfile(alt_file):
+            with open(alt_file, 'r', encoding='utf-8', errors='replace') as f:
+                alt_keys.update(k.strip() for k in re.findall(r'\\FigAlt\{([^}]*)\}', f.read()))
+        alt_keys = {unicodedata.normalize('NFC', k) for k in alt_keys}
+        graphics = re.findall(r'\\(?:includegraphics\*?|FullPagePDF)(?:\s*\[[^\]]*\])?\s*\{([^}]+)\}', self.full_body)
+        missing = []
+        for g in graphics:
+            base = unicodedata.normalize('NFC', os.path.splitext(os.path.basename(g.strip()))[0])
+            if base not in alt_keys and base not in missing:
+                missing.append(base)
+        if missing:
+            problems.append(f"no alt text (\\FigAlt) for {len(missing)} graphic(s): {', '.join(missing[:8])}"
+                            + (" ..." if len(missing) > 8 else ""))
+
+        report.add_result(RubricCheckResult(
+            section="IV. Electronic Publishing", rule_id="IV.PROQUEST_ACCESSIBILITY",
+            name="Tagged, Accessible PDF (ProQuest WCAG 2.2 / PDF/UA-1 review)",
+            passed=not problems, severity="ERROR",
+            details="Source is set up for a tagged PDF/UA-1 file with alt text for every graphic." if not problems
+                    else "; ".join(problems) + ".",
+            remediation="Follow the header of templates/latex/ucsf-accessibility.sty, add each graphic to "
+                        "figure_alt_text.tex, build with LuaLaTeX, then run `python3 run_pipeline.py check-accessibility`."))
 
     def _check_fonts_embedded(self, report: RubricReport):
         """Rubric Sec IV.D: every font in the submitted PDF is embedded (R figures and DocuSign PDFs often are not)."""

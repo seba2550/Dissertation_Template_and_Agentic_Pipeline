@@ -1,0 +1,73 @@
+% ucsf-accessibility.sty
+% Accessible (tagged, PDF/UA-1) dissertation PDF that passes ProQuest's accessibility review.
+%
+% ProQuest checks the submitted PDF against WCAG 2.2 / PDF/UA-1 with a veraPDF-style validator.
+% An untagged LaTeX PDF fails ten rules (no tag tree, no language, untagged links, ...). Tagging is
+% switched on by the \DocumentMetadata line that must come BEFORE \documentclass in the master file:
+%
+%   \DocumentMetadata{lang=en-US, pdfversion=1.7, pdfstandard=ua-1,
+%                     testphase={phase-III,math,table,title,firstaid}}
+%
+% This package adds what tagging alone does not:
+%   * stops the build unless it runs under LuaLaTeX (pdfLaTeX's tagging breaks longtable);
+%   * keeps the caption package's formatting (the 2024-11 tagging code replaces it: no bold labels);
+%   * alt text for every graphic, read from one file keyed by graphic file name (\FigAlt);
+%     a graphic without an entry stops the build, because the fallback alt text is the file path;
+%   * \FullPagePDF for the signed title page and publishing agreement;
+%   * the langtext environment for paragraphs in another language (WCAG 3.1.2).
+%
+% Load it after hyperref and caption. Then check the PDF:  verapdf --flavour ua1 <file>.pdf
+\NeedsTeXFormat{LaTeX2e}[2024-11-01]
+\ProvidesPackage{ucsf-accessibility}[2026/11/24 Tagged PDF/UA-1 helpers for UCSF dissertations]
+
+\RequirePackage{iftex}
+\RequireLuaTeX
+\IfDocumentMetadataTF{}{%
+  \PackageError{ucsf-accessibility}{No \string\DocumentMetadata\space before \string\documentclass}%
+    {Without it the PDF is untagged and fails ProQuest's accessibility check.
+     See the top of ucsf-accessibility.sty for the line to add.}}
+\RequirePackage{graphicx}
+
+% --- Caption formatting -----------------------------------------------------------------------
+% The tagging code redefines \@makecaption at \begin{document}, dropping caption-package settings
+% such as labelfont=bf and moving floats. Restore the caption package's version (captions are then
+% tagged as paragraphs inside their float, which PDF/UA-1 accepts).
+\AddToHook{begindocument}{%
+  \@ifpackageloaded{caption}{\let\@makecaption\caption@makecaption}{}}
+
+% --- Alt text --------------------------------------------------------------------------------
+% \FigAlt{<file name without folder or extension>}{<alt text>}, usually in figure_alt_text.tex.
+% Keys are Unicode-normalized (NFC): macOS stores accented file names decomposed.
+\directlua{ucsf_accessibility_nfc = require("lua-uni-normalize").NFC}
+\newcommand\ucsfacc@key[1]{FigAlt@\directlua{tex.sprint(-2, ucsf_accessibility_nfc("\luaescapestring{#1}"))}}
+\newcommand\FigAlt[2]{\expandafter\def\csname\ucsfacc@key{#1}\endcsname{#2}}
+\NewCommandCopy\ucsfacc@includegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{s O{} m}{%
+  \filename@parse{#3}%
+  \ifcsname\ucsfacc@key{\filename@base}\endcsname
+    \expandafter\expandafter\expandafter\ucsfacc@include
+      \expandafter\expandafter\expandafter{\csname\ucsfacc@key{\filename@base}\endcsname}{#1}{#2}{#3}%
+  \else
+    \PackageError{ucsf-accessibility}{No alt text for graphic `#3'}%
+      {Add \string\FigAlt{\filename@base}{<description>} to figure_alt_text.tex.}%
+    \ucsfacc@include{\filename@base}{#1}{#2}{#3}%
+  \fi}
+\newcommand\ucsfacc@include[4]{%
+  \IfBooleanTF{#2}{\ucsfacc@includegraphics*}{\ucsfacc@includegraphics}[#3,alt={#1}]{#4}}
+
+% --- Full-page PDFs (title page, publishing agreement) ----------------------------------------
+% \FullPagePDF[<page style>]{<file>}: page 1 of <file> as a whole page, tagged as one figure whose
+% alt text comes from \FigAlt. Used instead of \includepdf, whose measuring passes each leave an
+% empty Figure tag (screen readers may read the alt text several times). Run embed_fonts.sh with
+% --forms on these files first: it outlines their text and drops their own tags.
+\newcommand\FullPagePDF[2][empty]{%
+  \clearpage\thispagestyle{#1}\null
+  \AddToHookNext{shipout/background}{%
+    \put(0pt,-\paperheight){\includegraphics[width=\paperwidth,height=\paperheight,page=1]{#2}}}%
+  \clearpage}
+
+% --- Language of parts (WCAG 3.1.2) -------------------------------------------------------------
+% \begin{langtext}{es} ... \end{langtext} around whole paragraphs in another language.
+\NewDocumentEnvironment{langtext}{m}{\par\tagstructbegin{tag=Div,lang=#1}}{\par\tagstructend}
+
+\endinput

@@ -16,6 +16,7 @@ from .reference_extractor import ReferenceExtractor, extract_docx_references, gu
 from .docx_converter import DocxConverter, convert_docx_to_latex
 from .rubric_validator import RubricValidator, RubricReport
 from .compiler import LatexCompiler, compile_dissertation
+from .accessibility import check_pdf_accessibility, print_accessibility_report, verapdf_available
 
 
 _BIB_ENTRY_START = re.compile(r'@\w+\s*\{\s*([^,\s]+)\s*,')
@@ -82,11 +83,16 @@ def build_parser() -> argparse.ArgumentParser:
     p_validate.add_argument("-j", "--json", help="Optional path to save JSON validation audit report")
 
     # 4. build
-    p_build = subparsers.add_parser("build", help="Compile dissertation via latexmk/pdflatex + biber")
+    p_build = subparsers.add_parser("build", help="Compile dissertation via latexmk (LuaLaTeX) + biber")
     p_build.add_argument("-t", "--tex", default="dissertation_master.tex", help="Master LaTeX document to compile")
     p_build.add_argument("--validate", action="store_true", help="Automatically run rubric validation audit after build")
 
-    # 5. full-pipeline
+    # 5. check-accessibility
+    p_access = subparsers.add_parser("check-accessibility",
+                                     help="Check the compiled PDF as ProQuest's accessibility review does (veraPDF, PDF/UA-1)")
+    p_access.add_argument("pdf", nargs="?", default="dissertation_master.pdf", help="Compiled dissertation PDF")
+
+    # 6. full-pipeline
     p_full = subparsers.add_parser("full-pipeline", help="Run full pipeline: extract -> convert -> build -> validate")
     p_full.add_argument("--docx", nargs="*", help="Optional DOCX file(s) to extract and convert before building")
     p_full.add_argument("-t", "--tex", default="dissertation_master.tex", help="Master LaTeX document")
@@ -216,6 +222,15 @@ def _main(argv: Optional[List[str]] = None) -> int:
 
         return 0
 
+    elif args.subcommand == "check-accessibility":
+        if not os.path.isfile(args.pdf):
+            print(f"[!] PDF not found: {args.pdf}. Build first: python3 run_pipeline.py build")
+            return 1
+        print(f"\n[*] Checking PDF accessibility (PDF/UA-1, as ProQuest does): {args.pdf}")
+        res = check_pdf_accessibility(args.pdf)
+        print_accessibility_report(res)
+        return 0 if (res.available and not res.error and res.compliant) else 1
+
     elif args.subcommand == "full-pipeline":
         print("\n" + "=" * 70)
         print(" RUNNING FULL DISSERTATION AGENTIC PIPELINE")
@@ -310,7 +325,17 @@ def _main(argv: Optional[List[str]] = None) -> int:
         report = validator.validate_all()
         report.print_summary()
 
-        return 0 if report.is_compliant else 1
+        # Step 4: ProQuest accessibility (needs veraPDF; skipped with a note when it is not installed)
+        accessible = True
+        print(f"\n--- Accessibility (ProQuest PDF/UA-1 review) ---")
+        if verapdf_available():
+            acc = check_pdf_accessibility(comp_res.output_pdf)
+            print_accessibility_report(acc)
+            accessible = bool(acc.compliant and not acc.error)
+        else:
+            print("[!] Skipped: veraPDF not installed (`brew install verapdf`). ProQuest will run this check on submission.")
+
+        return 0 if (report.is_compliant and accessible) else 1
 
     return 0
 
