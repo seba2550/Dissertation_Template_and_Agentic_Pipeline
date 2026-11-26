@@ -1,0 +1,21 @@
+% Alternative text for every graphic in the dissertation (ProQuest accessibility review: WCAG 2.2 SC 1.1.1,
+% PDF/UA-1 clause 7.3). A screen reader reads this text in place of the image, then reads the caption.
+%
+% One entry per graphic file, keyed by the file name without folder or extension:
+%     \FigAlt{fig2_accuracy}{Bar chart of clock accuracy in five cohorts; accuracy is lowest in ...}
+% matches \includegraphics{figures/fig2_accuracy.pdf} anywhere in the dissertation. A graphic without an
+% entry stops the build with "No alt text for graphic".
+%
+% Writing alt text:
+%   * Say what kind of graphic it is, what it plots, and the main takeaway, in one to three sentences.
+%   * Do not repeat the caption: the screen reader reads the caption right after the alt text.
+%   * Plain text only: no math mode, no \cite, no \ref. Write "p = 0.04", "percent", "r = 0.72".
+%   * Multi-panel figures: summarize each panel briefly ("Panel A: ...; Panel B: ...").
+%   * Full-page forms (title page, publishing agreement): give the page's full text, and who signed it.
+
+%%% ---------- Title page and publishing agreement (\FullPagePDF) ---------- %%%
+\FigAlt{Title_Page}{Title page. TITLE OF THE DISSERTATION, by Candidate Full Name. Dissertation submitted in partial satisfaction of the requirements for degree of Doctor of Philosophy in Biomedical Sciences in the Graduate Division of the University of California, San Francisco. Approved: Dissertation Chair and Committee Member.}
+\FigAlt{publishing_agreement}{Signed UCSF Publishing Agreement. REPLACE WITH THE FULL TEXT OF THE SIGNED AGREEMENT, followed by: Signed by the author, Candidate Full Name, and dated MM/DD/YYYY.}
+
+%%% ---------- Chapter figures ---------- %%%
+% \FigAlt{fig1_workflow}{...}

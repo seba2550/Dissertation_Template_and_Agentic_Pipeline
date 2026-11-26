@@ -368,7 +368,8 @@ def generate_synthetic_documents():
 
 def generate_synthetic_master_tex(path: str):
     """Generates the master dissertation LaTeX file for the synthetic test environment."""
-    content = r"""\documentclass[12pt,oneside]{report}
+    content = r"""\DocumentMetadata{lang=en-US, pdfversion=1.7, pdfstandard=ua-1, testphase={phase-III,math,table,title,firstaid}}
+\documentclass[12pt,oneside]{report}
 
 %%% ========================================================================= %%%
 %%% UCSF DISSERTATION MASTER LATEX TEMPLATE - SYNTHETIC TEST SUITE            %%%
@@ -377,6 +378,7 @@ def generate_synthetic_master_tex(path: str):
 
 %%% ------------ I. MARGINS, FONT & SPACING (RUBRIC SEC I.A, I.B, I.F) ------------ %%%
 \usepackage[letterpaper, top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage[T1]{fontenc} % keeps LuaLaTeX on Times; precomposed accents extract as Unicode
 \usepackage{mathptmx} % Times New Roman 12pt TrueType font
 \usepackage{microtype} % Protrusion and font expansion to prevent overfull hboxes
 \usepackage{setspace}
@@ -430,8 +432,13 @@ def generate_synthetic_master_tex(path: str):
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{array}
-\usepackage{pdfpages}
 \usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black, breaklinks=true]{hyperref}
+\hypersetup{pdftitle={Synthetic Dissertation for Pipeline Testing}, pdfauthor={AUTHOR FULL NAME}, pdfdisplaydoctitle=true}
+
+%%% ------------ ACCESSIBILITY (PROQUEST WCAG 2.2 / PDF/UA-1) ------------ %%%
+\usepackage{ucsf-accessibility}
+\FigAlt{Title_Page}{Title page of the synthetic test dissertation, by Author Full Name, submitted for the degree of Doctor of Philosophy in the Graduate Division of the University of California, San Francisco.}
+\FigAlt{publishing_agreement}{UCSF Publishing Agreement page of the synthetic test dissertation.}
 \usepackage[capitalise, noabbrev, nameinlink]{cleveref}
 
 %%% ------------ CITATION FORMATTING (RUBRIC SEC I.H) ------------ %%%
@@ -527,7 +534,7 @@ def generate_synthetic_master_tex(path: str):
 \pagenumbering{roman}
 
 % --- TITLE PAGE (Page i, unnumbered, Rubric Sec I.G) ---
-\includepdf[pages={1}]{Title_Page.pdf}
+\FullPagePDF{Title_Page.pdf}
 \setcounter{page}{2} % Copyright page is Page ii
 
 % --- COPYRIGHT PAGE (Page ii, Rubric Sec I.I & III.B) ---
@@ -645,7 +652,7 @@ Descriptions of student and co-author contributions for adapted manuscript chapt
 %%% ========================================================================= %%%
 %%% UCSF PUBLISHING AGREEMENT (Required, Rubric Sec I.J & IV.C)               %%%
 %%% ========================================================================= %%%
-\includepdf[pages={1}, pagecommand={\thispagestyle{fancy}}]{publishing_agreement.pdf}
+\FullPagePDF[fancy]{publishing_agreement.pdf}
 
 \end{document}
 """
@@ -677,6 +684,9 @@ def main():
     pub_pdf_src = os.path.join(TEMPLATES_LATEX_DIR, "publishing_agreement.pdf")
     shutil.copy2(title_pdf_src, os.path.join(SYNTHETIC_DIR, "Title_Page.pdf"))
     shutil.copy2(pub_pdf_src, os.path.join(SYNTHETIC_DIR, "publishing_agreement.pdf"))
+    # accessibility package and LuaLaTeX build setting (tagged PDF/UA-1 output)
+    shutil.copy2(os.path.join(TEMPLATES_LATEX_DIR, "ucsf-accessibility.sty"), os.path.join(SYNTHETIC_DIR, "ucsf-accessibility.sty"))
+    shutil.copy2(os.path.join(TEMPLATES_LATEX_DIR, ".latexmkrc"), os.path.join(SYNTHETIC_DIR, ".latexmkrc"))
 
     # 4. Create synthetic master dissertation LaTeX file
     print("    4. Writing synthetic master dissertation LaTeX file...")

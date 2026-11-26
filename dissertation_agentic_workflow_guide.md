@@ -119,11 +119,11 @@ The template's preamble also carries the layout rules (float placement, short la
 
 ### Stage 4: Fonts and Multi-Pass Compilation
 
-R's `pdf()` device leaves Helvetica unembedded, and DocuSign title pages and agreements leave Arial unembedded (Rubric IV.D). Whenever a figure, the title page or the publishing agreement changes, write font-embedded copies first:
+R's `pdf()` device leaves Helvetica unembedded, and DocuSign title pages and agreements leave Arial unembedded (Rubric IV.D). Whenever a figure, the title page or the publishing agreement changes, write font-embedded copies first. The signed forms go after `--forms`: their text becomes vector outlines and their own tags are dropped, since DocuSign/Word fonts and tags fail ProQuest's accessibility check:
 ```bash
-agentic_scripts/embed_fonts.sh figures/ Title_Page.pdf publishing_agreement.pdf
+agentic_scripts/embed_fonts.sh figures/ --forms Title_Page.pdf publishing_agreement.pdf
 ```
-Then compile the complete dissertation via `latexmk` or multi-pass `pdflatex` + `biber`:
+Then compile the complete dissertation with LuaLaTeX + `biber` (`latexmk -lualatex`; never `-pdf`, which cannot build the tagged PDF):
 ```bash
 python3 run_pipeline.py build -t dissertation_master.tex --validate
 ```
@@ -155,6 +155,7 @@ python3 run_pipeline.py validate-rubric -t dissertation_master.tex -j audit_repo
 - **Publishing Agreement**: Last page, numbered, not in the TOC. Set `\AgreementPageStyle` in the preamble: `{fancy}` if LaTeX should number it, `{empty}` if the signed DocuSign copy already has its page number printed on it. In that case the printed number must equal the PDF's final page number, and any edit that moves the last page means getting a newly signed copy.
 - **Bold References**: If `III.A.7_BOLD_REFERENCES` fails, replace hand-typed `Figure 2.1` / `Table~\ref{...}` with `\FIG[A]{name}`, `\TABLE{name}` or `\cref{...}`.
 - **Embedded Fonts**: If `IV.D_FONTS_EMBEDDED` fails, run `embed_fonts.sh` on the offending figures and rebuild.
+- **Accessibility**: If `IV.PROQUEST_ACCESSIBILITY` fails, follow its details: `\DocumentMetadata` before `\documentclass`, `\usepackage{ucsf-accessibility}`, `pdftitle` in `\hypersetup`, `\FullPagePDF` instead of `\includepdf`, and a `\FigAlt` entry in `figure_alt_text.tex` for each listed graphic.
 - **Table / Figure Captions**: Confirm table captions are positioned **above** the table and figure captions are positioned **below** the figure.
 
 ---
@@ -166,6 +167,11 @@ Before final upload to ProQuest ETD:
 2. Confirm both a UCSF email and a permanent personal email are entered in ProQuest.
 3. Confirm committee members match your official Advance to Candidacy petition on file.
 4. Verify all fonts are embedded and the PDF has no password protection or security restrictions (`IV.D_PDF_SPEC`).
+5. Run the accessibility check ProQuest runs, and expect `0 failed`:
+   ```bash
+   python3 run_pipeline.py check-accessibility dissertation_master.pdf
+   ```
+   ProQuest's review report cites PDF/UA-1 clause and test numbers (e.g. "Test #3 | Clause 7.1"); the command prints the same numbers, so its output can be matched line by line against a report ProQuest sends back.
 
 ---
 
@@ -194,3 +200,10 @@ These are the problems that came up while finishing a real dissertation with thi
 9. **Bibliography style:** one consistent format (initials, DOI rather than URL, no ISSN/notes), and optionally sentence-case titles (`sentence_case.py --dry-run` first: add any proper nouns it would lower-case with `--keep`).
 10. **List of Abbreviations:** dataset or cohort names that are not abbreviations of anything (e.g. a cohort called by a code name) do not belong in it. Check expansions against the source rather than copying them from a draft, since drafts can carry wrong expansions.
 11. **Keep tests hermetic.** A test that reads "the real file if present" will one day run inside the real dissertation folder.
+12. **ProQuest rejects untagged PDFs.** Its accessibility review failed the finished dissertation on 10 PDF/UA-1 rules (52,218 instances), all from one cause: pdfLaTeX writes an untagged PDF. Lessons from fixing it:
+    - Tag at compile time (`\DocumentMetadata`), do not repair the PDF afterwards. With TeX Live 2025 (LaTeX 2024-11) use LuaLaTeX: pdfLaTeX's tagging adds a page to every split `longtable`.
+    - LuaLaTeX with `mathptmx` alone silently switches the body font to Latin Modern. Load `\usepackage[T1]{fontenc}` before `mathptmx` to keep Times and the original page breaks.
+    - The 2024-11 tagging code overrides the caption package (labels lose bold, captions gain a line, floats move). `ucsf-accessibility.sty` restores it. After switching, compare the `.toc`/`.lof`/`.lot` page numbers with the previous build: identical lists mean figures and sections stayed on their pages.
+    - veraPDF passes figures whose alt text is the file path (the tagging default). That is still inaccessible, so the template makes a missing `\FigAlt` a build error.
+    - Signed DocuSign/Word pages carry fonts without Unicode maps and their own tags. Converting them to outlines (`embed_fonts.sh --forms`) and giving the page's full text as alt text fixes both, without touching the signatures.
+    - Accented file names: macOS stores them decomposed, so alt-text keys are Unicode-normalized before matching.

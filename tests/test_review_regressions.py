@@ -180,13 +180,14 @@ class TestTemplateHandlesGreekReferences(unittest.TestCase):
         src = os.path.join("templates", "latex")
         with tempfile.TemporaryDirectory() as tmpdir:
             for name in ("dissertation_master_template.tex", "ch1_intro.tex",
-                         "Title_Page.pdf", "publishing_agreement.pdf"):
+                         "Title_Page.pdf", "publishing_agreement.pdf",
+                         "ucsf-accessibility.sty", "figure_alt_text.tex"):
                 shutil.copy(os.path.join(src, name), tmpdir)
             with open(os.path.join(tmpdir, "references.bib"), "w", encoding="utf-8") as f:
                 f.write("@article{Horvath2013, author={Horvath, S}, year={2013},\n"
                         "  title={LRG1 modulates TGF-\u03b2 signalling at \u2265 5 \u03bcM}, journal={Nature}}\n")
             res = subprocess.run(
-                ["latexmk", "-pdf", "-interaction=nonstopmode", "dissertation_master_template.tex"],
+                ["latexmk", "-lualatex", "-interaction=nonstopmode", "dissertation_master_template.tex"],
                 cwd=tmpdir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
             with open(os.path.join(tmpdir, "dissertation_master_template.log"), errors="replace") as f:
                 errors = [l for l in f if l.startswith("! ")]

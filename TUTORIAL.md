@@ -39,6 +39,13 @@ This is the software that typesets your dissertation. It is large (several GB), 
 
 When it finishes, **close and reopen** Terminal (or Command Prompt) so it can find the new software.
 
+### 2b. veraPDF (checks accessibility, recommended)
+
+ProQuest checks that your PDF is accessible (usable with screen readers) and sends it back if it isn't. veraPDF runs the same check on your computer first.
+
+- **Mac:** if you have [Homebrew](https://brew.sh), run `brew install verapdf`. Otherwise download the installer from [verapdf.org](https://verapdf.org/software/).
+- **Windows:** download the installer from [verapdf.org](https://verapdf.org/software/).
+
 ### 3. This tool
 
 1. Go to the project's GitHub page, click the green **Code** button, and choose **Download ZIP**.
@@ -101,6 +108,8 @@ Inside the tool's folder, create a new folder called `my_dissertation`. Then cop
 - `dissertation_master_template.tex` → rename the copy to **`dissertation.tex`**
 - `Title_Page.pdf`
 - `publishing_agreement.pdf`
+- `ucsf-accessibility.sty` (makes the PDF accessible; don't edit it)
+- `figure_alt_text.tex` (where you describe your figures; see Part 5)
 
 Also copy your Word chapters into `my_dissertation`, named simply, for example `chapter1.docx`, `chapter2.docx`, `chapter3.docx`.
 
@@ -167,6 +176,16 @@ and replace it with one line per chapter, in order, with `\clearpage` between th
 - `Title_Page.pdf` → your official UCSF title page (the DocuSign-signed PDF), saved with the same name.
 - `publishing_agreement.pdf` → your signed publishing agreement, saved with the same name.
 
+**Then prepare them for the PDF** (run this again whenever you replace either file):
+
+```
+bash agentic_scripts/embed_fonts.sh -o my_dissertation/build_embedded --forms my_dissertation/Title_Page.pdf my_dissertation/publishing_agreement.pdf
+```
+
+This turns their text into outlines, which makes them pass ProQuest's accessibility check without changing how they look. Because the text is no longer readable by software, open `figure_alt_text.tex` and replace the two example descriptions at the top with **the full text of your title page and of your signed agreement** (who signed and the date included). Screen readers read that text instead.
+
+**Title and name in the PDF's properties:** in `dissertation.tex`, find `pdftitle={DISSERTATION TITLE}` and `pdfauthor={AUTHOR FULL NAME}` and fill in your title and name exactly as on the title page.
+
 **Publishing agreement page number:** the agreement must be the last page and must be numbered. The signed copy UCSF sends back usually has its page number already printed on it. If yours does, open `dissertation.tex`, find the line `\newcommand{\AgreementPageStyle}{fancy}` and change `fancy` to `empty`, otherwise the page will show two numbers. Then check that the printed number matches the actual last page of your PDF. If later edits change the page count, you will need a newly signed copy.
 
 ### Special characters in your text
@@ -193,6 +212,14 @@ python3 run_pipeline.py validate-rubric -t my_dissertation/dissertation.tex
 
 Each rule shows `[PASS]` or `[FAIL]`. For every failure, the report explains what's wrong and how to fix it. **Always build before checking**: the check reads the files the build produces.
 
+### Check accessibility (what ProQuest checks)
+
+```
+python3 run_pipeline.py check-accessibility my_dissertation/dissertation.pdf
+```
+
+You want `PDF/UA-1 compliant ... 0 failed`. Otherwise each problem is listed with the name ProQuest uses for it and what to do. This needs veraPDF (Part 1, step 2b).
+
 ### Adding figures
 
 Put your image files (`.pdf`, `.png` or `.jpg`) in `my_dissertation`. Then, in the chapter's `.tex` file, paste this where the figure should go and edit the file name and caption:
@@ -208,6 +235,16 @@ Put your image files (`.pdf`, `.png` or `.jpg`) in `my_dissertation`. Then, in t
 
 Captions go *below* figures, as UCSF requires. To refer to it in your text, write `Figure~\ref{fig:my_figure}`.
 
+**Every figure needs a description for screen readers** ("alt text"). Open `figure_alt_text.tex` and add a line with the image's file name (without `.png`/`.pdf`):
+
+```
+\FigAlt{figure1}{Bar chart of clock accuracy in five groups; accuracy is lowest in the two groups with the most African ancestry.}
+```
+
+Say what kind of graphic it is, what it shows, and the main finding, in one to three sentences. Don't repeat the caption: it is read right after. If you forget, the build stops with `No alt text for graphic` and names the file.
+
+**Text in another language** (for example a dedication in Spanish): put the paragraphs between `\begin{langtext}{es}` and `\end{langtext}` so screen readers pronounce them correctly (`es` Spanish, `fr` French, `pt` Portuguese, ...).
+
 ---
 
 ## Common problems
@@ -221,6 +258,9 @@ Captions go *below* figures, as UCSF requires. To refer to it in your text, writ
 | `[?]` or **"citation undefined"** in the PDF | A `\cite{...}` key in a chapter isn't in `references.bib`. Rerun Part 3, Step 2 with **all** chapters listed, adding `--overwrite`. |
 | Fewer references found than expected | Your citations aren't hyperlinks or DOIs. Add links in Word (Part 2) and rerun Part 3. |
 | `Compilation Log Quality` fails | The build had errors. Fix those first, rebuild, then re-check. |
+| `No alt text for graphic` | Add a `\FigAlt{...}{...}` line for that file to `figure_alt_text.tex` (Part 5, "Adding figures"). |
+| `LuaTeX is required` | Something built the PDF with pdfLaTeX. Use `python3 run_pipeline.py build`; on Overleaf, set Menu → Compiler → **LuaLaTeX**. |
+| `veraPDF not found` | Install it (Part 1, step 2b), close and reopen Terminal, and rerun. |
 
 ---
 
@@ -230,7 +270,7 @@ If you change a Word chapter, rerun **Part 3, Steps 2 and 3** for all chapters, 
 
 **Recommended:** make text edits in Word until your chapters are final, then add figures and do final tweaks in the `.tex` files.
 
-> **Prefer an online editor?** Once your `my_dissertation` folder builds successfully, you can upload the whole folder to [Overleaf](https://www.overleaf.com) (New Project → Upload Project, as a ZIP) and make final edits there with a live preview.
+> **Prefer an online editor?** Once your `my_dissertation` folder builds successfully, you can upload the whole folder to [Overleaf](https://www.overleaf.com) (New Project → Upload Project, as a ZIP) and make final edits there with a live preview. In Overleaf, open **Menu → Compiler** and choose **LuaLaTeX**, or the build stops with "LuaTeX is required".
 
 ---
 
